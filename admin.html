@@ -1723,6 +1723,305 @@
                 max-width: 100%;
             }
         }
+    
+        /* =========================================================
+           ADVANCED MOBILE-FIRST ADMIN ERGONOMIC DOCK & CARD VIEWS
+        ========================================================= */
+        .mobile-admin-dock {
+            display: none;
+            position: fixed;
+            bottom: 14px;
+            left: 14px;
+            right: 14px;
+            height: 66px;
+            background: rgba(14, 10, 18, 0.92);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 33px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95), 0 0 25px rgba(193, 18, 31, 0.25);
+            z-index: 9999;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 6px;
+            pointer-events: auto;
+        }
+
+        .mobile-dock-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-family: var(--font-main);
+            font-size: 9.5px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 6px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--trans-smooth);
+            position: relative;
+            flex: 1;
+            text-decoration: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .mobile-dock-btn:active {
+            transform: scale(0.92);
+        }
+
+        .mobile-dock-btn i {
+            font-size: 19px;
+            margin-bottom: 3px;
+            transition: var(--trans-smooth);
+        }
+
+        .mobile-dock-btn.active {
+            color: #fff;
+        }
+
+        .mobile-dock-btn.active i {
+            color: #ff4d5a;
+            transform: translateY(-2px);
+            filter: drop-shadow(0 0 10px rgba(193, 18, 31, 0.7));
+        }
+
+        .mobile-dock-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            width: 14px;
+            height: 3px;
+            border-radius: 2px;
+            background: var(--crimson);
+            box-shadow: 0 0 10px var(--crimson);
+        }
+
+        .dock-icon-wrap {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dock-badge {
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            background: var(--crimson);
+            color: #fff;
+            font-size: 9px;
+            font-weight: 800;
+            padding: 1px 5px;
+            border-radius: 10px;
+            line-height: 1.2;
+            border: 1.5px solid #000;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.8);
+        }
+
+        /* Mobile View Toggle Pills */
+        .mobile-view-toggle {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+
+        .btn-view-toggle {
+            padding: 6px 14px;
+            border-radius: var(--radius-full);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--trans-smooth);
+        }
+
+        .btn-view-toggle.active {
+            background: var(--crimson);
+            color: #fff;
+            border-color: var(--crimson);
+        }
+
+        /* Responsive Mobile Breakpoint Overrides */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px 10px 110px !important;
+            }
+            .mobile-admin-dock {
+                display: flex !important;
+            }
+            .tabs-container {
+                display: none !important;
+            }
+            .admin-shell {
+                padding: 20px 14px 100px !important;
+                border-radius: 20px !important;
+            }
+            .header {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 14px !important;
+            }
+            .brand-box {
+                width: 100% !important;
+            }
+            .brand-avatar {
+                width: 40px !important;
+                height: 40px !important;
+            }
+            .brand-title-wrap h1 {
+                font-size: 18px !important;
+                letter-spacing: 2px !important;
+            }
+            .header-actions {
+                width: 100% !important;
+                justify-content: space-between !important;
+                flex-wrap: wrap !important;
+                gap: 8px !important;
+            }
+            .badge-admin-status {
+                padding: 6px 12px !important;
+                font-size: 10px !important;
+            }
+            .time-pill {
+                padding: 6px 10px !important;
+                font-size: 10px !important;
+            }
+            .btn-lock-console {
+                padding: 6px 12px !important;
+                font-size: 10px !important;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px !important;
+            }
+            .stat-card {
+                padding: 16px 14px !important;
+                border-radius: 14px !important;
+            }
+            .stat-value {
+                font-size: 20px !important;
+            }
+            .stat-footer {
+                font-size: 10px !important;
+            }
+            .toolbar {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 12px !important;
+            }
+            .search-wrapper {
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+            .toolbar-group {
+                width: 100% !important;
+                flex-wrap: wrap !important;
+                gap: 8px !important;
+            }
+            .toolbar-group > * {
+                flex: 1 !important;
+            }
+            .mobile-view-toggle {
+                display: flex !important;
+            }
+
+            /* Responsive Mobile Card Transformation for Tables */
+            .table-responsive.card-mode {
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                overflow: visible !important;
+            }
+            .table-responsive.card-mode .liquid-table {
+                min-width: 100% !important;
+                display: block !important;
+            }
+            .table-responsive.card-mode .liquid-table thead {
+                display: none !important;
+            }
+            .table-responsive.card-mode .liquid-table tbody {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 14px !important;
+            }
+            .table-responsive.card-mode .liquid-table tbody tr {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 8px !important;
+                background: rgba(18, 14, 24, 0.9) !important;
+                border: 1px solid rgba(255, 255, 255, 0.08) !important;
+                border-radius: 18px !important;
+                padding: 18px 16px !important;
+                backdrop-filter: blur(18px) !important;
+                box-shadow: 0 12px 35px rgba(0,0,0,0.6) !important;
+            }
+            .table-responsive.card-mode .liquid-table tbody tr:hover {
+                border-color: rgba(193, 18, 31, 0.4) !important;
+                background: rgba(25, 18, 32, 0.98) !important;
+            }
+            .table-responsive.card-mode .liquid-table tbody td {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                padding: 6px 0 !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+                font-size: 12px !important;
+                white-space: normal !important;
+                max-width: 100% !important;
+            }
+            .table-responsive.card-mode .liquid-table tbody td:last-child {
+                border-bottom: none !important;
+                padding-top: 10px !important;
+                justify-content: flex-end !important;
+            }
+            .table-responsive.card-mode .liquid-table tbody td::before {
+                content: attr(data-label);
+                font-size: 10px !important;
+                font-weight: 700 !important;
+                color: #8d8d95 !important;
+                text-transform: uppercase !important;
+                letter-spacing: 1px !important;
+                flex-shrink: 0 !important;
+                margin-right: 10px !important;
+            }
+
+            /* Bottom Sheet Drawer for Mobile */
+            .liquid-drawer {
+                top: auto !important;
+                bottom: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                max-height: 86vh !important;
+                border-radius: 24px 24px 0 0 !important;
+                border-left: none !important;
+                border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+                transform: translateY(100%) !important;
+                padding: 24px 20px 36px !important;
+                box-shadow: 0 -15px 50px rgba(0,0,0,0.85) !important;
+            }
+            .liquid-drawer.open {
+                transform: translateY(0) !important;
+            }
+            .drawer-header::before {
+                content: '';
+                position: absolute;
+                top: -12px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 44px;
+                height: 4px;
+                border-radius: 2px;
+                background: rgba(255, 255, 255, 0.3);
+            }
+        }
+
     </style>
 </head>
 
@@ -1949,7 +2248,7 @@
                 </div>
             </div>
 
-            <div class="table-responsive">
+            <div class="table-responsive card-mode">
                 <table class="liquid-table">
                     <thead>
                         <tr>
@@ -2048,7 +2347,7 @@
                 </div>
             </div>
 
-            <div class="table-responsive">
+            <div class="table-responsive card-mode">
                 <table class="liquid-table">
                     <thead>
                         <tr>
@@ -2753,6 +3052,8 @@
         isVerifiedAdmin = true;
         document.getElementById('admin-gate-overlay').classList.add('hidden');
         document.getElementById('admin-main-shell').style.display = 'block';
+        const mobDock = document.getElementById('mobile-admin-dock');
+        if (mobDock) mobDock.style.display = 'flex';
 
         document.getElementById('session-email-display').textContent = email;
         document.getElementById('badge-admin-session-display').innerHTML = `<i class="fas fa-shield-halved"></i> <span>VERIFIED: ${escapeHtml(email)}</span>`;
@@ -2778,6 +3079,8 @@
         isVerifiedAdmin = false;
         document.getElementById('admin-main-shell').style.display = 'none';
         document.getElementById('admin-gate-overlay').classList.remove('hidden');
+        const mobDock = document.getElementById('mobile-admin-dock');
+        if (mobDock) mobDock.style.display = 'none';
 
         document.getElementById('gate-status-msg').textContent = 'Console locked. Identity verification required.';
         document.getElementById('gate-status-msg').className = 'gate-status-msg';
@@ -3217,6 +3520,8 @@
         const total = allUsers.length;
         const buyers = allUsers.filter(u => String(u.role || '').toLowerCase() === 'buyer').length;
         const active = allUsers.filter(u => String(u.status || '').toUpperCase() === 'ACTIVE').length;
+        const dockUsers = document.getElementById('dock-badge-users');
+        if (dockUsers) dockUsers.textContent = total;
 
         document.getElementById('kpi-total-users').textContent = total;
         document.getElementById('kpi-active-buyers').textContent = buyers;
@@ -3499,11 +3804,11 @@
 
             return `
                 <tr>
-                    <td>
+                    <td data-label="Order ID">
                         <strong style="color: #fff; font-family: monospace; font-size: 13px; letter-spacing: 0.5px;">${escapeHtml(o.id || '—')}</strong>
                         <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">${escapeHtml(o.paymentMethod || 'Cash on Delivery')}</div>
                     </td>
-                    <td>
+                    <td data-label="Customer">
                         <div style="font-weight: 600; color: #fff; font-size: 13px;">${escapeHtml(o.customer || 'Valued Buyer')}</div>
                         <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">${escapeHtml(o.email || '—')}</div>
                         <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
@@ -3515,22 +3820,22 @@
                             ` : ''}
                         </div>
                     </td>
-                    <td style="font-size: 11px; color: var(--text-muted); white-space: nowrap;">
+                    <td data-label="Placed Date" style="font-size: 11px; color: var(--text-muted); white-space: nowrap;">
                         ${formatDate(o.date)}
                     </td>
-                    <td style="max-width: 200px; font-size: 11.5px; line-height: 1.4;">
+                    <td data-label="Destination" style="max-width: 200px; font-size: 11.5px; line-height: 1.4;">
                         ${escapeHtml(o.shipping || 'Standard Delivery')}
                     </td>
-                    <td style="max-width: 240px;">
+                    <td data-label="Total Amount" style="max-width: 240px;">
                         <div style="font-weight: 700; color: var(--green); font-size: 14px;">${escapeHtml(o.total || '$0.00')}</div>
                         <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px; line-height: 1.3;" title="${escapeAttribute(o.items || '')}">
                             ${escapeHtml(o.items || 'Item list')}
                         </div>
                     </td>
-                    <td>
+                    <td data-label="Status Pipeline">
                         ${timelineHtml}
-                        <div style="margin-top: 8px;">
-                            <select class="filter-select" style="padding: 4px 8px; font-size: 10px; height: auto;" onchange="quickUpdateOrderStatus('${escapeAttribute(o.id)}', this.value)" title="Change order status in Google Sheet">
+                        <div style="margin-top: 8px; width: 100%;">
+                            <select class="filter-select" style="padding: 6px 8px; font-size: 11px; height: auto; width: 100%;" onchange="quickUpdateOrderStatus('${escapeAttribute(o.id)}', this.value)" title="Change order status in Google Sheet">
                                 <option value="CONFIRMED" ${normStatus === 'CONFIRMED' || normStatus === 'ORDER PLACED' ? 'selected' : ''}>Confirmed</option>
                                 <option value="PROCESSING" ${normStatus === 'PROCESSING' ? 'selected' : ''}>Processing</option>
                                 <option value="SHIPPED" ${normStatus === 'SHIPPED' ? 'selected' : ''}>Shipped</option>
@@ -3540,7 +3845,7 @@
                             </select>
                         </div>
                     </td>
-                    <td style="text-align: right;">
+                    <td data-label="Actions" style="text-align: right;">
                         <div class="action-btns" style="justify-content: flex-end;">
                             <button class="btn-icon-action edit-btn" onclick="openEditOrderModal('${escapeAttribute(o.id)}')" title="Manage Order Details">
                                 <i class="fas fa-sliders"></i>
@@ -3556,6 +3861,8 @@
 
         const badgeOrders = document.getElementById('badge-total-orders');
         if (badgeOrders) badgeOrders.textContent = orderList.length;
+        const dockOrders = document.getElementById('dock-badge-orders');
+        if (dockOrders) dockOrders.textContent = orderList.length;
         updateOrderRevenueKPI();
     }
 
@@ -3925,13 +4232,24 @@
 
     function switchTab(tabId, el) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.mobile-dock-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
 
-        if (el) el.classList.add('active');
+        // Sync desktop top tabs
+        const deskBtn = document.querySelector(`.tab-btn[onclick*="${tabId}"]`);
+        if (deskBtn) deskBtn.classList.add('active');
+
+        // Sync mobile dock buttons
+        const mobBtn = document.querySelector(`.mobile-dock-btn[onclick*="${tabId}"]`);
+        if (mobBtn) mobBtn.classList.add('active');
+
         const pane = document.getElementById('pane-' + tabId);
         if (pane) pane.classList.add('active');
 
         if (tabId === 'analytics') updateAnalytics();
+
+        // Smooth scroll to top on mobile
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function showToast(msg, type = 'success') {
@@ -3952,5 +4270,49 @@
     }
 
     </script>
+
+    <!-- =========================================================
+         FLOATING ERGONOMIC MOBILE ADMIN BOTTOM DOCK
+    ========================================================= -->
+    <nav class="mobile-admin-dock" id="mobile-admin-dock">
+        <button type="button" class="mobile-dock-btn active" onclick="switchTab('users', this)">
+            <div class="dock-icon-wrap">
+                <i class="fas fa-users"></i>
+                <span class="dock-badge" id="dock-badge-users">0</span>
+            </div>
+            <span>Users</span>
+        </button>
+
+        <button type="button" class="mobile-dock-btn" onclick="switchTab('orders', this)">
+            <div class="dock-icon-wrap">
+                <i class="fas fa-truck-fast"></i>
+                <span class="dock-badge" id="dock-badge-orders">0</span>
+            </div>
+            <span>Orders</span>
+        </button>
+
+        <button type="button" class="mobile-dock-btn" onclick="switchTab('products', this)">
+            <div class="dock-icon-wrap">
+                <i class="fas fa-box-open"></i>
+                <span class="dock-badge" id="dock-badge-products">38</span>
+            </div>
+            <span>Catalog</span>
+        </button>
+
+        <button type="button" class="mobile-dock-btn" onclick="switchTab('analytics', this)">
+            <div class="dock-icon-wrap">
+                <i class="fas fa-chart-pie"></i>
+            </div>
+            <span>Revenue</span>
+        </button>
+
+        <button type="button" class="mobile-dock-btn" onclick="switchTab('audit', this)">
+            <div class="dock-icon-wrap">
+                <i class="fas fa-shield-halved"></i>
+            </div>
+            <span>Audit</span>
+        </button>
+    </nav>
+
 </body>
 </html>
