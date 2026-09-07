@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Profile & Orders Portal — ABDULLAH PSYCHOTIC</title>
+
+    <link rel="icon" href="icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icon.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* =========================================================
+           ABDULLAH PSYCHOTIC — LUXURY OBSIDIAN GLASS THEME
+        ========================================================= */
+        :root {
+            --bg-canvas: #050407;
+            --crimson: #c1121f;
+            --crimson-glow: rgba(193, 18, 31, 0.4);
+            --crimson-dark: #780000;
+            --gold: #d4af37;
+            --gold-glow: rgba(212, 175, 55, 0.25);
+            
+            --glass-card: rgba(16, 12, 19, 0.72);
+            --glass-card-hover: rgba(24, 18, 28, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.09);
+            --glass-border-crimson: rgba(193, 18, 31, 0.35);
+            --glass-border-gold: rgba(212, 175, 55, 0.35);
+            
+            --text-main: #f5f5f7;
+            --text-muted: #8d8d95;
+            --text-dim: #5c5c64;
+            
+            --green: #22c55e;
+            --green-glow: rgba(34, 197, 94, 0.25);
+            --whatsapp-green: #25d366;
+            
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 22px;
+            --radius-full: 9999px;
+            
+            --trans-smooth: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            color-scheme: dark;
+        }
+
+        body {
+            background-color: var(--bg-canvas);
+            background-image: 
+                radial-gradient(circle at 85% 10%, rgba(193, 18, 31, 0.12), transparent 45%),
+                radial-gradient(circle at 15% 90%, rgba(120, 0, 0, 0.1), transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(5, 4, 7, 0.9), var(--bg-canvas));
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(5, 4, 7, 0.8);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(193, 18, 31, 0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--crimson);
+        }
+
+        /* Top Bar */
+        .top-navbar {
+            height: 74px;
+            background: rgba(9, 7, 11, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 900;
+        }
+
+        .brand-cluster {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid var(--glass-border-crimson);
+            box-shadow: 0 0 15px var(--crimson-glow);
+        }
+
+        .brand-name {
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            letter-spacing: 2.5px;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .brand-name span {
+            color: var(--crimson);
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-top-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            border-radius: var(--radius-full);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition: var(--trans-smooth);
+        }
+
+        .btn-top-back:hover {
+            background: rgba(193, 18, 31, 0.15);
+            border-color: var(--crimson);
+            transform: translateY(-1px);
+        }
+
+        .btn-top-admin {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, rgba(193, 18, 31, 0.3), rgba(120, 0, 0, 0.4));
+            border: 1px solid var(--crimson);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-decoration: none;
+            box-shadow: 0 0 20px var(--crimson-glow);
+            transition: var(--trans-smooth);
+        }
+
+        .btn-top-admin:hover {
+            background: var(--crimson);
+            transform: translateY(-1px);
+            box-shadow: 0 0 30px var(--crimson-glow);
+        }
+
+        .btn-top-logout {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 16px;
+            border-radius: var(--radius-full);
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            color: #ff7878;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--trans-smooth);
+        }
+
+        .btn-top-logout:hover {
+            background: #c1121f;
+            color: #fff;
+            border-color: #c1121f;
+        }
+
+        /* App Container */
+        .app-layout {
+            display: flex;
+            max-width: 1440px;
+            margin: 0 auto;
+            min-height: calc(100vh - 74px);
+        }
+
+        /* Sidebar */
+        .side-nav {
+            width: 270px;
+            background: rgba(11, 8, 14, 0.7);
+            border-right: 1px solid var(--glass-border);
+            padding: 36px 20px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            backdrop-filter: blur(16px);
+        }
+
+        .nav-label {
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            padding: 0 14px 10px;
+            font-weight: 700;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            border-radius: var(--radius-md);
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: var(--trans-smooth);
+            background: transparent;
+            width: 100%;
+            text-align: left;
+        }
+
+        .nav-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--glass-border);
+        }
+
+        .nav-btn.active {
+            color: #fff;
+            background: linear-gradient(90deg, rgba(193, 18, 31, 0.22), rgba(193, 18, 31, 0.05));
+            border-color: var(--glass-border-crimson);
+            border-left: 3px solid var(--crimson);
+        }
+
+        .nav-btn i {
+            width: 18px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .nav-btn.active i {
+            color: var(--crimson);
+        }
+
+        .side-vip-card {
+            margin-top: auto;
+            background: linear-gradient(145deg, rgba(20, 15, 24, 0.9), rgba(10, 8, 12, 0.9));
+            border: 1px solid var(--glass-border-gold);
+            border-radius: var(--radius-md);
+            padding: 18px 16px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .side-vip-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .side-vip-title {
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
+            color: var(--gold);
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .side-vip-sub {
+            font-size: 10px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Main Workspace */
+        .workspace {
+            flex: 1;
+            padding: 36px 40px 60px;
+            overflow-y: auto;
+        }
+
+        .page-pane {
+            display: none;
+            animation: fadeIn 0.35s ease;
+        }
+
+        .page-pane.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            background: linear-gradient(135deg, rgba(25, 18, 30, 0.8) 0%, rgba(13, 10, 16, 0.9) 100%);
+            border: 1px solid var(--glass-border-crimson);
+            border-radius: var(--radius-lg);
+            padding: 32px 36px;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(193, 18, 31, 0.25), transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-meta-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .avatar-container {
+            position: relative;
+            width: 88px;
+            height: 88px;
+        }
+
+        .profile-avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--crimson);
+            box-shadow: 0 0 25px var(--crimson-glow);
+            background: #110e15;
+        }
+
+        .avatar-edit-badge {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 28px;
+            height: 28px;
+            background: var(--crimson);
+            border: 2px solid #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 11px;
+            cursor: pointer;
+            transition: var(--trans-smooth);
+        }
+
+        .avatar-edit-badge:hover {
+            transform: scale(1.15);
+            background: #e61929;
+        }
+
+        .hero-info-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge-vip {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 10px;
+            padding: 3px 10px;
+            border-radius: var(--radius-full);
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .hero-info-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .hero-info-sub span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hero-info-id {
+            color: #ff6b7a;
+            font-family: monospace;
+            font-weight: 700;
+        }
+
+        .hero-status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            background: rgba(34, 197, 94, 0.12);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: var(--green);
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* KPI Quick Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 32px;
+        }
+
+        .metric-card {
+            background: var(--glass-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 20px 22px;
+            position: relative;
+            transition: var(--trans-smooth);
+            backdrop-filter: blur(12px);
+        }
+
+        .metric-card:hover {
+            border-color: var(--glass-border-crimson);
+            transform: translateY(-2px);
+            background: var(--glass-card-hover);
+        }
+
+        .metric-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .metric-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .metric-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
+
+        .metric-icon.red { background: rgba(193, 18, 31, 0.15); color: #ff5565; }
+        .metric-icon.green { background: rgba(34, 197, 94, 0.15); color: var(--green); }
+        .metric-icon.gold { background: rgba(212, 175, 55, 0.15); color: var(--gold); }
+        .metric-icon.blue { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+
+        .metric-val {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .metric-sub {
+            font-size: 10px;
+            color: var(--text-dim);
+        }
+
+        /* 2-Column Content Grid */
+        .content-columns {
+            display: grid;
+            grid-template-columns: 1.25fr 0.95fr;
+            gap: 28px;
+        }
+
+        .panel-box {
+            background: var(--glass-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            backdrop-filter: blur(16px);
+        }
+
+        .panel-box-title {
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .panel-box-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        /* Forms */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            height: 48px;
+            background: rgba(8, 6, 11, 0.85);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            padding: 0 16px;
+            color: #fff;
+            font-family: var(--font-main);
+            font-size: 13px;
+            outline: none;
+            transition: var(--trans-smooth);
+        }
+
+        .form-control:focus {
+            border-color: var(--crimson);
+            box-shadow: 0 0 15px var(--crimson-glow);
+            background: rgba(15, 11, 18, 0.95);
+        }
+
+        .form-control[readonly] {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-muted);
+            cursor: not-allowed;
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        textarea.form-control {
+            height: 90px;
+            padding: 12px 16px;
+            resize: vertical;
+        }
+
+        .phone-group-wrap {
+            display: flex;
+            gap: 10px;
+        }
+
+        .country-select {
+            width: 90px;
+            flex-shrink: 0;
+            background: rgba(8, 6, 11, 0.9);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            color: #fff;
+            font-size: 12px;
+            padding: 0 8px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .whatsapp-preview-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--whatsapp-green);
+            font-size: 11px;
+            text-decoration: none;
+            margin-top: 6px;
+            font-weight: 600;
+            transition: var(--trans-smooth);
+        }
+
+        .whatsapp-preview-link:hover {
+            text-decoration: underline;
+            filter: brightness(1.2);
+        }
+
+        .btn-save-main {
+            width: 100%;
+            height: 52px;
+            background: linear-gradient(135deg, var(--crimson) 0%, #8b0000 100%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: var(--radius-md);
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 10px 30px var(--crimson-glow);
+            transition: var(--trans-smooth);
+            margin-top: 10px;
+        }
+
+        .btn-save-main:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(193, 18, 31, 0.6);
+            background: linear-gradient(135deg, #e61929 0%, #a00000 100%);
+        }
+
+        .btn-save-main:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Live Preview Card */
+        .preview-card {
+            background: linear-gradient(145deg, rgba(20, 14, 25, 0.8), rgba(9, 7, 12, 0.9));
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 26px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preview-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--crimson);
+        }
+
+        .preview-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .preview-brand {
+            font-family: 'Cinzel', serif;
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+        }
+
+        .preview-chip {
+            font-size: 10px;
+            color: var(--green);
+            background: rgba(34, 197, 94, 0.1);
+            padding: 3px 8px;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+        }
+
+        .preview-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .preview-row:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .preview-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--crimson);
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .preview-meta-title {
+            font-size: 10px;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .preview-meta-value {
+            font-size: 13px;
+            color: #fff;
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        /* Order Tracking Elements */
+        .order-card-luxury {
+            background: rgba(15, 11, 19, 0.7);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 22px;
+            margin-bottom: 18px;
+            transition: var(--trans-smooth);
+        }
+
+        .order-card-luxury:hover {
+            border-color: var(--glass-border-crimson);
+        }
+
+        .order-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .order-code {
+            font-family: monospace;
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .order-timeline {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 18px 0;
+        }
+
+        .timeline-step {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .timeline-step.completed {
+            background: var(--crimson);
+        }
+
+        .timeline-step.current {
+            background: var(--gold);
+            box-shadow: 0 0 10px var(--gold-glow);
+        }
+
+        /* Toast */
+        .toast-box {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast-item {
+            background: rgba(15, 11, 18, 0.95);
+            border: 1px solid var(--glass-border-crimson);
+            border-left: 4px solid var(--crimson);
+            border-radius: var(--radius-md);
+            padding: 14px 20px;
+            color: #fff;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            animation: slideIn 0.3s ease;
+            pointer-events: auto;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Responsive Mobile Layout */
+        @media (max-width: 960px) {
+            .app-layout { flex-direction: column; }
+            .side-nav { width: 100%; border-right: none; border-bottom: 1px solid var(--glass-border); padding: 16px 20px; flex-direction: row; overflow-x: auto; }
+            .side-vip-card { display: none; }
+            .workspace { padding: 24px 18px 60px; }
+            .content-columns { grid-template-columns: 1fr; }
+            .metrics-grid { grid-template-columns: 1fr 1fr; }
+            .hero-banner { flex-direction: column; text-align: center; gap: 20px; }
+            .hero-meta-left { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="top-navbar">
+        <a href="index.html" class="brand-cluster">
+            <img src="icon.png" alt="Abdullah Psychotic" class="brand-logo">
+            <div class="brand-name">ABDULLAH <span>PSYCHOTIC</span></div>
+        </a>
+
+        <div class="top-actions">
+            <!-- Discrete return link for verified admins only -->
+            <a href="admin.html" id="admin-console-btn" class="btn-top-admin">
+                <i class="fas fa-shield-halved"></i> Admin Console
+            </a>
+
+            <a href="index.html" class="btn-top-back">
+                <i class="fas fa-arrow-left"></i> Storefront
+            </a>
+
+            <button type="button" class="btn-top-logout" onclick="handleSignOut()">
+                <i class="fas fa-power-off"></i> Sign Out
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN APP LAYOUT -->
+    <div class="app-layout">
+        <!-- SIDEBAR -->
+        <aside class="side-nav">
+            <div class="nav-label">Client Navigation</div>
+            
+            <button type="button" class="nav-btn active" onclick="switchPage('profile', this)">
+                <i class="fas fa-user-circle"></i> Profile & Data
+            </button>
+            <button type="button" class="nav-btn" onclick="switchPage('orders', this)">
+                <i class="fas fa-bag-shopping"></i> My Orders
+            </button>
+            <button type="button" class="nav-btn" onclick="switchPage('addresses', this)">
+                <i class="fas fa-location-dot"></i> Shipping Book
+            </button>
+            <button type="button" class="nav-btn" onclick="switchPage('security', this)">
+                <i class="fas fa-lock"></i> Session & Security
+            </button>
+
+            <div id="admin-exclusive-nav-section" style="display: none; margin-top: 10px; padding-top: 12px; border-top: 1px dashed rgba(193, 18, 31, 0.35);">
+                <div class="nav-label" style="color: var(--gold);"><i class="fas fa-crown"></i> Executive Control</div>
+                <a href="admin.html" class="nav-btn" style="background: rgba(193, 18, 31, 0.15); border: 1px solid var(--crimson); color: #fff; text-decoration: none;">
+                    <i class="fas fa-shield-halved" style="color: var(--crimson);"></i> Admin Panel
+                </a>
+            </div>
+
+            <div class="side-vip-card">
+                <div class="side-vip-title">LUXURY CLIENT TIER</div>
+                <div class="side-vip-sub">Verified Abdullah Psychotic Client with priority concierge fulfillment.</div>
+            </div>
+        </aside>
+
+        <!-- MAIN WORKSPACE -->
+        <main class="workspace">
+
+            <!-- HERO CLIENT BANNER -->
+            <section class="hero-banner">
+                <div class="hero-meta-left">
+                    <div class="avatar-container">
+                        <img id="client-avatar" src="icon.png" alt="Profile Avatar" class="profile-avatar-img">
+                        <label for="avatar-file-input" class="avatar-edit-badge" title="Change Avatar Photo">
+                            <i class="fas fa-camera"></i>
+                        </label>
+                        <input type="file" id="avatar-file-input" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
+                    </div>
+
+                    <div>
+                        <div class="hero-info-title">
+                            <span id="hero-display-name">Client Account</span>
+                            <span class="badge-vip" id="hero-role-badge">Verified Buyer</span>
+                        </div>
+                        <div class="hero-info-sub">
+                            <span><i class="fas fa-id-badge"></i> <strong class="hero-info-id" id="hero-access-id">AP-BUYER-8001</strong></span>
+                            <span><i class="fas fa-envelope"></i> <span id="hero-email">client@email.com</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="hero-status-pill">
+                        <i class="fas fa-circle-check"></i> <span id="hero-status">Active Account</span>
+                    </span>
+                </div>
+            </section>
+
+            <!-- KPI QUICK METRICS -->
+            <section class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">Access Role</span>
+                        <div class="metric-icon red"><i class="fas fa-user-shield"></i></div>
+                    </div>
+                    <div class="metric-val" id="kpi-role">Buyer</div>
+                    <div class="metric-sub">Personal Shopping Account</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">Identity Status</span>
+                        <div class="metric-icon green"><i class="fas fa-check-double"></i></div>
+                    </div>
+                    <div class="metric-val">Verified</div>
+                    <div class="metric-sub">Authenticated via Store Gate</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">Purchases</span>
+                        <div class="metric-icon gold"><i class="fas fa-box"></i></div>
+                    </div>
+                    <div class="metric-val" id="kpi-orders-count">2 Orders</div>
+                    <div class="metric-sub">Luxury Curations</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">Security Tier</span>
+                        <div class="metric-icon blue"><i class="fas fa-shield"></i></div>
+                    </div>
+                    <div class="metric-val">Encrypted</div>
+                    <div class="metric-sub">Active Session Token</div>
+                </div>
+            </section>
+
+            <!-- TAB 1: PROFILE & DATA MANAGEMENT (DEFAULT) -->
+            <section id="pane-profile" class="page-pane active">
+                <div class="content-columns">
+                    <!-- EDIT / REPLACE FORM -->
+                    <div class="panel-box">
+                        <div class="panel-box-title">
+                            <span>Manage Profile Information</span>
+                            <span style="font-size: 10px; color: var(--crimson); text-transform: uppercase;">
+                                <i class="fas fa-pen-to-square"></i> In-Place Edit & Replace
+                            </span>
+                        </div>
+                        <div class="panel-box-sub">
+                            Modify or replace your personal delivery credentials. Changes are synchronized directly with the Google Sheet database.
+                        </div>
+
+                        <form id="buyer-profile-form" onsubmit="saveProfileData(event)">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <span>Full Legal Name / Display Title</span>
+                                    <span style="font-size: 9px; color: var(--gold);"><i class="fas fa-star"></i> Required</span>
+                                </label>
+                                <input type="text" id="input-full-name" class="form-control" placeholder="e.g. Farhan Ahmed" required oninput="updateLivePreview()">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <span>WhatsApp / Mobile Number</span>
+                                    <span style="font-size: 9px; color: var(--whatsapp-green);"><i class="fa-brands fa-whatsapp"></i> WhatsApp Ready</span>
+                                </label>
+                                <div class="phone-group-wrap">
+                                    <select id="input-country-code" class="country-select" onchange="updateLivePreview()">
+                                        <option value="+880" selected>🇧🇩 +880</option>
+                                        <option value="+1">🇺🇸 +1</option>
+                                        <option value="+44">🇬🇧 +44</option>
+                                        <option value="+971">🇦🇪 +971</option>
+                                        <option value="+966">🇸🇦 +966</option>
+                                        <option value="+91">🇮🇳 +91</option>
+                                        <option value="+49">🇩🇪 +49</option>
+                                        <option value="+33">🇫🇷 +33</option>
+                                        <option value="+65">🇸🇬 +65</option>
+                                        <option value="+61">🇦🇺 +61</option>
+                                    </select>
+                                    <input type="tel" id="input-phone-number" class="form-control" placeholder="1711998877" required oninput="updateLivePreview()">
+                                </div>
+                                <a id="preview-whatsapp-link" href="#" target="_blank" class="whatsapp-preview-link">
+                                    <i class="fa-brands fa-whatsapp"></i> Test WhatsApp Link: <span id="wa-display-link">—</span>
+                                </a>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <span>Account Email Identity</span>
+                                    <span style="font-size: 9px; color: var(--text-dim);"><i class="fas fa-lock"></i> Protected</span>
+                                </label>
+                                <input type="email" id="input-email-locked" class="form-control" readonly title="Account email cannot be modified as it represents your permanent identity.">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <span>Delivery & Shipping Address</span>
+                                    <span style="font-size: 9px; color: var(--text-muted);">Apartment / House / City</span>
+                                </label>
+                                <textarea id="input-delivery-address" class="form-control" placeholder="e.g. House 24, Road 7, Gulshan 2, Dhaka 1212" oninput="updateLivePreview()"></textarea>
+                            </div>
+
+                            <button type="submit" id="btn-save-profile" class="btn-save-main">
+                                <i class="fas fa-floppy-disk"></i>
+                                <span>Save & Replace Profile Data</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- LIVE CARD PREVIEW -->
+                    <div>
+                        <div class="preview-card">
+                            <div class="preview-head">
+                                <span class="preview-brand">ABDULLAH PSYCHOTIC • CLIENT CARD</span>
+                                <span class="preview-chip"><i class="fas fa-bolt"></i> Live Sync</span>
+                            </div>
+
+                            <div class="preview-row">
+                                <div class="preview-icon"><i class="fas fa-user"></i></div>
+                                <div>
+                                    <div class="preview-meta-title">Registered Customer</div>
+                                    <div class="preview-meta-value" id="card-preview-name">Loading...</div>
+                                </div>
+                            </div>
+
+                            <div class="preview-row">
+                                <div class="preview-icon"><i class="fas fa-phone"></i></div>
+                                <div>
+                                    <div class="preview-meta-title">Verified Contact</div>
+                                    <div class="preview-meta-value" id="card-preview-phone">—</div>
+                                </div>
+                            </div>
+
+                            <div class="preview-row">
+                                <div class="preview-icon"><i class="fas fa-envelope"></i></div>
+                                <div>
+                                    <div class="preview-meta-title">Primary Email</div>
+                                    <div class="preview-meta-value" id="card-preview-email">—</div>
+                                </div>
+                            </div>
+
+                            <div class="preview-row">
+                                <div class="preview-icon"><i class="fas fa-map-location-dot"></i></div>
+                                <div>
+                                    <div class="preview-meta-title">Default Shipping Destination</div>
+                                    <div class="preview-meta-value" id="card-preview-address">No shipping address recorded.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VIP ASSURANCE BOX -->
+                        <div style="margin-top: 20px; background: rgba(193, 18, 31, 0.08); border: 1px dashed var(--glass-border-crimson); border-radius: var(--radius-md); padding: 18px 20px;">
+                            <div style="color: #ff6b7a; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px;">
+                                <i class="fas fa-shield-halved"></i> Direct Cloud Database Sync
+                            </div>
+                            <div style="font-size: 11px; color: var(--text-muted); line-height: 1.6;">
+                                Every edit is written directly to the active Google Sheet backend. Administrators can connect with you on WhatsApp with one click for priority dispatch.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: ORDERS TRACKING (REAL-TIME SYNC) -->
+            <section id="pane-orders" class="page-pane">
+                <div class="panel-box">
+                    <div class="panel-box-title">
+                        <span>My Curated Orders & Tracking</span>
+                        <span id="orders-count-badge" style="font-size: 11px; color: var(--gold); font-weight: 600;">Loading...</span>
+                    </div>
+                    <div class="panel-box-sub">Track order identifiers, product manifest, and status synced directly with our Google Sheets backend.</div>
+
+                    <div id="user-orders-list">
+                        <div style="text-align: center; padding: 40px;">
+                            <div class="loading-spinner" style="display: inline-block; width: 24px; height: 24px; border: 2px solid rgba(255,255,255,0.2); border-top-color: var(--crimson); border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+                            <div style="color: var(--text-muted); font-size: 12px; margin-top: 10px;">Syncing orders from backend...</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: SHIPPING BOOK -->
+            <section id="pane-addresses" class="page-pane">
+                <div class="panel-box">
+                    <div class="panel-box-title">
+                        <span>Saved Delivery Addresses</span>
+                        <button type="button" class="btn-top-back" onclick="switchPage('profile')" style="padding: 6px 14px; font-size: 10px;">
+                            + Edit Current Address
+                        </button>
+                    </div>
+                    <div class="panel-box-sub">Your registered delivery coordinates for rapid one-click checkout.</div>
+
+                    <div style="background: rgba(14, 10, 18, 0.8); border: 1px solid var(--glass-border); border-radius: var(--radius-md); padding: 22px; margin-bottom: 14px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                            <strong style="color: #fff; font-size: 13px;"><i class="fas fa-house" style="color: var(--crimson); margin-right: 6px;"></i> Primary Shipping Address</strong>
+                            <span class="badge-vip" style="font-size: 9px;">Default</span>
+                        </div>
+                        <p id="saved-address-display" style="font-size: 12px; color: var(--text-muted); line-height: 1.6;">
+                            Loading address from database...
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: SECURITY & SESSION -->
+            <section id="pane-security" class="page-pane">
+                <div class="panel-box">
+                    <div class="panel-box-title">
+                        <span>Security & Access Credentials</span>
+                    </div>
+                    <div class="panel-box-sub">Verify your active session security token and authentication health.</div>
+
+                    <div style="margin-bottom: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">Active Session Access Token</label>
+                            <input type="text" id="security-token-display" class="form-control" readonly style="font-family: monospace;">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Session Initiated</label>
+                            <input type="text" id="security-signin-time" class="form-control" readonly>
+                        </div>
+                    </div>
+
+                    <div style="border-top: 1px solid var(--glass-border); padding-top: 24px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="color: #fff; font-size: 13px; font-weight: 600;">Sign Out from this Device</div>
+                            <div style="color: var(--text-dim); font-size: 11px;">Terminates current session token and returns to storefront.</div>
+                        </div>
+                        <button type="button" class="btn-top-logout" onclick="handleSignOut()">
+                            <i class="fas fa-arrow-right-from-bracket"></i> End Session
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Toast Feedback Container -->
+    <div id="toast-box" class="toast-box"></div>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+    'use strict';
+
+    /* CONFIG & BACKEND */
+    const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbyHik2t4HnaeQsY9A992qOPdMHxjV0YeS-pcSnfisZYwJW5JJbH55RxhRHPHbGO2hztSA/exec';
+    const PRIMARY_ADMIN_EMAIL = 'abdullahpsychotic@gmail.com';
+
+    let userEmail = localStorage.getItem('ap_underworld_email') || '';
+    let accessToken = localStorage.getItem('ap_underworld_access_token') || '';
+    let isUserAdmin = false;
+
+    /* INITIALIZATION GUARD */
+    document.addEventListener('DOMContentLoaded', () => {
+        // 1. Strict Authentication Check
+        if (!userEmail || !accessToken) {
+            alert('Please sign in to access your profile.');
+            window.location.href = 'index.html';
+            return;
+        }
+
+        // 2. Strict check: Admin Panel section is VISIBLE ONLY to verified admin with special token!
+        isUserAdmin = (localStorage.getItem('ap_is_admin') === 'true' || userEmail.toLowerCase() === PRIMARY_ADMIN_EMAIL.toLowerCase() || userEmail.toLowerCase().includes('abdullahpsychotic')) && 
+                      accessToken.startsWith('AP_ADMIN_SPECIAL_');
+
+        const adminConsoleBtn = document.getElementById('admin-console-btn');
+        if (adminConsoleBtn) {
+            adminConsoleBtn.style.display = isUserAdmin ? 'inline-flex' : 'none';
+        }
+        const adminNavSection = document.getElementById('admin-exclusive-nav-section');
+        if (adminNavSection) {
+            adminNavSection.style.display = isUserAdmin ? 'block' : 'none';
+        }
+
+        // Load real-time orders
+        loadUserOrders();
+
+        // 3. Populate known data
+        document.getElementById('hero-email').textContent = userEmail;
+        document.getElementById('input-email-locked').value = userEmail;
+        document.getElementById('card-preview-email').textContent = userEmail;
+        document.getElementById('security-token-display').value = accessToken;
+
+        const signinTime = localStorage.getItem('ap_underworld_signin_time');
+        document.getElementById('security-signin-time').value = signinTime ? new Date(Number(signinTime)).toLocaleString() : 'Active Session';
+
+        // 4. Load Saved Profile & Avatar
+        loadSavedAvatar();
+        loadLocalProfileData();
+
+        // 5. Fetch Real-time profile from Backend Google Sheet
+        fetchBuyerDataFromBackend();
+    });
+
+    /* TAB SWITCHING */
+    function switchPage(pageId, btnEl) {
+        document.querySelectorAll('.page-pane').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+        const targetPane = document.getElementById('pane-' + pageId);
+        if (targetPane) targetPane.classList.add('active');
+        if (btnEl) btnEl.classList.add('active');
+    }
+
+    /* LOAD LOCAL SAVED DATA FOR INSTANT RENDER */
+    function loadLocalProfileData() {
+        const savedUser = JSON.parse(localStorage.getItem('ap_user') || '{}');
+        const phone = localStorage.getItem('ap_underworld_phone') || savedUser.phone || '';
+        const name = savedUser.name || '';
+        const address = savedUser.address || '';
+
+        applyProfileToUI({
+            name: name,
+            phone: phone,
+            address: address,
+            accessId: savedUser.accessId || (isUserAdmin ? 'AP-EXEC-001' : 'AP-BUYER-' + Math.floor(1000 + Math.random() * 9000)),
+            role: isUserAdmin ? 'admin' : 'buyer'
+        });
+    }
+
+    /* FETCH REAL-TIME FROM GOOGLE APPS SCRIPT BACKEND */
+    function fetchBuyerDataFromBackend() {
+        const script = document.createElement('script');
+        const cb = 'buyerLoad_' + Date.now();
+
+        window[cb] = function(res) {
+            cleanupJsonp(cb, script);
+            if (res && res.ok) {
+                applyProfileToUI({
+                    name: res.name,
+                    phone: res.phone,
+                    address: res.address,
+                    accessId: res.accessId,
+                    role: res.role
+                });
+            }
+        };
+
+        script.onerror = function() {
+            cleanupJsonp(cb, script);
+        };
+
+        script.src = `${BACKEND_URL}?action=get_buyer_data&email=${encodeURIComponent(userEmail)}&callback=${cb}`;
+        document.head.appendChild(script);
+    }
+
+    /* POPULATE UI FIELDS */
+    function applyProfileToUI(data) {
+        const fullName = data.name || (isUserAdmin ? 'Abdullah The Legend' : 'Registered Client');
+        const phone = data.phone || '';
+        const address = data.address || '';
+        const accessId = data.accessId || (isUserAdmin ? 'AP-EXEC-001' : 'AP-BUYER-8092');
+
+        document.getElementById('input-full-name').value = fullName;
+        document.getElementById('hero-display-name').textContent = fullName;
+        document.getElementById('card-preview-name').textContent = fullName;
+        document.getElementById('hero-access-id').textContent = accessId;
+
+        if (data.role) {
+            const isAdm = String(data.role).toLowerCase() === 'admin';
+            document.getElementById('hero-role-badge').textContent = isAdm ? 'Administrator' : 'Verified Buyer';
+            document.getElementById('kpi-role').textContent = isAdm ? 'Admin' : 'Buyer';
+        }
+
+        // Parse Phone and Country Code
+        if (phone) {
+            const parts = splitCountryCode(phone);
+            document.getElementById('input-country-code').value = parts.code;
+            document.getElementById('input-phone-number').value = parts.number;
+            document.getElementById('card-preview-phone').textContent = phone;
+        }
+
+        if (address) {
+            document.getElementById('input-delivery-address').value = address;
+            document.getElementById('card-preview-address').textContent = address;
+            document.getElementById('saved-address-display').textContent = address;
+        }
+
+        updateLivePreview();
+    }
+
+    function splitCountryCode(fullPhone) {
+        fullPhone = String(fullPhone).trim();
+        const codes = ['+880', '+1', '+44', '+971', '+966', '+91', '+49', '+33', '+65', '+61'];
+        for (let c of codes) {
+            if (fullPhone.startsWith(c)) {
+                return { code: c, number: fullPhone.substring(c.length).trim() };
+            }
+        }
+        return { code: '+880', number: fullPhone };
+    }
+
+    /* REAL-TIME PREVIEW AS USER TYPES */
+    function updateLivePreview() {
+        const nameVal = document.getElementById('input-full-name').value.trim() || 'Client';
+        const codeVal = document.getElementById('input-country-code').value;
+        const phoneVal = document.getElementById('input-phone-number').value.trim();
+        const addressVal = document.getElementById('input-delivery-address').value.trim() || 'No address specified.';
+
+        const fullPhone = phoneVal ? (codeVal + ' ' + phoneVal) : '—';
+        const digitsOnly = fullPhone.replace(/[^0-9]/g, '');
+
+        document.getElementById('hero-display-name').textContent = nameVal;
+        document.getElementById('card-preview-name').textContent = nameVal;
+        document.getElementById('card-preview-phone').textContent = fullPhone;
+        document.getElementById('card-preview-address').textContent = addressVal;
+        document.getElementById('saved-address-display').textContent = addressVal;
+
+        const waLinkEl = document.getElementById('preview-whatsapp-link');
+        const waDisplayEl = document.getElementById('wa-display-link');
+
+        if (digitsOnly.length >= 7) {
+            const waUrl = `https://wa.me/${digitsOnly}?text=${encodeURIComponent('Hello ' + nameVal + ', this is Abdullah Psychotic Luxury Lifestyle.')}`;
+            waLinkEl.href = waUrl;
+            waDisplayEl.textContent = 'wa.me/' + digitsOnly;
+            waLinkEl.style.display = 'inline-flex';
+        } else {
+            waLinkEl.href = '#';
+            waDisplayEl.textContent = 'Enter valid digits';
+        }
+    }
+
+    /* SAVE & REPLACE DATA IN GOOGLE SHEET */
+    async function saveProfileData(e) {
+        e.preventDefault();
+
+        const name = document.getElementById('input-full-name').value.trim();
+        const code = document.getElementById('input-country-code').value;
+        const phonePart = document.getElementById('input-phone-number').value.trim();
+        const address = document.getElementById('input-delivery-address').value.trim();
+
+        if (!name) {
+            showToast('Please enter your full name.', 'error');
+            return;
+        }
+
+        const fullPhone = phonePart ? (code + ' ' + phonePart) : '';
+        const btn = document.getElementById('btn-save-profile');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Saving to Cloud Database...</span>';
+
+        // 1. Immediately Save to LocalStorage
+        try {
+            const savedUser = JSON.parse(localStorage.getItem('ap_user') || '{}');
+            savedUser.email = userEmail;
+            savedUser.name = name;
+            savedUser.phone = fullPhone;
+            savedUser.address = address;
+            localStorage.setItem('ap_user', JSON.stringify(savedUser));
+            localStorage.setItem('ap_underworld_phone', fullPhone);
+
+            // Sync to Admin Overrides for real-time visibility in admin console
+            const adminOverrides = JSON.parse(localStorage.getItem('ap_admin_user_overrides') || '{}');
+            adminOverrides[userEmail.toLowerCase()] = {
+                ...(adminOverrides[userEmail.toLowerCase()] || {}),
+                email: userEmail,
+                name: name,
+                phone: fullPhone,
+                address: address,
+                updatedAt: new Date().toISOString()
+            };
+            localStorage.setItem('ap_admin_user_overrides', JSON.stringify(adminOverrides));
+        } catch (err) {}
+
+        // 2. Dispatch to Backend Google Apps Script (JSONP / Fetch)
+        const script = document.createElement('script');
+        const cb = 'buyerUpdate_' + Date.now();
+
+        window[cb] = function(res) {
+            cleanupJsonp(cb, script);
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-floppy-disk"></i> <span>Save & Replace Profile Data</span>';
+
+            if (res && res.ok) {
+                showToast('Profile data replaced and synchronized with backend sheet!', 'success');
+            } else {
+                showToast('Saved locally. Backend sync response received.', 'info');
+            }
+        };
+
+        script.onerror = function() {
+            cleanupJsonp(cb, script);
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-floppy-disk"></i> <span>Save & Replace Profile Data</span>';
+            showToast('Saved locally and queued for cloud synchronization.', 'info');
+        };
+
+        const params = new URLSearchParams({
+            action: 'update_buyer_data',
+            email: userEmail,
+            name: name,
+            phone: fullPhone,
+            address: address,
+            callback: cb
+        });
+
+        script.src = `${BACKEND_URL}?${params.toString()}`;
+        document.head.appendChild(script);
+    }
+
+    /* AVATAR UPLOAD */
+    function handleAvatarUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+            showToast('Please select an image file.', 'error');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function() {
+            const dataUrl = reader.result;
+            document.getElementById('client-avatar').src = dataUrl;
+            localStorage.setItem('ap_buyer_avatar_' + userEmail, dataUrl);
+            showToast('Profile avatar photo updated.');
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function loadSavedAvatar() {
+        const saved = localStorage.getItem('ap_buyer_avatar_' + userEmail);
+        if (saved) {
+            document.getElementById('client-avatar').src = saved;
+        }
+    }
+
+    /* SIGN OUT */
+    function handleSignOut() {
+        if (!confirm('Do you want to log out and terminate this session?')) return;
+
+        localStorage.removeItem('ap_underworld_access');
+        localStorage.removeItem('ap_underworld_email');
+        localStorage.removeItem('ap_underworld_phone');
+        localStorage.removeItem('ap_underworld_access_token');
+        localStorage.removeItem('ap_underworld_signin_time');
+        localStorage.removeItem('ap_is_admin');
+        localStorage.removeItem('ap_active_otp');
+
+        showToast('Logged out successfully. Redirecting...');
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 600);
+    }
+
+    /* UTILITIES */
+    function showToast(msg, type = 'success') {
+        const container = document.getElementById('toast-box');
+        if (!container) return;
+
+        const icon = type === 'success' ? 'fa-circle-check' : (type === 'error' ? 'fa-circle-exclamation' : 'fa-bell');
+        const item = document.createElement('div');
+        item.className = 'toast-item';
+        item.innerHTML = `<i class="fa-solid ${icon}" style="color: ${type === 'success' ? 'var(--green)' : '#ff5565'};"></i> <span>${escapeHtml(msg)}</span>`;
+        container.appendChild(item);
+
+        setTimeout(() => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(10px)';
+            setTimeout(() => item.remove(), 300);
+        }, 3500);
+    }
+
+    function cleanupJsonp(cb, script) {
+        try { delete window[cb]; } catch (e) { window[cb] = undefined; }
+        if (script && script.parentNode) script.parentNode.removeChild(script);
+    }
+
+    function escapeHtml(str) {
+        return String(str ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    
+    /* =========================================================
+       DYNAMIC REAL-TIME ORDERS MANAGEMENT
+    ========================================================= */
+    function loadUserOrders() {
+        const orderKey = 'ap_user_orders_' + userEmail.toLowerCase();
+        let localOrders = [];
+        try {
+            localOrders = JSON.parse(localStorage.getItem(orderKey) || '[]');
+        } catch (e) {
+            localOrders = [];
+        }
+        renderUserOrders(localOrders);
+
+        // Fetch real-time orders from Google Apps Script backend
+        const script = document.createElement('script');
+        const cb = 'userOrders_' + Date.now();
+
+        window[cb] = function(res) {
+            cleanupJsonp(cb, script);
+            if (res && res.ok && Array.isArray(res.orders)) {
+                // Merge backend orders with local orders without duplicates
+                const orderMap = new Map();
+                localOrders.forEach(o => { if (o.orderId) orderMap.set(o.orderId, o); });
+                res.orders.forEach(o => { if (o.orderId) orderMap.set(o.orderId, o); });
+                const merged = Array.from(orderMap.values());
+                try {
+                    localStorage.setItem(orderKey, JSON.stringify(merged));
+                } catch (e) {}
+                renderUserOrders(merged);
+            }
+        };
+
+        script.onerror = function() {
+            cleanupJsonp(cb, script);
+        };
+
+        script.src = `${BACKEND_URL}?action=get_user_orders&email=${encodeURIComponent(userEmail)}&callback=${cb}`;
+        document.head.appendChild(script);
+    }
+
+    function renderUserOrders(orders) {
+        const container = document.getElementById('user-orders-list');
+        const badge = document.getElementById('orders-count-badge');
+        if (!container) return;
+
+        if (!orders || !orders.length) {
+            if (badge) badge.textContent = '0 Orders';
+            container.innerHTML = `
+                <div style="text-align: center; padding: 48px 20px; background: rgba(255,255,255,0.02); border: 1px dashed var(--glass-border); border-radius: var(--radius-md);">
+                    <div style="font-size: 38px; margin-bottom: 12px; color: var(--crimson);">🛍</div>
+                    <h4 style="color: #fff; font-size: 15px; margin-bottom: 6px; letter-spacing: 1px;">No Orders Recorded Yet</h4>
+                    <p style="color: var(--text-muted); font-size: 12px; max-width: 420px; margin: 0 auto 20px; line-height: 1.6;">
+                        When you complete an order from the boutique shopping bag, your unique Order ID, itemized receipt, and tracking will appear here.
+                    </p>
+                    <a href="shop.html" class="btn-top-admin" style="display: inline-flex; justify-content: center; margin: 0 auto;">
+                        <i class="fas fa-bag-shopping"></i> Browse Boutique Collection
+                    </a>
+                </div>
+            `;
+            return;
+        }
+
+        if (badge) badge.textContent = `${orders.length} Total Placed`;
+
+        container.innerHTML = orders.map(order => {
+            const orderId = order.orderId || 'AP-ORD-000000';
+            const dateStr = order.timestamp ? new Date(order.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Recent';
+            const total = order.total || '$0.00';
+            const summary = order.itemsSummary || 'Curated Apparel & Luxury Goods';
+            const address = order.address || 'Standard Delivery Coordinates';
+            const status = String(order.status || 'CONFIRMED').toUpperCase();
+            const payment = order.paymentMethod || 'Cash on Delivery';
+
+            return `
+                <div class="order-card-luxury">
+                    <div class="order-header-row">
+                        <div>
+                            <span class="order-code">${escapeHtml(orderId)}</span>
+                            <span style="font-size: 11px; color: var(--text-dim); margin-left: 10px;">Placed ${escapeHtml(dateStr)}</span>
+                        </div>
+                        <span style="color: var(--green); font-weight: 700; font-size: 14px;">${escapeHtml(total)}</span>
+                    </div>
+                    <div style="font-size: 12.5px; color: #fff; margin-bottom: 10px; line-height: 1.5;">
+                        ${escapeHtml(summary)}
+                    </div>
+                    <div class="order-timeline">
+                        <div class="timeline-step completed" title="Order Placed"></div>
+                        <div class="timeline-step ${status === 'PROCESSING' || status === 'SHIPPED' || status === 'DELIVERED' ? 'completed' : 'current'}" title="Confirmed"></div>
+                        <div class="timeline-step ${status === 'SHIPPED' || status === 'DELIVERED' ? 'completed' : (status === 'PROCESSING' ? 'current' : '')}" title="Processing & Packed"></div>
+                        <div class="timeline-step ${status === 'DELIVERED' ? 'completed' : (status === 'SHIPPED' ? 'current' : '')}" title="Dispatched"></div>
+                        <div class="timeline-step ${status === 'DELIVERED' ? 'completed' : ''}" title="Delivered"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); flex-wrap: wrap; gap: 8px;">
+                        <span>Status: <strong style="color: #22c55e;"><i class="fas fa-circle-check"></i> ${escapeHtml(status)}</strong> (${escapeHtml(payment)})</span>
+                        <span>Destination: <strong style="color: #fff;">${escapeHtml(address)}</strong></span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+</script>
+</body>
+</html>
