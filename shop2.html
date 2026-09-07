@@ -1,0 +1,3092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Shop — Abdullah Psychotic</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --red:#d20f1d;
+  --red-dark:#9e0914;
+  --bg:#050505;
+  --card:#101010;
+  --muted:#8c8c8c;
+  --white:#f5f5f5;
+  --cream:#faf8ed;
+  --black:#050505;
+  --border:rgba(255,255,255,.12);
+
+  --heading:"Playfair Display",serif;
+  --subheading:"Cinzel",serif;
+  --body:"Montserrat",sans-serif;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  background:
+    radial-gradient(circle at 50% 20%,rgba(110,0,0,.08),transparent 35%),
+    #050505;
+  color:var(--white);
+  font-family:var(--body);
+  overflow-x:hidden;
+}
+
+body.locked{
+  overflow:hidden;
+}
+
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
+button{
+  font-family:inherit;
+}
+
+img{
+  max-width:100%;
+}
+
+::-webkit-scrollbar{
+  width:7px;
+}
+
+::-webkit-scrollbar-track{
+  background:#050505;
+}
+
+::-webkit-scrollbar-thumb{
+  background:var(--red);
+  border-radius:10px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+
+  height:86px;
+
+  display:grid;
+  grid-template-columns:70px 1fr 70px;
+  align-items:center;
+
+  background:rgba(0,0,0,.94);
+  border-bottom:1px solid rgba(255,255,255,.10);
+
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+}
+
+.menu-btn,
+.cart-btn{
+  position:relative;
+
+  width:38px;
+  height:38px;
+
+  margin:auto;
+
+  padding:0;
+  border:0;
+
+  background:transparent;
+  color:#f5f5f5;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  cursor:pointer;
+
+  transition:.2s;
+
+  -webkit-tap-highlight-color:transparent;
+}
+
+.menu-btn:hover,
+.cart-btn:hover{
+  transform:scale(1.08);
+}
+
+.menu-btn:active,
+.cart-btn:active{
+  transform:scale(.9);
+}
+
+.menu-btn svg,
+.cart-btn svg{
+  width:23px;
+  height:23px;
+
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.menu-btn svg{
+  width:25px;
+  height:20px;
+}
+
+.logo{
+  justify-self:center;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  width:150px;
+}
+
+.logo img{
+  display:block;
+
+  width:125px;
+  height:auto;
+
+  object-fit:contain;
+}
+
+.cart-count{
+  position:absolute;
+
+  top:-3px;
+  right:-5px;
+
+  min-width:17px;
+  width:17px;
+  height:17px;
+
+  border-radius:50%;
+
+  background:var(--red);
+  color:#fff;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:8px;
+  font-weight:700;
+
+  border:1px solid #000;
+}
+
+
+/* =========================================================
+   OVERLAY
+========================================================= */
+
+.overlay{
+  position:fixed;
+  inset:0;
+
+  background:rgba(0,0,0,.72);
+
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+
+  transition:.3s;
+
+  z-index:1100;
+}
+
+.overlay.active{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+}
+
+
+/* =========================================================
+   MENU DRAWER
+========================================================= */
+
+.menu-drawer{
+  position:fixed;
+
+  top:0;
+  left:-380px;
+
+  width:350px;
+  max-width:88vw;
+  height:100dvh;
+
+  z-index:1300;
+
+  background:#090909;
+
+  border-right:1px solid var(--border);
+
+  box-shadow:18px 0 55px rgba(0,0,0,.5);
+
+  padding:28px;
+
+  display:flex;
+  flex-direction:column;
+
+  transition:left .42s cubic-bezier(.77,0,.175,1);
+}
+
+.menu-drawer.active{
+  left:0;
+}
+
+.menu-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding-bottom:22px;
+
+  border-bottom:1px solid var(--border);
+}
+
+.menu-brand{
+  font-family:var(--subheading);
+
+  font-size:11px;
+
+  letter-spacing:2px;
+}
+
+.menu-close{
+  width:40px;
+  height:40px;
+
+  border:1px solid var(--border);
+  border-radius:50%;
+
+  background:#111;
+  color:#aaa;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:20px;
+
+  cursor:pointer;
+}
+
+.menu-close:hover{
+  color:#fff;
+  border-color:var(--red);
+}
+
+.menu-links{
+  display:flex;
+  flex-direction:column;
+
+  gap:5px;
+
+  padding-top:24px;
+}
+
+.menu-links a{
+  display:flex;
+  align-items:center;
+  gap:15px;
+
+  padding:15px 14px;
+
+  color:#bbb;
+
+  border-radius:8px;
+
+  font-size:12px;
+
+  letter-spacing:1.5px;
+
+  transition:.25s;
+}
+
+.menu-links a:hover{
+  color:#fff;
+  background:rgba(210,15,29,.1);
+  padding-left:18px;
+}
+
+.menu-links span{
+  font-weight:500;
+}
+
+.menu-bottom{
+  margin-top:auto;
+
+  color:#555;
+
+  text-align:center;
+
+  font-size:9px;
+
+  letter-spacing:2px;
+}
+
+
+/* =========================================================
+   PRODUCTS PAGE
+========================================================= */
+
+.products-page{
+  width:min(100%,1100px);
+
+  margin:auto;
+
+  padding:30px 25px 80px;
+}
+
+.page-title{
+  text-align:center;
+
+  font-family:var(--heading);
+
+  font-size:42px;
+
+  font-weight:500;
+
+  letter-spacing:1px;
+
+  margin-bottom:12px;
+}
+
+.title-decoration{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:12px;
+
+  margin-bottom:35px;
+}
+
+.title-decoration span{
+  width:70px;
+  height:1px;
+
+  background:var(--red);
+}
+
+.title-decoration b{
+  color:var(--red);
+
+  font-size:23px;
+
+  font-weight:400;
+}
+
+
+/* =========================================================
+   PRODUCT CARD
+========================================================= */
+
+.product-list{
+  display:flex;
+  flex-direction:column;
+
+  gap:12px;
+}
+
+.product-card{
+  min-height:180px;
+
+  display:grid;
+
+  grid-template-columns:46% 54%;
+
+  overflow:hidden;
+
+  background:
+    radial-gradient(circle at 25% 50%,rgba(255,255,255,.035),transparent 42%),
+    linear-gradient(135deg,#111 0%,#0c0c0c 100%);
+
+  border:1px solid var(--border);
+
+  border-radius:12px;
+
+  transition:.3s;
+}
+
+.product-card:hover{
+  transform:translateY(-2px);
+
+  border-color:rgba(210,15,29,.35);
+
+  box-shadow:0 15px 40px rgba(0,0,0,.45);
+}
+
+.product-image{
+  position:relative;
+
+  min-height:180px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:6px;
+
+  overflow:hidden;
+
+  background:
+    radial-gradient(circle at center,rgba(255,255,255,.045),transparent 60%);
+}
+
+.product-image img{
+  width:100%;
+  height:170px;
+
+  object-fit:contain;
+
+  filter:drop-shadow(0 15px 20px rgba(0,0,0,.6));
+
+  transition:.4s;
+}
+
+.product-card:hover .product-image img{
+  transform:scale(1.035);
+}
+
+.product-info{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+
+  padding:18px 25px 18px 8px;
+}
+
+.product-badge{
+  color:var(--red);
+
+  font-size:8px;
+
+  letter-spacing:.5px;
+
+  text-transform:uppercase;
+
+  margin-bottom:7px;
+}
+
+.product-name{
+  font-family:var(--heading);
+
+  font-size:15px;
+
+  line-height:1.25;
+
+  font-weight:500;
+
+  margin-bottom:7px;
+}
+
+.product-description{
+  color:#929292;
+
+  font-size:10px;
+
+  line-height:1.55;
+
+  margin-bottom:8px;
+}
+
+.product-price{
+  color:#f22935;
+
+  font-size:16px;
+
+  font-weight:500;
+
+  margin-bottom:10px;
+}
+
+.add-btn,
+.sold-out{
+  width:153px;
+  max-width:100%;
+
+  height:31px;
+
+  border-radius:5px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:8px;
+
+  font-size:11px;
+
+  cursor:pointer;
+}
+
+.add-btn{
+  border:0;
+
+  background:linear-gradient(
+    180deg,
+    #ed2935,
+    #c30c17
+  );
+
+  color:#fff;
+
+  font-weight:600;
+
+  transition:.2s;
+}
+
+.add-btn:hover{
+  transform:translateY(-1px);
+
+  background:linear-gradient(
+    180deg,
+    #ff3441,
+    #a90812
+  );
+}
+
+.add-btn svg{
+  width:15px;
+  height:15px;
+
+  fill:none;
+
+  stroke:currentColor;
+
+  stroke-width:2;
+
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.sold-out{
+  background:#eee;
+
+  color:#111;
+
+  font-weight:700;
+
+  letter-spacing:1px;
+}
+
+
+/* =========================================================
+   MAIN CART — RIGHT SIDE DRAWER
+   Same easy-to-use layout as index.html
+========================================================= */
+
+.cart-drawer{
+  position:fixed;
+  inset:0 0 0 auto;
+  width:min(430px, 80vw);
+  height:100dvh;
+  background:#090909;
+  border-left:1px solid var(--border);
+  z-index:1300;
+  display:flex;
+  flex-direction:column;
+  transform:translateX(100%);
+  transition:transform .38s cubic-bezier(.77,0,.175,1);
+  box-shadow:-18px 0 55px rgba(0,0,0,.55);
+  padding:0;
+  overflow:hidden;
+}
+
+.cart-drawer.active{
+  transform:translateX(0);
+}
+
+.cart-header{
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-height:76px;
+  padding:0 22px;
+  border-bottom:1px solid var(--border);
+  background:#0b0b0b;
+}
+
+.cart-header h2{
+  margin:0;
+  font-family:var(--subheading);
+  font-size:15px;
+  letter-spacing:2.5px;
+}
+
+.cart-close{
+  width:40px;
+  height:40px;
+  border:1px solid var(--border);
+  border-radius:0;
+  background:#fff;
+  color:#050505;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  line-height:1;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.cart-close:hover{
+  background:var(--red);
+  color:#fff;
+  border-color:var(--red);
+}
+
+.cart-items{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  padding:18px 22px;
+  overscroll-behavior:contain;
+}
+
+.empty{
+  text-align:center;
+  color:#777;
+  margin-top:70px;
+  font-family:var(--heading);
+  font-size:15px;
+}
+
+.cart-item{
+  position:relative;
+  display:grid;
+  grid-template-columns:72px minmax(0,1fr) 34px;
+  gap:12px;
+  align-items:center;
+  padding:10px 0;
+  margin:0;
+  border:0;
+  border-bottom:1px solid var(--border);
+  background:transparent;
+  border-radius:0;
+}
+
+.cart-item img{
+  width:72px;
+  height:82px;
+  object-fit:contain;
+  background:#101010;
+  border-radius:0;
+  flex-shrink:0;
+}
+
+.cart-item-info{
+  min-width:0;
+}
+
+.cart-item-name{
+  font-family:var(--heading);
+  font-size:12px;
+  line-height:1.35;
+  padding-right:4px;
+}
+
+.cart-item-size{
+  color:#aaa;
+  font-size:10px;
+  margin-top:5px;
+  letter-spacing:.8px;
+}
+
+.cart-item-price{
+  color:var(--red);
+  font-size:12px;
+  margin-top:6px;
+  font-weight:600;
+}
+
+.qty{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:10px;
+}
+
+.qty button{
+  width:27px;
+  height:27px;
+  border:1px solid var(--border);
+  background:#111;
+  color:#fff;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.qty button:hover{
+  border-color:var(--red);
+  color:var(--red);
+}
+
+.qty span{
+  min-width:14px;
+  text-align:center;
+  font-size:11px;
+}
+
+.remove{
+  align-self:start;
+  width:34px;
+  height:34px;
+  border:1px solid var(--border);
+  background:#111;
+  color:#aaa;
+  font-size:21px;
+  line-height:1;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.remove:hover{
+  background:var(--red);
+  color:#fff;
+  border-color:var(--red);
+}
+
+.cart-footer{
+  flex-shrink:0;
+  border-top:1px solid var(--border);
+  padding:18px 22px 22px;
+  background:#0b0b0b;
+}
+
+.total{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  font-family:var(--subheading);
+  font-size:14px;
+  letter-spacing:.5px;
+  margin-bottom:15px;
+}
+
+.checkout{
+  width:100%;
+  height:52px;
+  border:1px solid var(--red);
+  background:var(--red);
+  color:#fff;
+  font-weight:700;
+  letter-spacing:2px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.checkout:hover{
+  background:#fff;
+  color:#050505;
+  border-color:#fff;
+}
+
+@media(max-width:520px){
+  .cart-drawer{
+    width:100vw;
+  }
+
+  .cart-header{
+    min-height:68px;
+    padding:0 16px;
+  }
+
+  .cart-items{
+    padding:14px 16px;
+  }
+
+  .cart-footer{
+    padding:16px;
+  }
+
+  .cart-item{
+    grid-template-columns:64px minmax(0,1fr) 32px;
+    gap:10px;
+  }
+
+  .cart-item img{
+    width:64px;
+    height:74px;
+  }
+}
+
+
+/* =========================================================
+   PRODUCT OPTIONS MODAL
+========================================================= */
+
+.options-overlay{
+  position:fixed;
+
+  inset:0;
+
+  z-index:2000;
+
+  background:rgba(0,0,0,.72);
+
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+
+  opacity:0;
+
+  visibility:hidden;
+
+  pointer-events:none;
+
+  transition:.25s;
+}
+
+.options-overlay.active{
+  opacity:1;
+
+  visibility:visible;
+
+  pointer-events:auto;
+}
+
+.options-window{
+  position:fixed;
+
+  left:50%;
+  bottom:0;
+
+  transform:translate(-50%,105%);
+
+  width:min(720px,100%);
+
+  max-height:92dvh;
+
+  background:var(--cream);
+
+  color:#171717;
+
+  z-index:2100;
+
+  border-radius:22px 22px 0 0;
+
+  overflow:hidden;
+
+  box-shadow:0 -20px 70px rgba(0,0,0,.5);
+
+  transition:transform .42s cubic-bezier(.77,0,.175,1);
+
+  display:flex;
+  flex-direction:column;
+}
+
+.options-overlay.active .options-window{
+  transform:translate(-50%,0);
+}
+
+.options-header{
+  flex:0 0 auto;
+
+  height:82px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  padding:0 30px;
+
+  border-bottom:1px solid rgba(0,0,0,.12);
+}
+
+.options-header h2{
+  font-family:var(--subheading);
+
+  font-size:19px;
+
+  font-weight:500;
+
+  letter-spacing:3px;
+}
+
+.options-close{
+  width:44px;
+  height:44px;
+
+  border:0;
+
+  background:transparent;
+
+  color:#171717;
+
+  font-size:34px;
+
+  line-height:1;
+
+  cursor:pointer;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.options-body{
+  overflow-y:auto;
+
+  padding:22px 30px 30px;
+}
+
+.option-product{
+  display:grid;
+
+  grid-template-columns:170px 1fr;
+
+  gap:25px;
+
+  align-items:center;
+
+  margin-bottom:24px;
+}
+
+.option-image{
+  width:170px;
+  height:190px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:#efeee5;
+
+  overflow:hidden;
+}
+
+.option-image img{
+  width:100%;
+  height:100%;
+
+  object-fit:contain;
+}
+
+.option-product-info h3{
+  font-family:var(--heading);
+
+  font-size:22px;
+
+  font-weight:500;
+
+  line-height:1.25;
+
+  margin-bottom:8px;
+}
+
+.option-price{
+  color:#666;
+
+  font-size:15px;
+
+  letter-spacing:2px;
+
+  margin-bottom:14px;
+}
+
+.option-label{
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  margin-bottom:9px;
+}
+
+.option-label span:first-child{
+  font-size:15px;
+
+  font-weight:500;
+
+  letter-spacing:1px;
+}
+
+.size-chart{
+  color:#222;
+
+  font-size:12px;
+
+  text-decoration:underline;
+
+  cursor:pointer;
+}
+
+.size-options{
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:8px;
+}
+
+.size-btn{
+  min-width:58px;
+  height:45px;
+
+  padding:0 13px;
+
+  border:1px solid #c9c7bc;
+
+  background:transparent;
+
+  color:#555;
+
+  font-size:13px;
+
+  cursor:pointer;
+
+  transition:.2s;
+}
+
+.size-btn:hover{
+  border-color:#111;
+
+  color:#111;
+}
+
+.size-btn.selected{
+  background:#050505;
+
+  border-color:#050505;
+
+  color:#fff;
+}
+
+.confirm-add{
+  width:100%;
+
+  height:53px;
+
+  border:0;
+
+  background:#050505;
+
+  color:#fff;
+
+  font-size:14px;
+
+  letter-spacing:3px;
+
+  font-weight:500;
+
+  cursor:pointer;
+
+  transition:.2s;
+}
+
+.confirm-add:hover{
+  background:#222;
+}
+
+.confirm-add:disabled{
+  opacity:.35;
+
+  cursor:not-allowed;
+}
+
+
+/* =========================================================
+   OPTION MODAL DESKTOP
+========================================================= */
+
+@media(min-width:769px){
+
+  .options-window{
+    bottom:50%;
+
+    transform:translate(-50%,50%);
+
+    width:650px;
+
+    border-radius:18px;
+  }
+
+  .options-overlay.active .options-window{
+    transform:translate(-50%,50%);
+  }
+
+  .options-body{
+    padding:22px 30px 30px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:768px){
+
+  header{
+    height:80px;
+
+    grid-template-columns:50px 1fr 50px;
+
+    padding:0 6px;
+  }
+
+  .menu-btn,
+  .cart-btn{
+    width:29px;
+    height:29px;
+  }
+
+  .menu-btn svg{
+    width:18px;
+    height:14px;
+  }
+
+  .cart-btn svg{
+    width:18px;
+    height:18px;
+  }
+
+  .logo img{
+    width:115px;
+  }
+
+  .cart-count{
+    min-width:15px;
+    width:15px;
+    height:15px;
+
+    font-size:7px;
+
+    top:-3px;
+    right:-5px;
+  }
+
+  .products-page{
+    padding:30px 17px 70px;
+  }
+
+  .page-title{
+    font-size:20px;
+
+    line-height:1.15;
+
+    margin-top:-8px;
+
+    margin-bottom:12px;
+  }
+
+  .title-decoration{
+    gap:10px;
+
+    margin-bottom:24px;
+  }
+
+  .title-decoration span{
+    width:58px;
+  }
+
+  .title-decoration b{
+    font-size:20px;
+  }
+
+  .product-list{
+    gap:10px;
+  }
+
+  .product-card{
+    grid-template-columns:44% 56%;
+
+    min-height:180px;
+
+    border-radius:11px;
+  }
+
+  .product-image{
+    min-height:200px;
+
+    padding:5px;
+  }
+
+  .product-image img{
+    height:175px;
+  }
+
+  .product-info{
+    padding:16px 11px 16px 6px;
+  }
+
+  .product-badge{
+    font-size:7px;
+
+    margin-bottom:6px;
+  }
+
+  .product-name{
+    font-size:12px;
+
+    line-height:1.25;
+
+    margin-bottom:6px;
+  }
+
+  .product-description{
+    font-size:9px;
+
+    line-height:1.55;
+
+    margin-bottom:7px;
+  }
+
+  .product-price{
+    font-size:16px;
+
+    margin-bottom:9px;
+  }
+
+  .add-btn,
+  .sold-out{
+    width:100%;
+
+    height:30px;
+
+    font-size:9px;
+
+    border-radius:5px;
+  }
+
+  /* CART */
+
+  .cart-drawer{
+    width: 90%;
+    max-width:none;
+    right:0;
+    padding:0;
+    transform:translateX(100%);
+  }
+
+  .cart-drawer.active{
+    transform:translateX(0);
+  }
+
+  .cart-header h2{
+    font-size:14px;
+  }
+
+  /* OPTIONS */
+
+  .options-window{
+    width:100%;
+
+    max-height:91dvh;
+
+    border-radius:20px 20px 0 0;
+  }
+
+  .options-header{
+    height:72px;
+
+    padding:0 20px;
+  }
+
+  .options-header h2{
+    font-size:16px;
+
+    letter-spacing:2.5px;
+  }
+
+  .options-close{
+    width:40px;
+    height:40px;
+
+    font-size:31px;
+  }
+
+  .options-body{
+    padding:18px 18px 20px;
+  }
+
+  .option-product{
+    grid-template-columns:115px 1fr;
+
+    gap:15px;
+
+    margin-bottom:18px;
+  }
+
+  .option-image{
+    width:115px;
+    height:135px;
+  }
+
+  .option-product-info h3{
+    font-size:16px;
+
+    line-height:1.3;
+
+    margin-bottom:6px;
+  }
+
+  .option-price{
+    font-size:12px;
+
+    letter-spacing:1.5px;
+
+    margin-bottom:11px;
+  }
+
+  .option-label{
+    margin-bottom:7px;
+  }
+
+  .option-label span:first-child{
+    font-size:13px;
+  }
+
+  .size-chart{
+    font-size:10px;
+  }
+
+  .size-options{
+    gap:6px;
+  }
+
+  .size-btn{
+    min-width:45px;
+
+    height:38px;
+
+    padding:0 9px;
+
+    font-size:11px;
+  }
+
+  .confirm-add{
+    height:49px;
+
+    font-size:12px;
+
+    letter-spacing:2.2px;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media(max-width:380px){
+
+  .products-page{
+    padding-left:14px;
+    padding-right:14px;
+  }
+
+  .product-card{
+    grid-template-columns:43% 57%;
+
+    min-height:170px;
+  }
+
+  .product-image{
+    min-height:170px;
+  }
+
+  .product-image img{
+    height:155px;
+  }
+
+  .product-info{
+    padding:14px 9px 14px 5px;
+  }
+
+  .product-name{
+    font-size:11px;
+  }
+
+  .product-description{
+    font-size:8px;
+  }
+
+  .product-price{
+    font-size:14px;
+  }
+
+  .add-btn,
+  .sold-out{
+    height:28px;
+
+    font-size:8px;
+  }
+
+  .option-product{
+    grid-template-columns:100px 1fr;
+
+    gap:12px;
+  }
+
+  .option-image{
+    width:100px;
+    height:120px;
+  }
+
+  .option-product-info h3{
+    font-size:14px;
+  }
+
+  .size-btn{
+    min-width:41px;
+
+    height:35px;
+
+    padding:0 7px;
+  }
+}
+
+/* FINAL CART VISIBILITY FIX */
+#cart-drawer.cart-drawer{
+  position:fixed !important;
+  top:0 !important;
+  right:0 !important;
+  bottom:0 !important;
+  left:auto !important;
+  z-index:9999 !important;
+  display:flex !important;
+  visibility:visible !important;
+  transform:translateX(100%) !important;
+}
+#cart-drawer.cart-drawer.active{
+  transform:translateX(0) !important;
+}
+#cart-overlay{
+  z-index:9998 !important;
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =======================================================
+     HEADER
+======================================================= -->
+
+<header>
+
+  <button
+    class="menu-btn"
+    aria-label="Open menu"
+    onclick="openMenu()"
+  >
+    <svg viewBox="0 0 32 24">
+      <path d="M1 2h30M1 12h30M1 22h30"/>
+    </svg>
+  </button>
+
+
+  <a
+    href="index.html"
+    class="logo"
+    aria-label="Abdullah Psychotic"
+  >
+    <img
+      src="logo0.webp"
+      alt="Abdullah Psychotic Logo"
+    >
+  </a>
+
+
+  <button
+    class="cart-btn"
+    aria-label="Shopping cart"
+    onclick="openCart()"
+  >
+
+    <svg viewBox="0 0 32 32">
+      <path d="M4 6h4l3.1 14.2a2 2 0 0 0 2 1.6h10.8a2 2 0 0 0 1.9-1.4L29 11H9"/>
+      <circle cx="13" cy="27" r="1.8"/>
+      <circle cx="25" cy="27" r="1.8"/>
+    </svg>
+
+    <span
+      class="cart-count"
+      id="cart-count"
+    >0</span>
+
+  </button>
+
+</header>
+
+
+
+<!-- =======================================================
+     MENU OVERLAY
+======================================================= -->
+
+<div
+  class="overlay"
+  id="menu-overlay"
+  onclick="closeMenu()"
+></div>
+
+
+<!-- =======================================================
+     MENU
+======================================================= -->
+
+<aside
+  class="menu-drawer"
+  id="menu-drawer"
+>
+
+  <div class="menu-top">
+
+    <div class="menu-brand">
+      ABDULLAH PSYCHOTIC
+    </div>
+
+    <button
+      class="menu-close"
+      onclick="closeMenu()"
+      aria-label="Close menu"
+    >
+      ×
+    </button>
+
+  </div>
+
+
+  <nav class="menu-links">
+
+    <a href="index.html">
+      <span>HOME</span>
+    </a>
+
+    <a href="shop.html">
+      <span>ALL PRODUCTS</span>
+    </a>
+
+    <a href="index.html#about">
+      <span>ABOUT</span>
+    </a>
+
+    <a href="index.html#contact">
+      <span>CONTACT</span>
+    </a>
+
+  </nav>
+
+
+  <div class="menu-bottom">
+    EST. ABDULLAH PSYCHOTIC
+  </div>
+
+</aside>
+
+
+
+<!-- =======================================================
+     PRODUCTS
+======================================================= -->
+
+<main class="products-page">
+
+
+  <div
+    class="product-list"
+    id="product-list"
+  ></div>
+
+</main>
+
+
+
+<!-- =======================================================
+     CART OVERLAY
+======================================================= -->
+
+<div
+  class="overlay"
+  id="cart-overlay"
+  onclick="closeCart()"
+></div>
+
+
+
+<!-- =======================================================
+     MAIN CART
+======================================================= -->
+
+<aside
+  class="cart-drawer"
+  id="cart-drawer"
+>
+
+  <div class="cart-header">
+
+    <h2>
+      YOUR CART
+    </h2>
+
+    <button
+      class="cart-close"
+      onclick="closeCart()"
+      aria-label="Close cart"
+    >
+      ×
+    </button>
+
+  </div>
+
+
+  <div
+    class="cart-items"
+    id="cart-items"
+  ></div>
+
+
+  <div class="cart-footer">
+
+    <div class="total">
+
+      <span>
+        SUBTOTAL
+      </span>
+
+      <span id="subtotal">
+        $0
+      </span>
+
+    </div>
+
+
+    <button
+      class="checkout"
+      onclick="checkout()"
+    >
+      CHECKOUT
+    </button>
+
+  </div>
+
+</aside>
+
+
+
+<!-- =======================================================
+     PRODUCT OPTIONS OVERLAY
+======================================================= -->
+
+<div
+  class="options-overlay"
+  id="options-overlay"
+>
+
+
+  <div
+    class="options-window"
+    id="options-window"
+  >
+
+
+    <div class="options-header">
+
+      <h2>
+        CHOOSE OPTIONS
+      </h2>
+
+      <button
+        class="options-close"
+        onclick="closeOptions()"
+        aria-label="Close"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="options-body">
+
+
+      <div class="option-product">
+
+
+        <div class="option-image">
+
+          <img
+            id="option-image"
+            src=""
+            alt=""
+          >
+
+        </div>
+
+
+        <div class="option-product-info">
+
+          <h3
+            id="option-name"
+          ></h3>
+
+
+          <div
+            class="option-price"
+            id="option-price"
+          ></div>
+
+
+          <div class="option-label">
+
+            <span id="option-label">
+              Size
+            </span>
+
+            <span
+              class="size-chart"
+              onclick="showSizeChart()"
+            >
+              Size chart
+            </span>
+
+          </div>
+
+
+          <div
+            class="size-options"
+            id="size-options"
+          ></div>
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="confirm-add"
+        id="confirm-add"
+        onclick="confirmAddToCart()"
+        disabled
+      >
+        CONFIRM ADD TO CART
+      </button>
+
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<script>
+
+/* =========================================================
+   PRODUCT DATA
+========================================================= */
+
+const products = [
+
+  {
+    id:1,
+    category:"apparel",
+    name:"Abdullah Psychotic Branded Logo T-Shirt",
+    image:"t1.webp",
+    url:"t1.webp",
+    price:499,
+    badge:"Graphic t-shirt",
+    desc:"Premium Graphic t-Shirt"
+  },
+
+  {
+    id:2,
+    category:"apparel",
+    name:"Abdullah Psychotic Branded Dragon Edition Logo Trouser",
+    image:"pent.webp",
+    url:"pent.webp",
+    price:599,
+    badge:"Premium Graphic Trouser",
+    desc:"Premium Graphic Trouser"
+  },
+
+  {
+    id:3,
+    category:"apparel",
+    name:"A.P Oversized Dragon edition premium t-shirt",
+    image:"t4.webp",
+    url:"t4.webp",
+    price:459,
+    badge:"Graphic t-shirt",
+    desc:"Premium Graphic t-shirt"
+  },
+
+  {
+    id:4,
+    category:"apparel",
+    name:"A.P Oversized Tiger edition premium t-shirt",
+    image:"t3.webp",
+    url:"t3.webp",
+    price:449,
+    badge:"Graphic t-shirt",
+    desc:"Premium Graphic t-shirt"
+  },
+
+  {
+    id:5,
+    category:"apparel",
+    name:"A.P Oversized Penguin edition premium t-shirt",
+    image:"t2.webp",
+    url:"we5.webp",
+    price:449,
+    badge:"Graphic t-shirt",
+    desc:"Premium Graphic t-shirt"
+  },
+
+  {
+    id:6,
+    category:"apparel",
+    name:"A.P Oversized logo design premium red & black t-shirt(chinese style)",
+    image:"t5.webp",
+    url:"we6.webp",
+    price:489,
+    badge:"Premium Graphic t-shirt",
+    desc:"Premium Graphic t-shirt"
+  },
+
+  {
+    id:7,
+    category:"apparel",
+    name:"A.P Oversized logo design premium t-shirt",
+    image:"t6.webp",
+    url:"t6.webp",
+    price:489,
+    badge:"Premium Graphic t-shirt",
+    desc:"Premium Graphic t-shirt"
+  },
+
+  {
+    id:8,
+    category:"apparel",
+    name:"A.P Oversized logo design premium t-shirt",
+    image:"t7.webp",
+    url:"t7.webp",
+    price:489,
+    badge:"Premium Graphic t-shirt",
+    desc:"Premium Graphic t-shirt"
+  },
+
+  {
+    id:10,
+    category:"apparel",
+    name:"A.P Oversized logo design premium t-shirt",
+    image:"t8.webp",
+    url:"t8.webp",
+    price:489,
+    badge:"Premium Graphic t-shirt",
+    desc:"Premium Graphic t-shirt"
+  },
+
+  {
+    id:11,
+    category:"apparel",
+    name:"A.P Oversized logo design premium t-shirt",
+    image:"t9.webp",
+    url:"we11.webp",
+    price:489,
+    badge:"Premium Graphic t-shirt",
+    desc:"Premium Graphic t-shirt"
+  },
+
+  {
+    id:12,
+    category:"footwear",
+    name:"Premium A.P Logo Sneakers",
+    image:"s1.webp",
+    url:"s1.webp",
+    price:499,
+    badge:"Classic Sneakers",
+    desc:"Classic Sneakers"
+  },
+
+  {
+    id:13,
+    category:"footwear",
+    name:"A.P bullet Edition Premium Shoes",
+    image:"s01.webp",
+    url:"s01.webp",
+    price:799,
+    badge:"Premium shoes",
+    desc:"Premium shoes"
+  },
+
+  {
+    id:14,
+    category:"watches",
+    name:"A.P Ocean Whale Iconic Timepiece",
+    image:"W1.webp",
+    url:"W1.webp",
+    price:7899,
+    badge:"Luxury Wear",
+    desc:"Luxury Wear"
+  },
+
+  {
+    id:15,
+    category:"watches",
+    name:"A.P Logo Design Iconic Timepiece",
+    image:"w2.webp",
+    url:"w2.webp",
+    price:9899,
+    badge:"Luxury Wear",
+    desc:"Luxury Wear"
+  },
+
+  {
+    id:16,
+    category:"lifestyle",
+    name:"A.P Logo Design Black Bedsheet",
+    image:"bed1.webp",
+    url:"bed1.webp",
+    price:1849,
+    badge:"Modern bedsheets",
+    desc:"Modern bedsheets"
+  },
+
+  {
+    id:17,
+    category:"lifestyle",
+    name:"A.P Logoed Royal Black Satin Bedsheet",
+    image:"bed2.webp",
+    url:"bed2.webp",
+    price:1899,
+    badge:"Modern bedsheets",
+    desc:"Modern bedsheets"
+  },
+
+  {
+    id:18,
+    category:"creative",
+    name:"A.P Logo Design Iconic Black Creative Mug",
+    image:"mug.webp",
+    url:"mug.webp",
+    price:79,
+    badge:"Creative Object",
+    desc:"Creative Object"
+  },
+
+  {
+    id:19,
+    category:"creative",
+    name:"A.P Logo Design Iconic Golden-Black Mug",
+    image:"mug2.webp",
+    url:"mug2.webp",
+    price:99,
+    badge:"Creative Object",
+    desc:"Creative Object"
+  },
+
+  {
+    id:20,
+    category:"hoodies",
+    name:"A.P Logo Design Iconic Black Color Hoodie",
+    image:"ho1.webp",
+    url:"ho1.webp",
+    price:769,
+    badge:"Premium Winter Hoodie",
+    desc:"Premium Winter Hoodie"
+  },
+
+  {
+    id:21,
+    category:"hoodies",
+    name:"A.P Logo Design Iconic Red Color Hoodie",
+    image:"ho2.webp",
+    url:"ho2.webp",
+    price:769,
+    badge:"Premium Winter Hoodie",
+    desc:"Premium Winter Hoodie"
+  },
+
+  {
+    id:22,
+    category:"hoodies",
+    name:"A.P Logo Design white black Hoodie",
+    image:"ho3.webp",
+    url:"weh2.webp",
+    price:749,
+    badge:"Premium Winter Hoodie",
+    desc:"Premium Winter Hoodie"
+  },
+
+  {
+    id:23,
+    category:"hoodies",
+    name:"A.P Logo Arted Premium Red & Black Hoodie",
+    image:"ho4.webp",
+    url:"ho4.webp",
+    price:789,
+    badge:"Premium Winter Hoodie",
+    desc:"Premium Winter Hoodie"
+  },
+
+  {
+    id:24,
+    category:"hoodies",
+    name:"A.P Premium black & white stylish designed Hoodie",
+    image:"ho5.webp",
+    url:"ho5.webp",
+    price:799,
+    badge:"Premium Winter Hoodie",
+    desc:"Premium Winter Hoodie"
+  },
+
+  {
+    id:25,
+    category:"caps",
+    name:"A.P Logo Design Classic Black cap",
+    image:"cap1.webp",
+    url:"cap1.webp",
+    price:239,
+    badge:"Classic cap",
+    desc:"Classic cap"
+  },
+
+  {
+    id:26,
+    category:"caps",
+    name:"A.P Logo Design Classic red cap",
+    image:"cap2.webp",
+    url:"cap2.webp",
+    price:229,
+    badge:"Classic cap",
+    desc:"Classic cap"
+  },
+
+  {
+    id:27,
+    category:"caps",
+    name:"Abdullah Psychotic modern cap",
+    image:"cap4.webp",
+    url:"cap4.webp",
+    price:249,
+    badge:"Modern cap",
+    desc:"Modern cap"
+  },
+
+  {
+    id:28,
+    category:"caps",
+    name:"Abdullah Psychotic – Luxury cap",
+    image:"cap5.webp",
+    url:"cap5.webp",
+    price:359,
+    badge:"Luxury cap",
+    desc:"Luxury cap"
+  },
+
+  {
+    id:29,
+    category:"caps",
+    name:"Abdullah Psychotic – Exclusive cap",
+    image:"cap6.webp",
+    url:"cap6.webp",
+    price:399,
+    badge:"Exclusive cap",
+    desc:"Exclusive cap"
+  },
+
+  {
+    id:30,
+    category:"caps",
+    name:"Abdullah Psychotic – classic logo hat",
+    image:"hat2.webp",
+    url:"hat2.webp",
+    price:2999,
+    badge:"Premium Classic Hat",
+    desc:"Premium Classic Hat"
+  },
+
+  {
+    id:31,
+    category:"caps",
+    name:"Abdullah Psychotic – Hell Rider stylish iconic hat",
+    image:"cap3.webp",
+    url:"cap3.webp",
+    price:3299,
+    badge:"Premium Iconic Hat",
+    desc:"Premium Iconic Hat"
+  },
+
+  {
+    id:32,
+    category:"caps",
+    name:"Abdullah Psychotic – Luxury dragon edition hat",
+    image:"hat3.webp",
+    url:"hat3.webp",
+    price:3499,
+    badge:"Premium Exclusive Hat",
+    desc:"Premium Exclusive Hat"
+  },
+
+  {
+    id:33,
+    category:"bags",
+    name:"Abdullah Psychotic – Luxury school bag",
+    image:"bag1.webp",
+    url:"bag1.webp",
+    price:549,
+    badge:"Premium school bag",
+    desc:"Premium school bag"
+  },
+
+  {
+    id:34,
+    category:"bags",
+    name:"Abdullah Psychotic – Luxury modern bag",
+    image:"bag2.webp",
+    url:"bag2.webp",
+    price:2249,
+    badge:"Premium fashion bag",
+    desc:"Premium fashion bag"
+  },
+
+  {
+    id:35,
+    category:"bags",
+    name:"Abdullah Psychotic – Luxury bag(Upper class)",
+    image:"bag3.webp",
+    url:"bag3.webp",
+    price:2349,
+    badge:"Luxury fashion bag",
+    desc:"Luxury fashion bag"
+  },
+
+  {
+    id:36,
+    category:"perfume",
+    name:"Abdullah Psychotic – Luxury red designed perfume",
+    image:"per1.webp",
+    url:"per1.webp",
+    price:2599,
+    badge:"Luxury perfume",
+    desc:"Luxury perfume"
+  },
+
+  {
+    id:37,
+    category:"perfume",
+    name:"Abdullah Psychotic – Luxury black designed logo perfume (Upper class)",
+    image:"per2.webp",
+    url:"per2.webp",
+    price:2700,
+    badge:"Luxury perfume",
+    desc:"Luxury perfume"
+  },
+
+  {
+    id:38,
+    category:"perfume",
+    name:"Abdullah Psychotic – Luxury black designed logo perfume",
+    image:"per3.webp",
+    url:"per3.webp",
+    price:2650,
+    badge:"Luxury perfume",
+    desc:"Luxury perfume"
+  }
+
+];
+
+
+/* =========================================================
+   SOLD OUT PRODUCTS
+========================================================= */
+
+const soldOut = [];
+
+
+/* =========================================================
+   CART
+   SAME STORAGE KEY
+========================================================= */
+
+let cart =
+  JSON.parse(
+    localStorage.getItem("ap_user_cart")
+  ) || [];
+
+
+/* =========================================================
+   CURRENT OPTION PRODUCT
+========================================================= */
+
+let optionProduct = null;
+
+let selectedSize = null;
+
+
+/* =========================================================
+   SIZE SYSTEM
+========================================================= */
+
+function getOptions(product){
+
+  /* T-SHIRTS + TROUSERS + HOODIES */
+
+  if(
+    product.category === "apparel" ||
+    product.category === "hoodies"
+  ){
+
+    return {
+      label:"Size",
+      values:[
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ]
+    };
+
+  }
+
+
+  /* SHOES */
+
+  if(product.category === "footwear"){
+
+    return {
+      label:"Size",
+      values:[
+        "39",
+        "40",
+        "41",
+        "42",
+        "43",
+        "44",
+        "45"
+      ]
+    };
+
+  }
+
+
+  /* EVERYTHING ELSE */
+
+  return {
+    label:"Size",
+    values:[
+      "ONE SIZE"
+    ]
+  };
+
+}
+
+
+/* =========================================================
+   SAVE CART
+========================================================= */
+
+function saveCart(){
+
+  localStorage.setItem(
+    "ap_user_cart",
+    JSON.stringify(cart)
+  );
+
+}
+
+
+/* =========================================================
+   RENDER PRODUCTS
+========================================================= */
+
+function renderProducts(){
+
+  const list =
+    document.getElementById("product-list");
+
+
+  list.innerHTML = products.map(product => {
+
+    const sold =
+      soldOut.includes(product.id);
+
+
+    return `
+
+      <article class="product-card">
+
+        <a
+          class="product-image"
+          href="${product.url}"
+          target="_blank"
+        >
+
+          <img
+            src="${product.image}"
+            alt="${product.name}"
+            loading="lazy"
+          >
+
+        </a>
+
+
+        <div class="product-info">
+
+          <div class="product-badge">
+            ${product.badge}
+          </div>
+
+
+          <h2 class="product-name">
+            ${product.name}
+          </h2>
+
+
+          <p class="product-description">
+            ${product.desc}
+          </p>
+
+
+          <div class="product-price">
+            $${product.price.toLocaleString()}
+          </div>
+
+
+          ${
+            sold
+
+            ?
+
+            `
+              <div class="sold-out">
+                SOLD OUT
+              </div>
+            `
+
+            :
+
+            `
+              <button
+                class="add-btn"
+                onclick="openOptions(${product.id})"
+              >
+
+                <svg viewBox="0 0 32 32">
+
+                  <path
+                    d="M4 6h4l3.1 14.2a2 2 0 0 0 2 1.6h10.8a2 2 0 0 0 1.9-1.4L29 11H9"
+                  />
+
+                  <circle
+                    cx="13"
+                    cy="27"
+                    r="1.8"
+                  />
+
+                  <circle
+                    cx="25"
+                    cy="27"
+                    r="1.8"
+                  />
+
+                </svg>
+
+                <span>
+                  ADD TO CART
+                </span>
+
+              </button>
+            `
+          }
+
+        </div>
+
+      </article>
+
+    `;
+
+  }).join("");
+
+}
+
+
+/* =========================================================
+   OPEN PRODUCT OPTIONS
+========================================================= */
+
+function openOptions(id){
+
+  const product =
+    products.find(
+      p => p.id === id
+    );
+
+  if(!product) return;
+
+
+  optionProduct = product;
+
+  selectedSize = null;
+
+
+  document.getElementById(
+    "option-image"
+  ).src = product.image;
+
+
+  document.getElementById(
+    "option-image"
+  ).alt = product.name;
+
+
+  document.getElementById(
+    "option-name"
+  ).textContent = product.name;
+
+
+  document.getElementById(
+    "option-price"
+  ).textContent =
+    "$" +
+    product.price.toLocaleString() +
+    " USD";
+
+
+  const options =
+    getOptions(product);
+
+
+  document.getElementById(
+    "option-label"
+  ).textContent =
+    options.label;
+
+
+  const sizeBox =
+    document.getElementById(
+      "size-options"
+    );
+
+
+  sizeBox.innerHTML =
+    options.values.map(value => `
+
+      <button
+        class="size-btn"
+        onclick="selectSize(this,'${value}')"
+      >
+        ${value}
+      </button>
+
+    `).join("");
+
+
+  document.getElementById(
+    "confirm-add"
+  ).disabled = true;
+
+
+  document.getElementById(
+    "options-overlay"
+  ).classList.add("active");
+
+
+  document.body.classList.add("locked");
+
+}
+
+
+/* =========================================================
+   SELECT SIZE
+========================================================= */
+
+function selectSize(button,size){
+
+  document
+    .querySelectorAll(".size-btn")
+    .forEach(btn => {
+
+      btn.classList.remove(
+        "selected"
+      );
+
+    });
+
+
+  button.classList.add(
+    "selected"
+  );
+
+
+  selectedSize = size;
+
+
+  document.getElementById(
+    "confirm-add"
+  ).disabled = false;
+
+}
+
+
+/* =========================================================
+   CONFIRM ADD TO CART
+========================================================= */
+
+function confirmAddToCart(){
+
+  if(!optionProduct){
+    return;
+  }
+
+
+  if(!selectedSize){
+    return;
+  }
+
+
+  /*
+    Important:
+    Product + size becomes a unique cart item.
+
+    Example:
+
+    T-Shirt / M
+    T-Shirt / L
+
+    They can exist separately.
+  */
+
+  const existing =
+    cart.find(
+      item =>
+        item.id === optionProduct.id &&
+        item.size === selectedSize
+    );
+
+
+  if(existing){
+    if(Number(existing.qty || 0) >= 3){
+      alert("Notice: Maximum 3 units per item allowed.");
+      return;
+    }
+    existing.qty++;
+  }else{
+
+    cart.push({
+
+      ...optionProduct,
+
+      size:selectedSize,
+
+      qty:1
+
+    });
+
+  }
+
+
+  saveCart();
+
+  updateCart();
+
+
+  closeOptions();
+
+
+  /*
+    Open the MAIN CART
+    after confirmation.
+  */
+
+  openCart();
+
+}
+
+
+/* =========================================================
+   CLOSE OPTIONS
+========================================================= */
+
+function closeOptions(){
+
+  document.getElementById(
+    "options-overlay"
+  ).classList.remove("active");
+
+
+  optionProduct = null;
+
+  selectedSize = null;
+
+
+  if(
+    !document
+      .getElementById("cart-drawer")
+      .classList.contains("active")
+    &&
+    !document
+      .getElementById("menu-drawer")
+      .classList.contains("active")
+  ){
+
+    document.body.classList.remove(
+      "locked"
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   SIZE CHART
+========================================================= */
+
+function showSizeChart(){
+
+  alert(
+`SIZE GUIDE
+
+S — Small
+M — Medium
+L — Large
+XL — Extra Large
+XXL — Extra Extra Large
+
+For shoes:
+39 / 40 / 41 / 42 / 43 / 44 / 45
+
+Please choose your usual size.`
+  );
+
+}
+
+
+/* =========================================================
+   CHANGE QUANTITY
+========================================================= */
+
+function changeQty(id,size,amount){
+
+  const item =
+    cart.find(
+      p =>
+        p.id === id &&
+        p.size === size
+    );
+
+
+  if(!item) return;
+
+
+  item.qty += amount;
+
+
+  if(item.qty <= 0){
+
+    cart =
+      cart.filter(
+        p =>
+          !(
+            p.id === id &&
+            p.size === size
+          )
+      );
+
+  }
+
+
+  saveCart();
+
+  updateCart();
+
+}
+
+
+/* =========================================================
+   REMOVE ITEM
+========================================================= */
+
+function removeItem(id,size){
+
+  cart =
+    cart.filter(
+      p =>
+        !(
+          p.id === id &&
+          p.size === size
+        )
+    );
+
+
+  saveCart();
+
+  updateCart();
+
+}
+
+
+/* =========================================================
+   UPDATE MAIN CART
+========================================================= */
+
+function updateCart(){
+
+  /* CART COUNT */
+
+  const count =
+    cart.reduce(
+      (sum,item) =>
+        sum + item.qty,
+      0
+    );
+
+
+  document.getElementById(
+    "cart-count"
+  ).textContent = count;
+
+
+  /* SUBTOTAL */
+
+  const subtotal =
+    cart.reduce(
+      (sum,item) =>
+        sum +
+        (
+          item.price *
+          item.qty
+        ),
+      0
+    );
+
+
+  document.getElementById(
+    "subtotal"
+  ).textContent =
+    "$" +
+    subtotal.toLocaleString();
+
+
+  /* CART CONTENT */
+
+  const box =
+    document.getElementById(
+      "cart-items"
+    );
+
+
+  if(!cart.length){
+
+    box.innerHTML = `
+
+      <div class="empty">
+
+        Your shopping bag is empty.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  box.innerHTML =
+    cart.map(item => `
+
+      <div class="cart-item">
+
+
+        <img
+          src="${item.image}"
+          alt="${item.name}"
+        >
+
+
+        <div class="cart-item-info">
+
+          <div class="cart-item-name">
+            ${item.name}
+          </div>
+
+
+          <div class="cart-item-size">
+            SIZE: ${item.size}
+          </div>
+
+
+          <div class="cart-item-price">
+            $${item.price.toLocaleString()}
+          </div>
+
+
+          <div class="qty">
+
+            <button
+              onclick="changeQty(
+                ${item.id},
+                '${item.size}',
+                -1
+              )"
+            >
+              −
+            </button>
+
+
+            <span>
+              ${item.qty}
+            </span>
+
+
+            <button
+              onclick="changeQty(
+                ${item.id},
+                '${item.size}',
+                1
+              )"
+            >
+              +
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <button
+          class="remove"
+          onclick="removeItem(
+            ${item.id},
+            '${item.size}'
+          )"
+          aria-label="Remove item"
+        >
+          ×
+        </button>
+
+
+      </div>
+
+    `).join("");
+
+}
+
+
+/* =========================================================
+   OPEN MENU
+========================================================= */
+
+function openMenu(){
+
+  closeCart();
+
+  closeOptions();
+
+
+  document
+    .getElementById("menu-drawer")
+    .classList.add("active");
+
+
+  document
+    .getElementById("menu-overlay")
+    .classList.add("active");
+
+
+  document.body.classList.add(
+    "locked"
+  );
+
+}
+
+
+/* =========================================================
+   CLOSE MENU
+========================================================= */
+
+function closeMenu(){
+
+  document
+    .getElementById("menu-drawer")
+    .classList.remove("active");
+
+
+  document
+    .getElementById("menu-overlay")
+    .classList.remove("active");
+
+
+  if(
+    !document
+      .getElementById("cart-drawer")
+      .classList.contains("active")
+    &&
+    !document
+      .getElementById("options-overlay")
+      .classList.contains("active")
+  ){
+
+    document.body.classList.remove(
+      "locked"
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   OPEN MAIN CART
+========================================================= */
+
+function openCart(){
+
+  closeMenu();
+
+
+  document
+    .getElementById("cart-drawer")
+    .classList.add("active");
+
+
+  document
+    .getElementById("cart-overlay")
+    .classList.add("active");
+
+
+  document.body.classList.add(
+    "locked"
+  );
+
+}
+
+
+/* =========================================================
+   CLOSE MAIN CART
+========================================================= */
+
+function closeCart(){
+
+  document
+    .getElementById("cart-drawer")
+    .classList.remove("active");
+
+
+  document
+    .getElementById("cart-overlay")
+    .classList.remove("active");
+
+
+  if(
+    !document
+      .getElementById("menu-drawer")
+      .classList.contains("active")
+    &&
+    !document
+      .getElementById("options-overlay")
+      .classList.contains("active")
+  ){
+
+    document.body.classList.remove(
+      "locked"
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   CHECKOUT
+========================================================= */
+
+function checkout(){
+
+  if(!cart.length){
+
+    alert(
+      "Your cart is empty!"
+    );
+
+    return;
+
+  }
+
+
+  /*
+    Your actual checkout page can
+    be connected here later.
+  */
+
+  window.location.href =
+    "index.html#checkout";
+
+}
+
+
+/* =========================================================
+   ESCAPE KEY
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  function(e){
+
+    if(e.key !== "Escape"){
+      return;
+    }
+
+
+    closeOptions();
+
+    closeCart();
+
+    closeMenu();
+
+  }
+);
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+renderProducts();
+
+updateCart();
+
+</script>
+
+</body>
+</html>
