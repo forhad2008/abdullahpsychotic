@@ -6838,6 +6838,13 @@ border: 0;
         padding: 0 14px !important;
     }
 
+    #underworld-phone-verifier {
+        font-size: 10px !important;
+        padding: 4px 10px !important;
+        margin-top: 5px !important;
+        line-height: 1.35 !important;
+    }
+
     .underworld-field input {
         height: 44px;
         line-height: 44px;
@@ -8138,7 +8145,7 @@ body:has(.ap-logout-modal.active) #welcome-screen {
 
         <!-- DESCRIPTION -->
         <p class="underworld-access-description" id="underworld-access-description">
-            Quick Sign-in: Enter your email and phone number to access your Buyer Profile.
+            Quick Sign-in: This website & the brand is only for the insider sign in and get exclusive access.
         </p>
 
         <!-- ACCESS FORM -->
@@ -8252,20 +8259,20 @@ body:has(.ap-logout-modal.active) #welcome-screen {
                             </optgroup>
                         </select>
 
-                        <!-- EXPANDED PHONE INPUT WITH PATTERN VALIDATION -->
+                        <!-- EXPANDED PHONE INPUT WITH SMART NUMBER VERIFIER -->
                         <input
                             type="tel"
                             id="underworld-phone"
                             name="phone"
                             autocomplete="tel-national"
                             inputmode="numeric"
-                            placeholder="Enter phone number"
-                            pattern="^[0-9\s\-]{6,15}$"
-                            title="Please enter a valid phone number (6 to 15 digits)"
-                            maxlength="17"
+                            placeholder="Enter phone number (e.g. 01812345678)"
+                            maxlength="20"
                             required
-                            style="flex: 1 1 auto; height: 54px; border-radius: 27px; background: #111111; color: #ffffff; border: 1px solid #222222; padding: 0 18px; outline: none; font-size: 13px;">
+                            style="flex: 1 1 auto; height: 54px; border-radius: 27px; background: #111111; color: #ffffff; border: 1px solid #222222; padding: 0 18px; outline: none; font-size: 13px; transition: border-color 0.25s ease, box-shadow 0.25s ease;">
                     </div>
+                    <!-- REAL-TIME NUMBER VERIFIER & AUTO-COUNTRY DETECTOR BADGE -->
+                    <div id="underworld-phone-verifier" style="display: none; align-items: center; margin-top: 8px; padding: 6px 14px; border-radius: 14px; font-size: 11px; font-weight: 500; letter-spacing: 0.2px; transition: all 0.25s ease;"></div>
                 </div>
 
                 <!-- CONSENT -->
@@ -8291,7 +8298,7 @@ body:has(.ap-logout-modal.active) #welcome-screen {
                     class="underworld-submit"
                     id="underworld-request-otp-btn">
                     <span id="underworld-request-otp-text">
-                        <i class="fas fa-arrow-right-to-bracket" style="margin-right: 6px;"></i> SIGN IN / ENTER PROFILE
+                        SIGN IN
                     </span>
                     <span
                         class="underworld-submit-loader"
@@ -9291,6 +9298,7 @@ body:has(.ap-logout-modal.active) #welcome-screen {
 </div>
 
 
+<script src="phone-verifier.js"></script>
 <script>
 
 'use strict';
@@ -9736,6 +9744,21 @@ const underworldPhone = document.getElementById('underworld-phone');
 const underworldStatus = document.getElementById('underworld-status');
 const countrySelect = document.getElementById('underworld-country-code');
 
+// Initialize Intelligent Phone Verifier & Country Auto-Detector
+let underworldPhoneVerifierCtrl = null;
+if (window.PhoneVerifier && underworldPhone) {
+    underworldPhoneVerifierCtrl = window.PhoneVerifier.attachToInput({
+        phoneInput: underworldPhone,
+        countrySelect: countrySelect,
+        statusEl: document.getElementById('underworld-phone-verifier'),
+        onVerifyChange: function(res) {
+            if (res.isValid && underworldStatus && underworldStatus.textContent.toLowerCase().includes('phone')) {
+                showUnderworldStatus('', '');
+            }
+        }
+    });
+}
+
 function showUnderworldStatus(msg, type = '') {
     if (!underworldStatus) return;
     underworldStatus.textContent = String(msg || '');
@@ -10032,8 +10055,8 @@ underworldEmail?.addEventListener('input', () => {
     } else {
         if (adminAuthIndicator) adminAuthIndicator.style.display = 'none';
         if (underworldPhoneGroup) underworldPhoneGroup.style.display = 'block';
-        if (reqText) reqText.innerHTML = '<i class="fas fa-arrow-right-to-bracket" style="margin-right: 6px;"></i> SIGN IN / ENTER PROFILE';
-        if (descEl) descEl.textContent = 'Quick Sign-in: Enter your email and phone number to access your Buyer Profile.';
+        if (reqText) reqText.innerHTML = 'SIGN IN';
+        if (descEl) descEl.textContent = 'Quick Sign-in: This website & the brand is only for the insider sign in and get exclusive access.';
     }
 });
 
@@ -10120,15 +10143,54 @@ requestOtpBtn?.addEventListener('click', async () => {
         // ADMIN FLOW: Strict 3-minute OTP verification
         generateAndSendOtp(email, '+880 1812 345678');
     } else {
-        // NORMAL USER (BUYER) FLOW: Instant sign-in without OTP!
-        const countryCode = countrySelect?.value || '+1';
-        let phone = underworldPhone?.value?.trim() || '';
-        if (!phone || phone.length < 5) {
-            showUnderworldStatus('Please enter a valid phone number.', 'error');
-            underworldPhone?.focus();
-            return;
+        // NORMAL USER (BUYER) FLOW: Instant sign-in with verified phone & auto-country detection!
+        const rawPhone = (underworldPhone?.value || '').trim();
+        const selCountryCode = countrySelect?.value || '+1';
+
+        // STRICT PHONE VERIFICATION & QUALITY CHECK
+        let verifyRes = null;
+        if (window.PhoneVerifier) {
+            verifyRes = window.PhoneVerifier.verify(rawPhone, selCountryCode);
+        } else {
+            const digits = rawPhone.replace(/\D/g, '');
+            verifyRes = {
+                isValid: digits.length >= 7 && digits.length <= 15,
+                error: digits.length < 7 ? 'Phone number is too short.' : null,
+                formattedNumber: selCountryCode + ' ' + rawPhone,
+                isAutoDetected: false
+            };
         }
-        const fullPhone = countryCode + ' ' + phone;
+
+        // IF NOT VALID: USER CANNOT SIGN IN!
+        if (!verifyRes.isValid) {
+            showUnderworldStatus('❌ ' + (verifyRes.error || 'Please enter a valid phone number.'), 'error');
+            if (underworldPhone) {
+                underworldPhone.style.borderColor = '#ef4444';
+                underworldPhone.style.boxShadow = '0 0 14px rgba(239, 68, 68, 0.45)';
+                underworldPhone.focus();
+                try {
+                    underworldPhone.animate([
+                        { transform: 'translateX(0px)' },
+                        { transform: 'translateX(-6px)' },
+                        { transform: 'translateX(6px)' },
+                        { transform: 'translateX(-4px)' },
+                        { transform: 'translateX(4px)' },
+                        { transform: 'translateX(0px)' }
+                    ], { duration: 350 });
+                } catch (animErr) {}
+            }
+            return; // STRICTLY CANNOT SIGN IN
+        }
+
+        // AUTO FIGURE OUT COUNTRY: If country was auto-detected from number quality/prefix, sync selector
+        if (verifyRes.country && verifyRes.isAutoDetected && countrySelect) {
+            const targetVal = verifyRes.country.selectVal || verifyRes.country.code;
+            if (countrySelect.value !== targetVal) {
+                countrySelect.value = targetVal;
+            }
+        }
+
+        const fullPhone = verifyRes.formattedNumber || (countrySelect?.value + ' ' + rawPhone);
 
         showUnderworldStatus('Authenticating buyer session...', 'loading');
         if (requestOtpBtn) requestOtpBtn.disabled = true;

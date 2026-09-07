@@ -100,7 +100,7 @@
         }
 
         .app-brand-logo-img {
-            height: 32px;
+            height: 72px;
             object-fit: contain;
             filter: drop-shadow(0 2px 8px rgba(0,0,0,0.8));
         }
@@ -1665,7 +1665,8 @@
             </div>
             <div class="form-group-lux">
                 <label class="label-lux">Contact Phone Number</label>
-                <input type="tel" id="input-delivery-phone" class="input-lux" placeholder="e.g. +880 1812-345678" required>
+                <input type="tel" id="input-delivery-phone" class="input-lux" placeholder="e.g. 01812-345678" required>
+                <div id="delivery-phone-verifier" style="display: none; align-items: center; margin-top: 6px; padding: 6px 12px; border-radius: 12px; font-size: 11px; font-weight: 500; transition: all 0.25s ease;"></div>
             </div>
             <div class="form-group-lux">
                 <label class="label-lux">Street & Apartment Address</label>
@@ -1821,6 +1822,8 @@
                     <input type="tel" id="input-phone-number" class="input-lux" placeholder="01812345678" required>
                 </div>
             </div>
+            <!-- Live Phone Verifier Feedback Badge -->
+            <div id="profile-phone-verifier" style="display: none; align-items: center; margin-top: 6px; margin-bottom: 12px; padding: 6px 12px; border-radius: 12px; font-size: 11px; font-weight: 500; transition: all 0.25s ease;"></div>
 
             <div class="form-group-lux">
                 <label class="label-lux">Alternative Contact Number</label>
@@ -1980,6 +1983,7 @@
     <!-- =========================================================
          8. JAVASCRIPT LOGIC & REAL BACKEND SYNCHRONIZATION
     ========================================================= -->
+    <script src="phone-verifier.js"></script>
     <script>
     const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbyHik2t4HnaeQsY9A992qOPdMHxjV0YeS-pcSnfisZYwJW5JJbH55RxhRHPHbGO2hztSA/exec';
     const PRIMARY_ADMIN_EMAIL = 'abdullahpsychotic@gmail.com';
@@ -2023,6 +2027,20 @@
         // Fetch real data from Google Sheet backend for this user
         fetchBuyerDataFromBackend();
         loadUserOrders();
+
+        // Initialize Intelligent Phone Verifier & Auto-Country Detectors
+        if (window.PhoneVerifier) {
+            window.PhoneVerifier.attachToInput({
+                phoneInput: document.getElementById('input-phone-number'),
+                countrySelect: document.getElementById('input-country-code'),
+                statusEl: document.getElementById('profile-phone-verifier')
+            });
+
+            window.PhoneVerifier.attachToInput({
+                phoneInput: document.getElementById('input-delivery-phone'),
+                statusEl: document.getElementById('delivery-phone-verifier')
+            });
+        }
     });
 
     /* DRAWER CONTROLLERS */
@@ -2151,6 +2169,27 @@
 
     function saveProfileData(e) {
         if (e) e.preventDefault();
+        const phoneInput = document.getElementById('input-phone-number');
+        const countrySelect = document.getElementById('input-country-code');
+        const rawPhone = (phoneInput?.value || '').trim();
+        const selCountry = countrySelect?.value || '+880';
+
+        // Check primary phone validity with PhoneVerifier
+        if (window.PhoneVerifier && rawPhone) {
+            const vRes = window.PhoneVerifier.verify(rawPhone, selCountry);
+            if (!vRes.isValid) {
+                showToast('❌ Phone Error: ' + (vRes.error || 'Please enter a valid phone number.'), 'error');
+                if (phoneInput) {
+                    phoneInput.style.borderColor = '#ef4444';
+                    phoneInput.focus();
+                }
+                return; // BLOCK SAVING
+            }
+            if (vRes.country && vRes.isAutoDetected && countrySelect) {
+                countrySelect.value = vRes.country.selectVal || vRes.country.code;
+            }
+        }
+
         const btn = document.getElementById('btn-save-profile');
         if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing to Google Sheet...'; }
 
