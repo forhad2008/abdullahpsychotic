@@ -5603,6 +5603,7 @@ a{
     visibility: visible;
     opacity: 1;
     pointer-events: auto;
+    cursor: pointer;
     transition: opacity .35s ease, visibility 0s linear 0s;
 }
 
@@ -8166,6 +8167,10 @@ body:has(.ap-logout-modal.active) #welcome-screen {
             ENTER INSIDER
         </button>
 
+        <span style="display: inline-block; margin-top: 14px; font-size: 10px; color: rgba(255,255,255,0.45); letter-spacing: 1.5px; text-transform: uppercase;">
+            <i class="fas fa-fingerprint" style="margin-right: 4px; color: #c1121f;"></i> Tap screen or button to enter
+        </span>
+
     </div>
 </div>
 
@@ -9461,14 +9466,39 @@ function callUnderworldBackend(payload) {
     });
 }
 
+let insiderDismissTimer = null;
+
+function dismissInsiderSuccessWindow() {
+    const insiderModal = document.getElementById('abdullah-insider-success');
+    if (!insiderModal) return;
+    if (insiderDismissTimer) {
+        clearTimeout(insiderDismissTimer);
+        insiderDismissTimer = null;
+    }
+    insiderModal.classList.remove('active');
+    insiderModal.setAttribute('aria-hidden', 'true');
+}
+
 function showInsiderSuccessWindow() {
     const insiderModal = document.getElementById('abdullah-insider-success');
     if (!insiderModal) return;
     insiderModal.classList.add('active');
-    setTimeout(() => {
-        insiderModal.classList.remove('active');
+    insiderModal.setAttribute('aria-hidden', 'false');
+    if (insiderDismissTimer) clearTimeout(insiderDismissTimer);
+    insiderDismissTimer = setTimeout(() => {
+        dismissInsiderSuccessWindow();
     }, 7000);
 }
+
+// Tap anywhere on the welcome screen or the enter insider button to vanish immediately:
+document.getElementById('abdullah-insider-success')?.addEventListener('click', () => {
+    dismissInsiderSuccessWindow();
+});
+
+document.getElementById('abdullah-insider-success-btn')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dismissInsiderSuccessWindow();
+});
 
 // Modal Open/Close Controls
 document.getElementById('underworld-access-close')?.addEventListener('click', () => {
