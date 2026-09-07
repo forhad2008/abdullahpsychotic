@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+
+<!-- =====================================================
+         WEBSITE ICON
+    ====================================================== -->
+    <link rel="icon"
+    
+      href="icon3.png">
+
+<link rel="apple-touch-icon"
+      sizes="180x180"
+      href="icon3.png">
+
+
+    <!-- =====================================================
+         WEBSITE TITLE
+    ====================================================== -->
+
+    <title>Contact| ABDULLAH PSYCHOTIC</title>
+
+    <!-- =====================================================
+         SEO
+    ====================================================== -->
+
+    <meta name="description"
+          content="Discover Abdullah Psychotic Lifestyle — iconic fashion, luxury, creativity and bold style.">
+
+    <meta name="keywords"
+          content="Abdullah Psychotic, Abdullah Psychotic Lifestyle, luxury fashion, lifestyle, creativity">
+
+    <meta name="author"
+          content="Abdullah Psychotic">
+
+
+    <!-- =====================================================
+         BROWSER THEME
+    ====================================================== -->
+
+    <meta name="theme-color"
+          content="#050505">
+
+
+    <!-- =====================================================
+         CANONICAL
+    ====================================================== -->
+
+    <link rel="canonical"
+          href="https://forhad2008.github.io/Abdullah-psychotic/">
+
+
+    <!-- =====================================================
+         WHATSAPP / FACEBOOK OPEN GRAPH
+    ====================================================== -->
+
+    <meta property="og:title"
+          content="ABDULLAH PSYCHOTIC LIFESTYLE">
+
+    <meta property="og:description"
+          content="Discover iconic fashion, luxury, creativity and the world of Abdullah Psychotic.">
+
+    <meta property="og:type"
+          content="website">
+
+    <meta property="og:site_name"
+          content="ABDULLAH PSYCHOTIC">
+
+    <meta property="og:url"
+          content="https://forhad2008.github.io/Abdullah-psychotic/">
+
+
+    <!-- =====================================================
+         COMPACT WHATSAPP THUMBNAIL
+
+         IMPORTANT:
+         THE ACTUAL preview.jpg FILE MUST BE:
+
+         WIDTH: 200px
+         HEIGHT: 200px
+
+         Keep it below 300KB.
+
+         This is what targets the:
+         [ IMAGE ] [ TITLE / DESCRIPTION / URL ]
+         layout.
+    ====================================================== -->
+
+    <meta property="og:image"
+          content="https://forhad2008.github.io/Abdullah-psychotic/preview.jpg">
+
+    <meta property="og:image:secure_url"
+          content="https://forhad2008.github.io/Abdullah-psychotic/preview.jpg">
+
+    <meta property="og:image:type"
+          content="image/jpeg">
+
+    <meta property="og:image:width"
+          content="200">
+
+    <meta property="og:image:height"
+          content="200">
+
+    <meta property="og:image:alt"
+          content="Abdullah Psychotic Lifestyle">
+
+
+    <!-- =====================================================
+         TWITTER / X
+    ====================================================== -->
+
+    <meta name="twitter:card"
+          content="summary">
+
+    <meta name="twitter:title"
+          content="Abdullah Psychotic Lifestyle">
+
+    <meta name="twitter:description"
+          content="Discover iconic fashion, luxury, creativity and the world of Abdullah Psychotic.">
+
+    <meta name="twitter:image"
+          content="https://forhad2008.github.io/Abdullah-psychotic/preview.jpg">
+
+
+
+
+
+
+    <!-- =====================================================
+         GOOGLE FONTS
+    ====================================================== -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cinzel:wght@400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+          rel="stylesheet">
+
+
+    <!-- =====================================================
+         FONT AWESOME
+    ====================================================== -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  
+<style>
+:root{
+  --red:#a8040f;
+  --red-dark:#780000;
+  --black:#050505;
+  --panel:#0c0c0c;
+  --panel2:#101010;
+  --white:#f4f4f5;
+  --muted:#8e8e93;
+  --line:rgba(255,255,255,.09);
+  --cream:#f8f7e8;
+  --heading:'Playfair Display',serif;
+  --sub:'Cinzel',serif;
+  --body:'Montserrat',sans-serif;
+  --signature:'Allura',cursive;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{
+  background:var(--black);
+  color:var(--white);
+  font-family:var(--body);
+  font-weight:300;
+  line-height:1.6;
+  letter-spacing:.4px;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+::selection{background:var(--red);color:#fff}
+
+/* HEADER */
+header{
+  position:fixed;
+  z-index:1000;
+  top:0;left:0;
+  width:100%;
+  height:90px;
+  padding:0 5%;
+  display:flex;
+  align-items:center;
+  background:rgba(5,5,5,.96);
+  border-bottom:1px solid transparent;
+  transition:.35s ease;
+}
+header.scrolled{
+  height:75px;
+  backdrop-filter:blur(16px);
+  border-color:var(--line);
+}
+.logo{display:flex;align-items:center}
+.logo img{
+  width:auto;height:100px;object-fit:contain;
+  transition:.35s ease;
+}
+header.scrolled .logo img{height:86px}
+
+.desktop-nav{
+  position:absolute;
+  left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  display:flex;
+  gap:34px;
+}
+.desktop-nav a{
+  position:relative;
+  font-family:var(--sub);
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+.desktop-nav a:after{
+  content:"";
+  position:absolute;
+  left:0;bottom:-7px;
+  width:0;height:1px;
+  background:var(--red);
+  transition:.3s ease;
+}
+.desktop-nav a:hover,
+.desktop-nav a.active{color:var(--red)}
+.desktop-nav a:hover:after,
+.desktop-nav a.active:after{width:100%}
+
+.header-right{
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+.icon-btn{
+  width:40px;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  border:0;background:#fff;color:#000;
+  transition:.25s ease;
+}
+.icon-btn:hover{color:var(--red);transform:scale(1.05)}
+.menu-btn{display:none}
+
+/* MOBILE DRAWER */
+.overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.58);
+  backdrop-filter:blur(3px);
+  opacity:0;visibility:hidden;
+  pointer-events:none;
+  z-index:1100;
+  transition:.35s ease;
+}
+.overlay.active{opacity:1;visibility:visible;pointer-events:auto}
+
+.drawer{
+  position:fixed;
+  z-index:1101;
+  left:0;top:0;
+  width:min(82vw,400px);
+  height:100dvh;
+  padding:30px 38px 55px;
+  background:var(--cream);
+  color:#111;
+  transform:translateX(-105%);
+  transition:transform .45s cubic-bezier(.77,0,.175,1);
+  overflow:auto;
+}
+.drawer.active{transform:translateX(0)}
+.close-drawer{
+  width:38px;height:38px;
+  margin-bottom:42px;
+  background:transparent;border:0;
+  position:relative;
+}
+.close-drawer:before,.close-drawer:after{
+  content:"";position:absolute;
+  width:32px;height:1.5px;
+  left:3px;top:18px;background:#111;
+}
+.close-drawer:before{transform:rotate(45deg)}
+.close-drawer:after{transform:rotate(-45deg)}
+.drawer a{
+  min-height:58px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid rgba(17,17,17,.09);
+  font-family:var(--sub);
+  font-size:13px;font-weight:600;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+.drawer a:hover{opacity:.5;transform:translateX(4px)}
+
+/* HERO */
+.hero{
+  min-height:68vh;
+  padding:170px 7% 90px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.55),rgba(25,0,0,.78)),
+    url('bgra4.webp') center/cover no-repeat;
+}
+.hero:after{
+  content:"";
+  position:absolute;
+  inset:auto 0 0;
+  height:150px;
+  background:linear-gradient(transparent,var(--black));
+}
+.hero-content{position:relative;z-index:1;max-width:850px}
+.eyebrow{
+  font-family:var(--sub);
+  font-size:10px;
+  letter-spacing:5px;
+  color:#ddd;
+  text-transform:uppercase;
+  margin-bottom:18px;
+}
+.hero h1{
+  font-family:var(--signature);
+  font-size:clamp(60px,9vw,105px);
+  line-height:.95;
+  font-weight:400;
+  margin-bottom:18px;
+}
+.hero p{
+  max-width:620px;
+  margin:auto;
+  color:#c4c4c4;
+  font-size:12px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+/* CONTACT */
+.contact-section{
+  padding:90px 7% 110px;
+  max-width:1450px;
+  margin:auto;
+}
+.contact-grid{
+  display:grid;
+  grid-template-columns:1fr 1.25fr;
+  gap:70px;
+  align-items:start;
+}
+.kicker{
+  color:var(--red);
+  font-family:var(--sub);
+  font-size:10px;
+  letter-spacing:3px;
+  margin-bottom:13px;
+}
+.title{
+  font-family:var(--heading);
+  font-size:clamp(32px,4vw,52px);
+  line-height:1.1;
+  font-weight:500;
+  margin-bottom:18px;
+}
+.intro{
+  color:var(--muted);
+  max-width:500px;
+  font-size:13px;
+  line-height:1.9;
+}
+.info-list{
+  margin-top:42px;
+  display:grid;
+  gap:18px;
+}
+.info-card{
+  padding:20px 0;
+  border-top:1px solid var(--line);
+  display:flex;
+  gap:17px;
+  align-items:flex-start;
+}
+.info-icon{
+  width:38px;height:38px;
+  flex:0 0 38px;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);
+  color:var(--red);
+}
+.info-card h4{
+  font-family:var(--sub);
+  font-size:11px;
+  letter-spacing:2px;
+  margin-bottom:4px;
+}
+.info-card p,.info-card a{
+  color:var(--muted);
+  font-size:12px;
+}
+.info-card a:hover{color:#fff}
+
+.contact-form{
+  background:linear-gradient(145deg,#111,#090909);
+  border:1px solid var(--line);
+  padding:38px;
+  box-shadow:0 25px 70px rgba(0,0,0,.3);
+}
+.form-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  margin-bottom:30px;
+  padding-bottom:20px;
+  border-bottom:1px solid var(--line);
+}
+.form-head h2{
+  font-family:var(--sub);
+  font-size:16px;
+  letter-spacing:3px;
+  font-weight:500;
+}
+.form-head span{
+  color:var(--muted);
+  font-size:9px;
+  letter-spacing:1.5px;
+}
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:22px;
+}
+.field{display:flex;flex-direction:column;gap:8px}
+.field.full{grid-column:1/-1}
+.field label{
+  font-family:var(--sub);
+  font-size:9px;
+  letter-spacing:2px;
+  color:#aaa;
+}
+.field input,.field textarea,.field select{
+  width:100%;
+  border:0;
+  border-bottom:1px solid rgba(255,255,255,.16);
+  background:transparent;
+  color:#fff;
+  padding:12px 2px;
+  outline:0;
+  border-radius:0;
+  font-size:12px;
+  transition:.25s ease;
+}
+.field input:focus,.field textarea:focus,.field select:focus{
+  border-color:var(--red);
+}
+.field textarea{min-height:135px;resize:vertical}
+.field select{appearance:none}
+.field select option{background:#111;color:#fff}
+.submit{
+  width:100%;
+  height:52px;
+  margin-top:28px;
+  border:1px solid #fff;
+  background:#fff;
+  color:#000;
+  font-family:var(--body);
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  position:relative;
+  overflow:hidden;
+  transition:.3s ease;
+}
+.submit:before{
+  content:"";position:absolute;
+  inset:0;width:0;background:var(--red);
+  transition:.35s ease;z-index:0;
+}
+.submit span{position:relative;z-index:1}
+.submit:hover{color:#fff;border-color:var(--red)}
+.submit:hover:before{width:100%}
+.status{
+  min-height:18px;
+  margin-top:12px;
+  text-align:center;
+  color:var(--muted);
+  font-size:9px;
+  letter-spacing:1px;
+}
+
+/* SOCIAL STRIP */
+.social-strip{
+  padding:55px 7%;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  text-align:center;
+}
+.social-strip h3{
+  font-family:var(--sub);
+  font-size:11px;
+  letter-spacing:4px;
+  margin-bottom:23px;
+}
+.socials{
+  display:flex;justify-content:center;gap:12px;
+}
+.socials a{
+  width:44px;height:44px;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);
+  color:var(--muted);
+  transition:.3s ease;
+}
+.socials a:hover{
+  background:var(--red);
+  border-color:var(--red);
+  color:#fff;
+  transform:translateY(-3px);
+}
+
+/* FOOTER */
+footer{
+  padding:65px 7% 25px;
+  background:#020202;
+}
+.footer-top{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  gap:50px;
+  padding-bottom:55px;
+}
+.footer-logo{height:88px;margin-left:-20px}
+.footer-brand p{
+  max-width:310px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.8;
+}
+.footer-col h4{
+  font-family:var(--sub);
+  font-size:11px;
+  letter-spacing:2px;
+  margin-bottom:20px;
+}
+.footer-col a{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:12px;
+}
+.footer-col a:hover{color:var(--red)}
+.footer-bottom{
+  padding-top:22px;
+  border-top:1px solid var(--line);
+  color:#666;
+  font-size:9px;
+  letter-spacing:1.2px;
+  text-align:center;
+}
+
+/* RESPONSIVE */
+@media(max-width:1023px){
+  .desktop-nav{display:none}
+  .menu-btn{display:flex}
+}
+@media(max-width:800px){
+  .hero{min-height:62vh;padding:145px 25px 75px}
+  .contact-section{padding:65px 6% 80px}
+  .contact-grid{grid-template-columns:1fr;gap:45px}
+  .contact-form{padding:25px 20px}
+  .footer-top{grid-template-columns:1fr 1fr;gap:35px}
+  .footer-brand{grid-column:1/-1}
+}
+@media(max-width:560px){
+  header{height:76px;padding:0 18px}
+  header.scrolled{height:68px}
+  .logo img{height:82px}
+  header.scrolled .logo img{height:74px}
+  .header-right{gap:6px}
+  .icon-btn{width:38px;height:38px}
+  .hero h1{font-size:64px}
+  .hero p{font-size:9px;letter-spacing:1.4px}
+  .eyebrow{font-size:8px;letter-spacing:3px}
+  .form-grid{grid-template-columns:1fr;gap:18px}
+  .field.full{grid-column:auto}
+  .form-head{align-items:flex-start;gap:10px;flex-direction:column}
+  .footer-top{grid-template-columns:1fr}
+  .footer-brand{grid-column:auto}
+  .social-strip{padding:45px 20px}
+}
+</style>
+</head>
+
+<body>
+
+<header id="navbar">
+  <a class="logo" href="index.html" aria-label="Abdullah Psychotic home">
+    <img src="logo0.webp" alt="Abdullah Psychotic">
+  </a>
+
+  <nav class="desktop-nav" aria-label="Main navigation">
+    <a href="index.html">Home</a>
+    <a href="index.html#shop">Shop</a>
+    <a href="contact.html" class="active">Contact</a>
+  </nav>
+
+  <div class="header-right">
+    <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu">
+      <i class="fas fa-bars"></i>
+    </button>
+    <a class="icon-btn" href="cart.html" aria-label="Shopping cart">
+      <i class="fas fa-bag-shopping"></i>
+    </a>
+  </div>
+</header>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="drawer" id="drawer" aria-label="Mobile navigation">
+  <button class="close-drawer" id="closeDrawer" aria-label="Close menu"></button>
+  <a href="index.html">Home <i class="fas fa-arrow-right"></i></a>
+  <a href="index.html#shop">Shop <i class="fas fa-arrow-right"></i></a>
+  <a href="contact.html">Contact <i class="fas fa-arrow-right"></i></a>
+  <a href="service.html">Support <i class="fas fa-arrow-right"></i></a>
+  <a href="privacy.html">Privacy <i class="fas fa-arrow-right"></i></a>
+</aside>
+
+<main>
+  <section class="hero">
+    <div class="hero-content">
+      <div class="eyebrow">Abdullah Psychotic / Customer Care</div>
+      <h1>Let's Talk</h1>
+      <p>Questions, support, collaborations or just want to reach us? We're listening.</p>
+    </div>
+  </section>
+
+  <section class="contact-section">
+    <div class="contact-grid">
+
+      <div>
+        <div class="kicker">CONTACT THE HOUSE</div>
+        <h2 class="title">Your message.<br>Our attention.</h2>
+        <p class="intro">
+          Whether you're asking about an order, a product, a future collaboration,
+          or the world of Abdullah Psychotic, send us a message. Keep it clear.
+          We'll take it from there.
+        </p>
+
+        <div class="info-list">
+          <div class="info-card">
+            <div class="info-icon"><i class="fas fa-headset"></i></div>
+            <div>
+              <h4>Customer Support</h4>
+              <p>Order questions, product information & general help.</p>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-icon"><i class="fas fa-handshake"></i></div>
+            <div>
+              <h4>Collaborations</h4>
+              <p>Brand partnerships, creative projects & business enquiries.</p>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-icon"><i class="fas fa-clock"></i></div>
+            <div>
+              <h4>Response</h4>
+              <p>Messages are reviewed as soon as possible.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form class="contact-form" id="contactForm">
+        <div class="form-head">
+          <h2>SEND AN ENQUIRY</h2>
+          <span>WE'RE LISTENING</span>
+        </div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="name">NAME</label>
+            <input id="name" name="name" type="text" placeholder="YOUR NAME" required>
+          </div>
+
+          <div class="field">
+            <label for="email">EMAIL</label>
+            <input id="email" name="email" type="email" placeholder="YOUR EMAIL" required>
+          </div>
+
+          <div class="field full">
+            <label for="topic">SUBJECT</label>
+            <select id="topic" name="topic" required>
+              <option value="" selected disabled>SELECT A TOPIC</option>
+              <option>ORDER / DELIVERY</option>
+              <option>PRODUCT ENQUIRY</option>
+              <option>RETURN / REFUND</option>
+              <option>COLLABORATION</option>
+              <option>BUSINESS ENQUIRY</option>
+              <option>OTHER</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label for="message">MESSAGE</label>
+            <textarea id="message" name="message" placeholder="WRITE YOUR MESSAGE..." required></textarea>
+          </div>
+        </div>
+
+        <button class="submit" type="submit">
+          <span>SEND MESSAGE <i class="fas fa-arrow-right"></i></span>
+        </button>
+        <div class="status" id="status" aria-live="polite"></div>
+      </form>
+
+    </div>
+  </section>
+
+  <section class="social-strip">
+    <h3>FOLLOW THE PSYCHOTIC WORLD</h3>
+    <div class="socials">
+      <a href="https://www.facebook.com/profile.php?id=61580779565120" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/abdullah.thelegend2008" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://x.com/" target="_blank" rel="noopener" aria-label="X"><i class="fab fa-x-twitter"></i></a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <img class="footer-logo" src="logo0.webp" alt="Abdullah Psychotic">
+      <p>Defining contemporary street style with luxurious craftsmanship, bold cuts, and uncompromising quality.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>SHOP</h4>
+      <a href="index.html#shop">New Arrivals</a>
+      <a href="index.html#shop">Footwear Collection</a>
+      <a href="index.html#shop">Streetwear Essentials</a>
+      <a href="index.html#shop">Accessories & Watches</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>SUPPORT</h4>
+      <a href="contact.html">Contact</a>
+      <a href="service.html">Order Tracking</a>
+      <a href="refunds.html">Shipping & Returns</a>
+      <a href="size-chart.html">Size Guide</a>
+      <a href="service.html">FAQs</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    &copy; Abdullah Psychotic — Luxury Lifestyle. All rights reserved.
+  </div>
+</footer>
+
+<script>
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+const drawer = document.getElementById('drawer');
+const overlay = document.getElementById('overlay');
+const menuBtn = document.getElementById('menuBtn');
+const closeDrawer = document.getElementById('closeDrawer');
+
+function openMenu(){
+  drawer.classList.add('active');
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeMenu(){
+  drawer.classList.remove('active');
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+menuBtn.addEventListener('click', openMenu);
+closeDrawer.addEventListener('click', closeMenu);
+overlay.addEventListener('click', closeMenu);
+
+drawer.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', closeMenu);
+});
+
+/*
+  CONTACT FORM
+  ---------------------------------------------------------
+  The visual page is ready. To connect it to your backend,
+  replace the submit section below with your Google Apps
+  Script/contact endpoint.
+
+  This version creates an email draft using the visitor's
+  default mail app instead of pretending the message was
+  saved to a server.
+*/
+const form = document.getElementById('contactForm');
+const status = document.getElementById('status');
+
+form.addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const topic = document.getElementById('topic').value;
+  const message = document.getElementById('message').value.trim();
+
+  if(!name || !email || !topic || !message){
+    status.textContent = 'PLEASE COMPLETE ALL FIELDS.';
+    return;
+  }
+
+  /*
+    IMPORTANT:
+    Replace the address below with your real business email.
+  */
+  const BUSINESS_EMAIL = 'YOUR-BUSINESS-EMAIL@example.com';
+
+  const subject = encodeURIComponent('[Abdullah Psychotic] ' + topic);
+  const body = encodeURIComponent(
+    'Name: ' + name + '\n' +
+    'Email: ' + email + '\n' +
+    'Subject: ' + topic + '\n\n' +
+    message
+  );
+
+  if(BUSINESS_EMAIL.includes('YOUR-BUSINESS-EMAIL')){
+    status.textContent = 'FORM READY — ADD YOUR BUSINESS EMAIL IN THE JAVASCRIPT.';
+    return;
+  }
+
+  window.location.href = `mailto:${BUSINESS_EMAIL}?subject=${subject}&body=${body}`;
+});
+</script>
+
+</body>
+</html>
