@@ -8033,22 +8033,16 @@ body:has(.ap-logout-modal.active) #welcome-screen {
 
             <!-- STEP 2: 3-MINUTE OTP VERIFICATION -->
             <div id="auth-step-2" style="display: none;">
-                <p style="font-size: 12px; color: #a8a29e; text-align: center; margin-bottom: 14px; line-height: 1.5;">
-                    A 6-digit security code was generated for:<br>
-                    <strong id="auth-target-email-display" style="color: #ffffff; word-break: break-all; font-size: 13px;"></strong>
-                </p>
-
-                <!-- TRANSMISSION BADGE -->
-                <div class="otp-transmission-badge" id="otp-transmission-badge">
-                    <div style="text-align: left;">
-                        <div style="font-size: 9px; color: #ff8080; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700;">
-                            <i class="fas fa-shield-alt"></i> Security Transmission Code
-                        </div>
-                        <div class="otp-code-highlight" id="simulated-otp-code">------</div>
+                <div style="background: rgba(193, 18, 31, 0.08); border: 1px solid rgba(193, 18, 31, 0.35); border-radius: 14px; padding: 18px 16px; margin-bottom: 20px; text-align: center;">
+                    <div style="color: #ff4d5a; font-size: 26px; margin-bottom: 8px;"><i class="fas fa-envelope-circle-check"></i></div>
+                    <div style="font-size: 13px; font-weight: 700; color: #ffffff; margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase;">6-Digit Passkey Dispatched</div>
+                    <p style="font-size: 12px; color: #a8a29e; line-height: 1.6; margin: 0;">
+                        A security verification code has been dispatched to:<br>
+                        <strong id="auth-target-email-display" style="color: #ff6b7a; word-break: break-all; font-size: 13px;"></strong>
+                    </p>
+                    <div style="font-size: 11px; color: #78716c; margin-top: 8px;">
+                        <i class="fas fa-shield-halved" style="color: var(--crimson);"></i> Check your Gmail Inbox or Spam folder. Code is valid for strictly 3 minutes.
                     </div>
-                    <button type="button" class="otp-copy-btn" id="btn-autofill-otp" title="Click to fill code">
-                        <i class="fas fa-bolt"></i> Auto-Fill
-                    </button>
                 </div>
 
                 <!-- OTP INPUT -->
@@ -9509,8 +9503,6 @@ const verifyOtpBtn = document.getElementById('underworld-verify-btn');
 const verifyOtpLoader = document.getElementById('underworld-verify-loader');
 const otpInput = document.getElementById('underworld-otp-input');
 const otpTimerDisplay = document.getElementById('auth-otp-timer');
-const simulatedCodeBadge = document.getElementById('simulated-otp-code');
-const autofillBtn = document.getElementById('btn-autofill-otp');
 const resendOtpBtn = document.getElementById('btn-resend-otp');
 const resendCountdownSpan = document.getElementById('resend-countdown');
 const changeEmailBtn = document.getElementById('btn-change-email');
@@ -9521,7 +9513,6 @@ const btnLockoutSwitch = document.getElementById('btn-lockout-switch');
 
 // 3-Minute OTP Session state
 let otpSession = {
-    code: null,
     expiresAt: 0,
     email: '',
     phone: '',
@@ -9563,7 +9554,6 @@ function trigger7HourLockout(email, reason) {
     // Clear active session
     if (otpSession.timerInterval) clearInterval(otpSession.timerInterval);
     if (otpSession.resendInterval) clearInterval(otpSession.resendInterval);
-    otpSession.code = null;
 
     showLockoutScreen(email, lockedUntil);
 }
@@ -9705,10 +9695,6 @@ async function generateAndSendOtp(email, fullPhone) {
         return;
     }
 
-    // Generate secure 6-digit code
-    const generatedCode = String(Math.floor(100000 + Math.random() * 900000));
-    
-    otpSession.code = generatedCode;
     otpSession.expiresAt = Date.now() + THREE_MINUTES_MS; // Strictly 3 minutes
     otpSession.email = email;
     otpSession.phone = fullPhone;
@@ -9717,7 +9703,6 @@ async function generateAndSendOtp(email, fullPhone) {
     // Persist active session in localStorage to prevent circumventing by reload
     localStorage.setItem('ap_active_otp', JSON.stringify({
         email: email,
-        code: generatedCode,
         expiresAt: otpSession.expiresAt,
         phone: fullPhone,
         attempts: 0
@@ -9728,14 +9713,15 @@ async function generateAndSendOtp(email, fullPhone) {
     if (authStepLockout) authStepLockout.style.display = 'none';
     if (authStep2) authStep2.style.display = 'block';
     if (targetEmailDisplay) targetEmailDisplay.textContent = email;
-    if (simulatedCodeBadge) simulatedCodeBadge.textContent = generatedCode;
     if (otpInput) {
         otpInput.value = '';
         setTimeout(() => otpInput.focus(), 150);
     }
     if (verifyOtpBtn) verifyOtpBtn.disabled = false;
 
-    // Dispatch to Backend (supports real Gmail delivery if Apps Script mail is enabled)
+    showUnderworldStatus(`A 6-digit security code valid for strictly 3 minutes has been dispatched to ${email}. Please check your Gmail Inbox.`, 'info');
+
+    // Dispatch to Backend (supports real Gmail delivery via Google Apps Script MailApp)
     try {
         callUnderworldBackend({
             action: 'send_otp',
@@ -9746,10 +9732,11 @@ async function generateAndSendOtp(email, fullPhone) {
             if (res && res.lockedOut) {
                 trigger7HourLockout(email, res.message);
             }
-        }).catch(e => {});
+        }).catch(e => {
+            console.warn('Backend send_otp warning:', e);
+        });
     } catch (e) {}
 
-    showUnderworldStatus(`A 6-digit security code valid for strictly 3 minutes has been dispatched to ${email}.`, 'info');
     startOtpCountdown();
 }
 
@@ -9857,14 +9844,6 @@ requestOtpBtn?.addEventListener('click', async () => {
     }
 });
 
-autofillBtn?.addEventListener('click', () => {
-    if (otpSession.code && otpInput) {
-        otpInput.value = otpSession.code;
-        showUnderworldStatus('Code auto-filled. Click Verify & Enter.', 'info');
-        otpInput.focus();
-    }
-});
-
 resendOtpBtn?.addEventListener('click', () => {
     if (!otpSession.email) return;
     showUnderworldStatus('Regenerating new 3-minute code...', 'info');
@@ -9897,25 +9876,11 @@ async function verifyOtpAndSignIn() {
         return;
     }
 
-    // Check code correctness
-    if (inputCode !== otpSession.code) {
-        otpSession.attempts++;
-        if (otpSession.attempts >= 3) {
-            trigger7HourLockout(email, 'Exceeded 3 failed verification attempts.');
-            return;
-        }
-        showUnderworldStatus(`Invalid verification code. ${3 - otpSession.attempts} attempt(s) remaining before 7-hour lockout.`, 'error');
-        otpInput?.focus();
-        return;
-    }
-
-    // CODE IS VALID! Complete admin sign-in
-    showUnderworldStatus('Verification successful! Finalizing executive access...', 'loading');
+    showUnderworldStatus('Verifying passkey with Google Backend...', 'loading');
     if (verifyOtpBtn) verifyOtpBtn.disabled = true;
     if (verifyOtpLoader) verifyOtpLoader.style.display = 'inline-block';
 
     const fullPhone = otpSession.phone;
-    const isAdminEmailAddr = isAdminEmail(email);
 
     try {
         let backendRes = null;
@@ -9926,7 +9891,21 @@ async function verifyOtpAndSignIn() {
                 otp: inputCode,
                 phone: fullPhone
             });
-        } catch (e) {}
+        } catch (e) {
+            console.warn('Backend verification call warning:', e);
+        }
+
+        // If backend explicitly rejected the OTP
+        if (backendRes && backendRes.ok === false) {
+            otpSession.attempts++;
+            if (otpSession.attempts >= 3 || backendRes.lockedOut) {
+                trigger7HourLockout(email, backendRes.message || 'Exceeded 3 failed verification attempts.');
+                return;
+            }
+            showUnderworldStatus(backendRes.message || `Invalid verification code. ${3 - otpSession.attempts} attempt(s) remaining before 7-hour lockout.`, 'error');
+            otpInput?.focus();
+            return;
+        }
 
         // Special Admin Token strictly granted upon valid 3-minute OTP verification
         let token = (backendRes && backendRes.accessToken && backendRes.accessToken.startsWith('AP_ADMIN_SPECIAL_'))

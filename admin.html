@@ -1904,12 +1904,12 @@
 
             <div class="stat-card blue">
                 <div class="stat-top">
-                    <span class="stat-label">Simulated Volume</span>
+                    <span class="stat-label">Live Order Revenue</span>
                     <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
                 </div>
-                <div class="stat-value" id="kpi-simulated-revenue">$12,745</div>
+                <div class="stat-value" id="kpi-live-revenue">$0.00</div>
                 <div class="stat-footer">
-                    <span class="stat-badge positive"><i class="fas fa-arrow-trend-up"></i> AP Luxury</span> E-Commerce sales
+                    <span class="stat-badge positive"><i class="fas fa-arrow-trend-up"></i> Google Sheets</span> Real-time order sales
                 </div>
             </div>
         </section>
@@ -2015,17 +2015,35 @@
             </div>
         </div>
 
-        <!-- TAB 3: ORDERS & DELIVERIES (Editable Tracking) -->
+        <!-- TAB 3: ORDERS & DELIVERIES (Real-time Google Sheet Tracking) -->
         <div class="tab-pane" id="pane-orders">
             <div class="toolbar">
                 <div class="search-wrapper">
                     <i class="fas fa-search search-icon"></i>
-                    <input type="search" id="order-search" class="search-input" placeholder="Search orders by Order ID, customer, city..." oninput="filterOrders()">
+                    <input type="search" id="order-search" class="search-input" placeholder="Search orders by Order ID, customer, email, phone, city..." oninput="filterOrders()">
                 </div>
 
                 <div class="toolbar-group">
-                    <button class="btn-liquid btn-primary" onclick="openAddOrderModal()">
-                        <i class="fas fa-plus"></i> Create Order
+                    <select id="order-status-filter" class="filter-select" onchange="filterOrders()">
+                        <option value="ALL">All Statuses</option>
+                        <option value="CONFIRMED">Confirmed / Placed</option>
+                        <option value="PROCESSING">Processing</option>
+                        <option value="SHIPPED">Shipped</option>
+                        <option value="OUT FOR DELIVERY">Out for Delivery</option>
+                        <option value="DELIVERED">Delivered</option>
+                        <option value="CANCELLED">Cancelled</option>
+                    </select>
+
+                    <button class="btn-liquid" onclick="exportOrdersCSV()" title="Export list of orders to CSV">
+                        <i class="fas fa-file-arrow-down"></i> Export CSV
+                    </button>
+
+                    <button class="btn-liquid" onclick="openAddOrderModal()" title="Create manual order">
+                        <i class="fas fa-plus"></i> Manual Order
+                    </button>
+
+                    <button class="btn-liquid btn-primary" onclick="loadOrders()" title="Sync real-time orders from Google Sheets">
+                        <i class="fas fa-rotate"></i> Sync Orders
                     </button>
                 </div>
             </div>
@@ -2035,16 +2053,23 @@
                     <thead>
                         <tr>
                             <th>Order ID</th>
-                            <th>Customer</th>
+                            <th>Customer & Contact</th>
                             <th>Date</th>
                             <th>Shipping Destination</th>
                             <th>Items & Total</th>
-                            <th>Status Timeline</th>
-                            <th style="text-align: right;">Manage</th>
+                            <th>Status & Timeline</th>
+                            <th style="text-align: right;">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="orders-tbody">
-                        <!-- Dynamically Rendered -->
+                        <tr>
+                            <td colspan="7">
+                                <div class="loading-state">
+                                    <div class="loading-spinner"></div>
+                                    <span>Syncing customer orders from Google Sheets backend...</span>
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -2310,11 +2335,12 @@
                     <div class="form-group">
                         <label class="form-label">Order Fulfillment Status</label>
                         <select id="modal-order-status" class="form-control">
-                            <option value="Order Placed">Order Placed</option>
-                            <option value="Processing">Processing</option>
-                            <option value="Shipped">Shipped</option>
-                            <option value="Out for Delivery">Out for Delivery</option>
-                            <option value="Delivered">Delivered</option>
+                            <option value="CONFIRMED">Confirmed / Order Placed</option>
+                            <option value="PROCESSING">Processing</option>
+                            <option value="SHIPPED">Shipped</option>
+                            <option value="OUT FOR DELIVERY">Out for Delivery</option>
+                            <option value="DELIVERED">Delivered</option>
+                            <option value="CANCELLED">Cancelled</option>
                         </select>
                     </div>
                 </div>
@@ -2402,44 +2428,7 @@
         { id: 38, category: 'perfume', name: 'Abdullah Psychotic – Luxury black designed logo perfume', image: 'per3.webp', price: 2650, badge: 'Luxury perfume' }
     ];
 
-    const DEFAULT_ORDERS = [
-        {
-            id: 'AP-2026-0001',
-            customer: 'Farhan Ahmed',
-            date: '2026-09-02',
-            shipping: 'Dhaka, Bangladesh',
-            total: '$1,498',
-            items: '2x Logo T-Shirt (L), 1x Bullet Shoes (42)',
-            status: 'Shipped'
-        },
-        {
-            id: 'AP-2026-0002',
-            customer: 'Zayd Al-Mansoor',
-            date: '2026-09-04',
-            shipping: 'Dubai, United Arab Emirates',
-            total: '$7,899',
-            items: '1x A.P Ocean Whale Iconic Timepiece',
-            status: 'Processing'
-        },
-        {
-            id: 'AP-2026-0003',
-            customer: 'Sarah Khan',
-            date: '2026-08-28',
-            shipping: 'London, United Kingdom',
-            total: '$2,349',
-            items: '1x Luxury bag (Upper class)',
-            status: 'Delivered'
-        },
-        {
-            id: 'AP-2026-0004',
-            customer: 'Abdullah Forhad',
-            date: '2026-09-05',
-            shipping: 'Chittagong, Bangladesh',
-            total: '$998',
-            items: '2x Branded Graphic T-Shirts (M)',
-            status: 'Out for Delivery'
-        }
-    ];
+    const DEFAULT_ORDERS = [];
 
     /* INITIALIZATION */
     document.addEventListener('DOMContentLoaded', () => {
@@ -2466,8 +2455,18 @@
         const savedSold = localStorage.getItem('ap_sold_out_list');
         soldOutIds = savedSold ? JSON.parse(savedSold) : [];
 
+        // Load cached orders, filtering out any old demo mock orders
         const savedOrders = localStorage.getItem('ap_admin_orders');
-        customOrders = savedOrders ? JSON.parse(savedOrders) : DEFAULT_ORDERS.slice();
+        if (savedOrders) {
+            try {
+                const parsed = JSON.parse(savedOrders);
+                customOrders = Array.isArray(parsed) ? parsed.filter(o => !String(o.id || '').startsWith('AP-2026-000')) : [];
+            } catch (e) {
+                customOrders = [];
+            }
+        } else {
+            customOrders = [];
+        }
 
         const savedAudit = localStorage.getItem('ap_admin_audit_logs');
         auditLogs = savedAudit ? JSON.parse(savedAudit) : [
@@ -2478,6 +2477,7 @@
         renderOrders(customOrders);
         renderAuditLogs();
         updateAnalytics();
+        updateOrderRevenueKPI();
     }
 
     /* =========================================================
@@ -2761,6 +2761,7 @@
         showToast('Administrator identity verified. Executive panel unlocked.');
 
         loadUsers();
+        loadOrders();
     }
 
     function lockConsole() {
@@ -2830,54 +2831,19 @@
     }
 
     function initLocalAccounts() {
+        // Fallback: Real administrator account only; no fake mock users
         allUsers = [
             {
                 accessId: 'AP-EXEC-001',
-                email: PRIMARY_ADMIN_EMAIL,
-                name: 'Abdullah The Legend',
-                phone: '+880 1812 345678',
-                address: 'Gulshan 2, Dhaka, Bangladesh',
+                email: userEmail || PRIMARY_ADMIN_EMAIL,
+                name: 'Abdullah (Admin)',
+                phone: localStorage.getItem('ap_underworld_phone') || '+880 1812 345678',
+                address: 'Dhaka, Bangladesh',
                 role: 'admin',
                 status: 'ACTIVE',
                 lastLogin: new Date().toISOString(),
                 profileImage: 'icon.png',
                 notes: 'Master Administrator'
-            },
-            {
-                accessId: 'AP-BUYER-8092',
-                email: 'buyer.vip@abdullahpsychotic.com',
-                name: 'Farhan Ahmed',
-                phone: '+880 1711 998877',
-                address: 'Dhanmondi, Dhaka, Bangladesh',
-                role: 'buyer',
-                status: 'ACTIVE',
-                lastLogin: new Date(Date.now() - 3600000 * 5).toISOString(),
-                profileImage: '',
-                notes: 'Frequent VIP Buyer'
-            },
-            {
-                accessId: 'AP-BUYER-4102',
-                email: 'sarah.london@psychoticwear.com',
-                name: 'Sarah Khan',
-                phone: '+44 7700 900123',
-                address: 'Kensington, London, United Kingdom',
-                role: 'buyer',
-                status: 'ACTIVE',
-                lastLogin: new Date(Date.now() - 86400000 * 2).toISOString(),
-                profileImage: '',
-                notes: 'International Client'
-            },
-            {
-                accessId: 'AP-BUYER-1029',
-                email: 'zayd.uae@luxurymail.com',
-                name: 'Zayd Al-Mansoor',
-                phone: '+971 50 123 4567',
-                address: 'Downtown Dubai, UAE',
-                role: 'buyer',
-                status: 'INACTIVE',
-                lastLogin: new Date(Date.now() - 86400000 * 8).toISOString(),
-                profileImage: '',
-                notes: 'Suspended pending address re-verification'
             }
         ];
 
@@ -2954,7 +2920,10 @@
             const isPrimary = String(u.email || '').toLowerCase() === PRIMARY_ADMIN_EMAIL.toLowerCase();
             const avatar = u.profileImage || createDefaultAvatar(u.name || u.email || 'U');
 
-            const rawPhone = String(u.phone || '').trim();
+            let rawPhone = String(u.phone || '').trim();
+            if (rawPhone === '#ERROR!' || rawPhone.startsWith('#')) {
+                rawPhone = '+880 1812 345678';
+            }
             const rawDigits = rawPhone.replace(/[^0-9]/g, '');
             const waUrl = u.whatsappUrl || (rawDigits.length >= 7 ? `https://wa.me/${rawDigits}?text=${encodeURIComponent('Hello ' + (u.name || 'valued customer') + ', this is Abdullah Psychotic Concierge.')}` : '');
 
@@ -3422,89 +3391,336 @@
     }
 
     /* =========================================================
-       ORDERS MANAGEMENT
+       ORDERS MANAGEMENT (REAL-TIME CLOUD GOOGLE SHEET BACKEND)
     ========================================================= */
+    function loadOrders() {
+        const tbody = document.getElementById('orders-tbody');
+        if (tbody) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7">
+                        <div class="loading-state">
+                            <div class="loading-spinner"></div>
+                            <span>Fetching live customer orders from Google Sheets backend...</span>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }
+
+        const script = document.createElement('script');
+        const cb = 'adminOrders_' + Date.now();
+
+        window[cb] = function (res) {
+            cleanupJsonp(cb, script);
+            if (res && res.ok && Array.isArray(res.orders)) {
+                // Filter out any mock orders
+                customOrders = res.orders.filter(o => !String(o.id || '').startsWith('AP-2026-000'));
+                localStorage.setItem('ap_admin_orders', JSON.stringify(customOrders));
+                renderOrders(customOrders);
+                updateOrderRevenueKPI();
+                showToast(`Synchronized ${customOrders.length} orders from Google Sheets.`);
+                logAudit(`Retrieved ${customOrders.length} orders from Google Sheet`);
+            } else {
+                renderOrders(customOrders);
+                updateOrderRevenueKPI();
+                if (res && res.message) {
+                    showToast(res.message, 'error');
+                }
+            }
+        };
+
+        script.onerror = function () {
+            cleanupJsonp(cb, script);
+            renderOrders(customOrders);
+            updateOrderRevenueKPI();
+            showToast('Unable to connect to Google Sheet for orders.', 'error');
+        };
+
+        script.src = `${BACKEND_URL}?action=admin_get_all_orders&email=${encodeURIComponent(userEmail || PRIMARY_ADMIN_EMAIL)}&accessToken=${encodeURIComponent(accessToken || '')}&callback=${cb}`;
+        document.head.appendChild(script);
+    }
+
     function renderOrders(orderList) {
         const tbody = document.getElementById('orders-tbody');
+        if (!tbody) return;
+
         if (!orderList.length) {
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px; color: var(--text-muted);">No orders in record.</td></tr>';
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7">
+                        <div class="empty-state">
+                            <i class="fas fa-box-open" style="font-size: 28px; margin-bottom: 12px; color: var(--crimson);"></i>
+                            <div>No customer orders recorded in Google Sheets yet.</div>
+                            <div style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">New orders placed through the store checkout will appear here in real time.</div>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            const badgeOrders = document.getElementById('badge-total-orders');
+            if (badgeOrders) badgeOrders.textContent = '0';
+            updateOrderRevenueKPI();
             return;
         }
 
         tbody.innerHTML = orderList.map(o => {
-            const steps = ['Order Placed', 'Processing', 'Shipped', 'Out for Delivery', 'Delivered'];
-            const curIdx = steps.indexOf(o.status);
+            const rawStatus = String(o.status || 'CONFIRMED').trim();
+            const normStatus = rawStatus.toUpperCase();
 
-            const timelineHtml = `
+            // 5-step timeline nodes: Placed -> Processing -> Shipped -> Out for Delivery -> Delivered
+            const steps = ['CONFIRMED', 'PROCESSING', 'SHIPPED', 'OUT FOR DELIVERY', 'DELIVERED'];
+            let curIdx = 0;
+            if (normStatus === 'PROCESSING') curIdx = 1;
+            else if (normStatus === 'SHIPPED') curIdx = 2;
+            else if (normStatus.includes('OUT')) curIdx = 3;
+            else if (normStatus === 'DELIVERED') curIdx = 4;
+            else if (normStatus === 'CANCELLED') curIdx = -1;
+
+            const isCancelled = normStatus === 'CANCELLED';
+
+            const timelineHtml = isCancelled ? `
+                <span class="pill-badge status-inactive">
+                    <i class="fas fa-ban"></i> CANCELLED
+                </span>
+            ` : `
                 <div class="order-timeline">
                     ${steps.map((st, i) => `
                         <div class="timeline-node ${i < curIdx ? 'done' : (i === curIdx ? 'current' : '')}" title="${st}">
                             ${i + 1}
                         </div>
                     `).join('')}
-                    <span style="font-size: 11px; margin-left: 6px; color: #ff4d5a; font-weight: 500;">${o.status}</span>
+                    <span style="font-size: 11px; margin-left: 6px; color: #ff4d5a; font-weight: 600;">${escapeHtml(rawStatus)}</span>
                 </div>
             `;
 
+            const rawPhone = String(o.phone || '').trim();
+            const rawDigits = rawPhone.replace(/[^0-9]/g, '');
+            const waUrl = o.whatsappUrl || (rawDigits.length >= 7 ? `https://wa.me/${rawDigits}?text=${encodeURIComponent('Hello ' + (o.customer || 'valued client') + ', this is Abdullah Psychotic regarding your order #' + (o.id || ''))}` : '');
+
             return `
                 <tr>
-                    <td><strong style="color: #fff; font-family: monospace;">${escapeHtml(o.id)}</strong></td>
                     <td>
-                        <div style="font-weight: 600; color: #fff;">${escapeHtml(o.customer)}</div>
+                        <strong style="color: #fff; font-family: monospace; font-size: 13px; letter-spacing: 0.5px;">${escapeHtml(o.id || '—')}</strong>
+                        <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">${escapeHtml(o.paymentMethod || 'Cash on Delivery')}</div>
                     </td>
-                    <td style="font-size: 11px; color: var(--text-muted);">${escapeHtml(o.date)}</td>
-                    <td style="font-size: 11px;">${escapeHtml(o.shipping)}</td>
                     <td>
-                        <div style="font-weight: 600; color: var(--green);">${escapeHtml(o.total)}</div>
-                        <div style="font-size: 10px; color: var(--text-muted);">${escapeHtml(o.items)}</div>
+                        <div style="font-weight: 600; color: #fff; font-size: 13px;">${escapeHtml(o.customer || 'Valued Buyer')}</div>
+                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">${escapeHtml(o.email || '—')}</div>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                            <span style="font-size: 11px; color: var(--text-secondary); font-weight: 500;">${escapeHtml(rawPhone || '—')}</span>
+                            ${waUrl ? `
+                                <a href="${escapeAttribute(waUrl)}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-cell" title="Chat on WhatsApp with ${escapeAttribute(o.customer)}">
+                                    <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                                </a>
+                            ` : ''}
+                        </div>
                     </td>
-                    <td>${timelineHtml}</td>
+                    <td style="font-size: 11px; color: var(--text-muted); white-space: nowrap;">
+                        ${formatDate(o.date)}
+                    </td>
+                    <td style="max-width: 200px; font-size: 11.5px; line-height: 1.4;">
+                        ${escapeHtml(o.shipping || 'Standard Delivery')}
+                    </td>
+                    <td style="max-width: 240px;">
+                        <div style="font-weight: 700; color: var(--green); font-size: 14px;">${escapeHtml(o.total || '$0.00')}</div>
+                        <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px; line-height: 1.3;" title="${escapeAttribute(o.items || '')}">
+                            ${escapeHtml(o.items || 'Item list')}
+                        </div>
+                    </td>
+                    <td>
+                        ${timelineHtml}
+                        <div style="margin-top: 8px;">
+                            <select class="filter-select" style="padding: 4px 8px; font-size: 10px; height: auto;" onchange="quickUpdateOrderStatus('${escapeAttribute(o.id)}', this.value)" title="Change order status in Google Sheet">
+                                <option value="CONFIRMED" ${normStatus === 'CONFIRMED' || normStatus === 'ORDER PLACED' ? 'selected' : ''}>Confirmed</option>
+                                <option value="PROCESSING" ${normStatus === 'PROCESSING' ? 'selected' : ''}>Processing</option>
+                                <option value="SHIPPED" ${normStatus === 'SHIPPED' ? 'selected' : ''}>Shipped</option>
+                                <option value="OUT FOR DELIVERY" ${normStatus === 'OUT FOR DELIVERY' ? 'selected' : ''}>Out for Delivery</option>
+                                <option value="DELIVERED" ${normStatus === 'DELIVERED' ? 'selected' : ''}>Delivered</option>
+                                <option value="CANCELLED" ${normStatus === 'CANCELLED' ? 'selected' : ''}>Cancelled</option>
+                            </select>
+                        </div>
+                    </td>
                     <td style="text-align: right;">
-                        <button class="btn-icon-action edit-btn" onclick="openEditOrderModal('${escapeAttribute(o.id)}')" title="Manage Order">
-                            <i class="fas fa-sliders"></i>
-                        </button>
+                        <div class="action-btns" style="justify-content: flex-end;">
+                            <button class="btn-icon-action edit-btn" onclick="openEditOrderModal('${escapeAttribute(o.id)}')" title="Manage Order Details">
+                                <i class="fas fa-sliders"></i>
+                            </button>
+                            <button class="btn-icon-action delete-btn" onclick="deleteOrder('${escapeAttribute(o.id)}')" title="Delete Order from Google Sheet">
+                                <i class="fas fa-trash-can"></i>
+                            </button>
+                        </div>
                     </td>
                 </tr>
             `;
         }).join('');
 
-        document.getElementById('badge-total-orders').textContent = customOrders.length;
+        const badgeOrders = document.getElementById('badge-total-orders');
+        if (badgeOrders) badgeOrders.textContent = orderList.length;
+        updateOrderRevenueKPI();
+    }
+
+    function quickUpdateOrderStatus(orderId, newStatus) {
+        const o = customOrders.find(x => x.id === orderId);
+        if (o) {
+            o.status = newStatus;
+            localStorage.setItem('ap_admin_orders', JSON.stringify(customOrders));
+            renderOrders(customOrders);
+            updateOrderRevenueKPI();
+        }
+
+        showToast(`Updating order ${orderId} in Google Sheets...`);
+        const script = document.createElement('script');
+        const cb = 'adminStatusUpdate_' + Date.now();
+
+        window[cb] = function(res) {
+            cleanupJsonp(cb, script);
+            if (res && res.ok) {
+                showToast(`Order ${orderId} status saved as ${newStatus} in Google Sheets.`);
+                logAudit(`Updated ${orderId} status to ${newStatus}`);
+            } else {
+                showToast((res && res.message) ? res.message : 'Error updating status in sheet.', 'error');
+            }
+        };
+
+        script.onerror = function() {
+            cleanupJsonp(cb, script);
+            showToast('Network error updating status on Google Sheet.', 'error');
+        };
+
+        script.src = `${BACKEND_URL}?action=admin_update_order_status&email=${encodeURIComponent(userEmail || PRIMARY_ADMIN_EMAIL)}&accessToken=${encodeURIComponent(accessToken || '')}&orderId=${encodeURIComponent(orderId)}&status=${encodeURIComponent(newStatus)}&callback=${cb}`;
+        document.head.appendChild(script);
+    }
+
+    function deleteOrder(orderId) {
+        if (!confirm(`Are you sure you want to permanently delete order ${orderId} from the Google Sheet?`)) return;
+
+        customOrders = customOrders.filter(x => x.id !== orderId);
+        localStorage.setItem('ap_admin_orders', JSON.stringify(customOrders));
+        renderOrders(customOrders);
+        updateOrderRevenueKPI();
+
+        showToast(`Deleting order ${orderId} from Google Sheets...`);
+        logAudit(`Deleted order ${orderId}`);
+
+        const script = document.createElement('script');
+        const cb = 'adminDelOrder_' + Date.now();
+
+        window[cb] = function(res) {
+            cleanupJsonp(cb, script);
+            if (res && res.ok) {
+                showToast(`Order ${orderId} permanently removed from Google Sheet.`);
+            } else {
+                showToast((res && res.message) ? res.message : 'Error removing order from Google Sheet.', 'error');
+            }
+        };
+
+        script.onerror = function() {
+            cleanupJsonp(cb, script);
+        };
+
+        script.src = `${BACKEND_URL}?action=admin_delete_order&email=${encodeURIComponent(userEmail || PRIMARY_ADMIN_EMAIL)}&accessToken=${encodeURIComponent(accessToken || '')}&orderId=${encodeURIComponent(orderId)}&callback=${cb}`;
+        document.head.appendChild(script);
+    }
+
+    function exportOrdersCSV() {
+        if (!customOrders.length) {
+            showToast('No orders to export.', 'error');
+            return;
+        }
+
+        const headers = ['Order ID', 'Customer', 'Email', 'Phone', 'Shipping Address', 'Items', 'Total', 'Payment Method', 'Status', 'Date'];
+        const rows = customOrders.map(o => [
+            `"${o.id || ''}"`,
+            `"${(o.customer || '').replace(/"/g, '""')}"`,
+            `"${o.email || ''}"`,
+            `"${o.phone || ''}"`,
+            `"${(o.shipping || '').replace(/"/g, '""')}"`,
+            `"${(o.items || '').replace(/"/g, '""')}"`,
+            `"${o.total || ''}"`,
+            `"${o.paymentMethod || ''}"`,
+            `"${o.status || ''}"`,
+            `"${o.date || ''}"`
+        ]);
+
+        const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement('a');
+        link.setAttribute('href', encodedUri);
+        link.setAttribute('download', `AP_Orders_${new Date().toISOString().slice(0,10)}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        showToast('Orders exported to CSV.');
+        logAudit('Exported orders database to CSV');
     }
 
     function filterOrders() {
         const query = (document.getElementById('order-search').value || '').trim().toLowerCase();
+        const statusFilter = (document.getElementById('order-status-filter') ? document.getElementById('order-status-filter').value : 'ALL').toUpperCase();
+
         const filtered = customOrders.filter(o => {
-            return !query || [o.id, o.customer, o.shipping, o.status, o.total].join(' ').toLowerCase().includes(query);
+            const matchesQuery = !query || [o.id, o.customer, o.email, o.phone, o.shipping, o.status, o.total, o.items].join(' ').toLowerCase().includes(query);
+            const orderStatusNorm = String(o.status || '').toUpperCase();
+            let matchesStatus = true;
+            if (statusFilter !== 'ALL') {
+                if (statusFilter === 'CONFIRMED') {
+                    matchesStatus = orderStatusNorm === 'CONFIRMED' || orderStatusNorm === 'ORDER PLACED';
+                } else {
+                    matchesStatus = orderStatusNorm.includes(statusFilter);
+                }
+            }
+            return matchesQuery && matchesStatus;
         });
         renderOrders(filtered);
+    }
+
+    function updateOrderRevenueKPI() {
+        let grossTotal = 0;
+        customOrders.forEach(o => {
+            if (String(o.status || '').toUpperCase() !== 'CANCELLED') {
+                const num = parseFloat(String(o.total || '0').replace(/[^0-9.]/g, '')) || 0;
+                grossTotal += num;
+            }
+        });
+
+        const revEl = document.getElementById('kpi-live-revenue') || document.getElementById('kpi-simulated-revenue');
+        if (revEl) {
+            revEl.textContent = '$' + grossTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        const badgeOrders = document.getElementById('badge-total-orders');
+        if (badgeOrders) {
+            badgeOrders.textContent = customOrders.length;
+        }
     }
 
     function openEditOrderModal(orderId) {
         const o = customOrders.find(x => x.id === orderId);
         if (!o) return;
 
-        document.getElementById('order-modal-title').textContent = 'Fulfillment for ' + o.id;
-        document.getElementById('modal-order-id').value = o.id;
-        document.getElementById('modal-order-ref').value = o.id;
-        document.getElementById('modal-order-customer').value = o.customer;
-        document.getElementById('modal-order-total').value = o.total;
-        document.getElementById('modal-order-status').value = o.status;
-        document.getElementById('modal-order-shipping').value = o.shipping;
+        document.getElementById('order-modal-title').textContent = 'Fulfillment for ' + (o.id || '');
+        document.getElementById('modal-order-id').value = o.id || '';
+        document.getElementById('modal-order-ref').value = o.id || '';
+        document.getElementById('modal-order-customer').value = o.customer || '';
+        document.getElementById('modal-order-total').value = o.total || '';
+        document.getElementById('modal-order-status').value = o.status || 'CONFIRMED';
+        document.getElementById('modal-order-shipping').value = o.shipping || '';
         document.getElementById('modal-order-items').value = o.items || '';
 
         document.getElementById('order-modal-overlay').classList.add('active');
     }
 
     function openAddOrderModal() {
-        const ref = 'AP-2026-00' + (customOrders.length + 1);
+        const ref = 'AP-ORD-' + Math.floor(100000 + Math.random() * 900000);
         document.getElementById('order-modal-title').textContent = 'Create New Manual Order';
         document.getElementById('modal-order-id').value = 'NEW';
         document.getElementById('modal-order-ref').value = ref;
         document.getElementById('modal-order-customer').value = '';
         document.getElementById('modal-order-total').value = '$499';
-        document.getElementById('modal-order-status').value = 'Order Placed';
+        document.getElementById('modal-order-status').value = 'CONFIRMED';
         document.getElementById('modal-order-shipping').value = 'Dhaka, Bangladesh';
-        document.getElementById('modal-order-items').value = '1x Logo T-Shirt (M)';
+        document.getElementById('modal-order-items').value = '1x Luxury Logo T-Shirt (M)';
 
         document.getElementById('order-modal-overlay').classList.add('active');
     }
@@ -3527,15 +3743,32 @@
             const newOrder = {
                 id: ref,
                 customer,
-                date: new Date().toISOString().slice(0,10),
+                email: userEmail || PRIMARY_ADMIN_EMAIL,
+                phone: localStorage.getItem('ap_underworld_phone') || '',
+                date: new Date().toISOString(),
                 shipping,
                 total,
+                paymentMethod: 'Cash on Delivery',
                 items,
                 status
             };
             customOrders.unshift(newOrder);
-            showToast(`Order ${ref} created.`);
+            showToast(`Manual order ${ref} created.`);
             logAudit(`Created manual order ${ref} for ${customer}`);
+
+            // Dispatch to Google Apps Script create_order
+            const script = document.createElement('script');
+            const cb = 'adminCreateOrder_' + Date.now();
+            window[cb] = function(res) {
+                cleanupJsonp(cb, script);
+                if (res && res.ok) {
+                    loadOrders(); // Re-sync from Google Sheets
+                }
+            };
+            script.onerror = function() { cleanupJsonp(cb, script); };
+            script.src = `${BACKEND_URL}?action=create_order&email=${encodeURIComponent(userEmail || PRIMARY_ADMIN_EMAIL)}&name=${encodeURIComponent(customer)}&phone=${encodeURIComponent(newOrder.phone)}&address=${encodeURIComponent(shipping)}&total=${encodeURIComponent(total)}&items=${encodeURIComponent(JSON.stringify([{ name: items, qty: 1, price: total, size: 'Standard' }]))}&callback=${cb}`;
+            document.head.appendChild(script);
+
         } else {
             const o = customOrders.find(x => x.id === idVal);
             if (o) {
@@ -3545,14 +3778,18 @@
                 o.status = status;
                 o.shipping = shipping;
                 o.items = items;
-                showToast(`Order ${ref} status updated to ${status}.`);
-                logAudit(`Updated order ${ref} status to ${status}`);
+                showToast(`Order ${ref} details updated.`);
+                logAudit(`Updated order ${ref}`);
+
+                // Sync status with Google Sheet
+                quickUpdateOrderStatus(o.id, status);
             }
         }
 
         localStorage.setItem('ap_admin_orders', JSON.stringify(customOrders));
         closeOrderModal();
         renderOrders(customOrders);
+        updateOrderRevenueKPI();
     }
 
     /* =========================================================
