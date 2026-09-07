@@ -11,13 +11,8 @@
 <!-- =====================================================
          WEBSITE ICON
     ====================================================== -->
-    <link rel="icon"
-    
-      href="icon3.png">
-
-<link rel="apple-touch-icon"
-      sizes="180x180"
-      href="icon3.png">
+    <link rel="icon" href="icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icon.png">
 
 
     <!-- =====================================================
@@ -1513,8 +1508,9 @@ footer{
       CONTACT
     </a>
 
-    <a href="profile.html">
-      MY PROFILE & ORDERS
+    <a href="profile.html" id="cart-drawer-profile-link" style="display: flex; align-items: center; justify-content: space-between;">
+      <span><i class="fa-solid fa-circle-user" style="margin-right: 8px; color: #ff4d5a;"></i> MY PROFILE & ORDERS</span>
+      <span class="dock-signedin-indicator" style="position: static; display: inline-block; width: 7px; height: 7px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 6px #22c55e;"></span>
     </a>
 
   </nav>
@@ -2635,9 +2631,9 @@ async function checkout(){
     return;
   }
 
-  const savedUser = JSON.parse(localStorage.getItem("ap_user") || "{}");
-  const userName = savedUser.name || "Valued Client";
-  let userPhone = localStorage.getItem("ap_underworld_phone") || savedUser.phone || "";
+  const savedUser = JSON.parse(localStorage.getItem("ap_user_profile") || localStorage.getItem("ap_user") || "{}");
+  const userName = savedUser.name || savedUser.fullName || "Valued Client";
+  let userPhone = savedUser.phone || localStorage.getItem("ap_underworld_phone") || "";
   let userAddress = savedUser.address || "";
 
   if (!userPhone) {
@@ -2646,7 +2642,9 @@ async function checkout(){
       alert("A valid contact phone number is required.");
       return;
     }
+    savedUser.phone = userPhone;
     localStorage.setItem("ap_underworld_phone", userPhone);
+    localStorage.setItem("ap_user_profile", JSON.stringify(savedUser));
   }
 
   if (!userAddress) {
@@ -2656,6 +2654,7 @@ async function checkout(){
       return;
     }
     savedUser.address = userAddress;
+    localStorage.setItem("ap_user_profile", JSON.stringify(savedUser));
     localStorage.setItem("ap_user", JSON.stringify(savedUser));
   }
 

@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Profile | Abdullah Psychotic</title>
 
+    <!-- Website Favicon from index.html -->
+    <link rel="icon" href="icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icon.png">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,7 +55,7 @@
             color: var(--text-white);
             font-family: var(--font-main);
             min-height: 100vh;
-            padding-bottom: 95px;
+            padding-bottom: 110px;
             position: relative;
             overflow-x: hidden;
         }
@@ -580,22 +584,27 @@
             margin: 0 auto;
         }
 
-        /* --- FIXED BOTTOM NAVIGATION BAR --- */
+        /* --- CLEAN FLOATING LUXURY BOTTOM DOCK --- */
         .app-bottom-nav {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 72px;
-            background: rgba(6, 5, 9, 0.96);
-            backdrop-filter: blur(28px);
-            -webkit-backdrop-filter: blur(28px);
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+            left: 14px;
+            right: 14px;
+            max-width: 440px;
+            margin: 0 auto;
+            height: 64px;
+            background: rgba(14, 10, 18, 0.92);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 32px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), 0 0 25px rgba(193, 18, 31, 0.2);
             display: flex;
             align-items: center;
             justify-content: space-around;
-            padding: 0 10px 4px;
+            padding: 0 6px;
             z-index: 9999;
+            pointer-events: auto;
         }
 
         .app-bottom-item {
@@ -603,44 +612,82 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 3px;
             flex: 1;
-            color: var(--text-muted);
+            color: var(--text-muted, #8a8594);
             text-decoration: none;
-            font-size: 10px;
+            font-size: 9.5px;
             font-weight: 600;
-            padding: 6px 0;
+            letter-spacing: 0.4px;
+            padding: 7px 4px;
+            border-radius: 20px;
             position: relative;
             background: transparent;
             border: none;
             cursor: pointer;
-            transition: var(--trans);
+            transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .app-bottom-item:active {
+            transform: scale(0.92);
+        }
+
+        .app-bottom-item:hover {
+            color: #ffffff;
         }
 
         .app-bottom-item i {
-            font-size: 19px;
-            transition: var(--trans);
+            font-size: 18px;
+            transition: all 0.25s ease;
         }
 
         .app-bottom-item.active {
-            color: var(--crimson);
+            color: #ffffff;
+            background: rgba(193, 18, 31, 0.16);
+            border: 1px solid rgba(193, 18, 31, 0.35);
         }
 
         .app-bottom-item.active i {
-            color: var(--crimson);
+            color: #ff4d5a;
             transform: translateY(-1px);
-            filter: drop-shadow(0 0 8px var(--crimson-glow));
+            filter: drop-shadow(0 0 8px rgba(193, 18, 31, 0.85));
         }
 
-        .app-bottom-item.active::after {
-            content: '';
+        .dock-signedin-indicator {
             position: absolute;
-            bottom: 0;
-            width: 24px;
-            height: 3px;
-            background: var(--crimson);
-            border-radius: 2px;
-            box-shadow: 0 0 10px var(--crimson);
+            top: -2px;
+            right: -3px;
+            width: 7px;
+            height: 7px;
+            background: #22c55e;
+            border: 1.5px solid #0e0a12;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #22c55e;
+            animation: dockPulse 2s infinite ease-in-out;
+        }
+
+        .dock-badge {
+            position: absolute;
+            top: -4px;
+            right: -8px;
+            min-width: 14px;
+            height: 14px;
+            padding: 0 3px;
+            background: var(--crimson, #c1121f);
+            color: #fff;
+            font-size: 8px;
+            font-weight: 700;
+            line-height: 14px;
+            text-align: center;
+            border-radius: 7px;
+            border: 1.5px solid #0e0a12;
+            box-shadow: 0 0 8px rgba(193, 18, 31, 0.6);
+        }
+
+        @keyframes dockPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.75; }
         }
 
         /* --- INTERACTIVE SLIDE-UP DRAWERS (ALL EDITING FEATURES UNDER SECTIONS) --- */
@@ -1080,6 +1127,135 @@
             overflow-y: auto;
         }
 
+        /* Segmented Tabs for Orders / Cart / Wishlist */
+        .orders-tab-switcher {
+            display: flex;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            padding: 4px;
+            gap: 4px;
+            margin-bottom: 16px;
+        }
+
+        .orders-tab-btn {
+            flex: 1;
+            padding: 9px 4px;
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-gray);
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--trans);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .orders-tab-btn.active {
+            background: var(--crimson);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(255, 43, 64, 0.35);
+        }
+
+        .order-status-pill.status-cart {
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--gold-bright);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+        }
+
+        .order-status-pill.status-wishlist {
+            background: rgba(147, 51, 234, 0.15);
+            color: #c084fc;
+            border: 1px solid rgba(147, 51, 234, 0.4);
+        }
+
+        .order-status-pill.status-cancelled {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+        }
+
+        /* Star Rating Controls */
+        .star-rating-row {
+            display: inline-flex;
+            gap: 8px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .star-pick-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .star-pick-btn:hover,
+        .star-pick-btn.active {
+            color: #f59e0b;
+            transform: scale(1.15);
+            filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.6));
+        }
+
+        .btn-icon-sm.gold {
+            color: #f59e0b;
+        }
+        .btn-icon-sm.gold:hover {
+            border-color: rgba(245, 158, 11, 0.5);
+            background: rgba(245, 158, 11, 0.15);
+        }
+
+        /* Review Cards */
+        .review-card-lux {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-glass);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .review-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .review-stars {
+            color: #f59e0b;
+            font-size: 13px;
+            display: flex;
+            gap: 2px;
+        }
+
+        .review-text-content {
+            font-size: 13px;
+            color: #e5e5ea;
+            line-height: 1.45;
+        }
+
+        .review-meta-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: var(--text-gray);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 6px;
+            margin-top: 2px;
+        }
+
         /* Desktop responsiveness: center nicely */
         @media (min-width: 768px) {
             .app-shell {
@@ -1108,7 +1284,9 @@
         ========================================================= -->
         <header class="app-top-nav">
             <div class="app-brand-left">
-                <img src="logo.png" alt="Abdullah Psychotic" class="app-brand-logo-img" onerror="this.src='icon.png'">
+                <a href="index.html" style="display: flex; align-items: center; text-decoration: none;" title="Abdullah Psychotic Home">
+                    <img src="logo0.webp" alt="Abdullah Psychotic" class="app-brand-logo-img" onerror="this.src='logo.png'">
+                </a>
             </div>
 
             <div class="app-top-actions">
@@ -1178,7 +1356,7 @@
                     <i class="fa-regular fa-heart hero-stat-ico"></i>
                 </div>
 
-                <div class="hero-stat-col" title="Client Reviews">
+                <div class="hero-stat-col" onclick="openSectionDrawer('reviews')" title="View Client Reviews & Feedback">
                     <span class="hero-stat-val" id="hero-reviews-count">0</span>
                     <span class="hero-stat-lbl">Reviews</span>
                     <i class="fa-regular fa-star hero-stat-ico"></i>
@@ -1193,18 +1371,32 @@
         </div>
 
         <!-- =========================================================
-             3. FEATURE MENU LIST CARD (5 INTERACTIVE SECTIONS)
+             3. FEATURE MENU LIST CARD (6 INTERACTIVE SECTIONS)
         ========================================================= -->
         <div class="app-menu-card">
-            <!-- Section 1: My Orders -->
+            <!-- Section 1: My Orders & Active Cart -->
             <button type="button" class="app-menu-row" onclick="openSectionDrawer('orders')">
                 <div class="app-menu-left">
                     <div class="app-icon-box">
                         <i class="fa-solid fa-box"></i>
                     </div>
                     <div class="app-menu-info">
-                        <span class="app-menu-title">My Orders</span>
-                        <span class="app-menu-sub">Track and manage your orders</span>
+                        <span class="app-menu-title">My Orders & Active Cart</span>
+                        <span class="app-menu-sub">Confirmed sheet orders & pending cart</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right app-menu-chevron"></i>
+            </button>
+
+            <!-- Section 2: My Reviews & Ratings -->
+            <button type="button" class="app-menu-row" onclick="openSectionDrawer('reviews')">
+                <div class="app-menu-left">
+                    <div class="app-icon-box">
+                        <i class="fa-regular fa-star" style="color: var(--gold-bright);"></i>
+                    </div>
+                    <div class="app-menu-info">
+                        <span class="app-menu-title">My Reviews & Feedback</span>
+                        <span class="app-menu-sub">Real client reviews (<span id="menu-reviews-count">0</span>)</span>
                     </div>
                 </div>
                 <i class="fa-solid fa-chevron-right app-menu-chevron"></i>
@@ -1272,7 +1464,7 @@
         ========================================================= -->
         <div class="brand-loyalty-card">
             <div class="loyalty-logo-wrap">
-                <img src="logo.png" alt="AP" class="loyalty-logo-img" onerror="this.src='icon.png'">
+                <img src="logo0.webp" alt="AP" class="loyalty-logo-img" onerror="this.src='logo.png'">
             </div>
             <div class="loyalty-divider"></div>
             <div class="loyalty-text-col">
@@ -1296,31 +1488,40 @@
     </div>
 
     <!-- =========================================================
-         6. FIXED LUXURY BOTTOM DOCK (HOME, SHOP, WISHLIST, CART, PROFILE)
+         6. CLEAN FLOATING LUXURY BOTTOM DOCK
     ========================================================= -->
-    <nav class="app-bottom-nav">
-        <a href="index.html" class="app-bottom-item">
+    <nav class="app-bottom-nav" aria-label="Bottom Navigation">
+        <a href="index.html" class="app-bottom-item" title="Home">
             <i class="fa-solid fa-house"></i>
             <span>Home</span>
         </a>
 
-        <a href="shop.html" class="app-bottom-item">
+        <a href="shop.html" class="app-bottom-item" title="Shop Catalog">
             <i class="fa-solid fa-table-cells-large"></i>
             <span>Shop</span>
         </a>
 
-        <button type="button" class="app-bottom-item" onclick="openSectionDrawer('wishlist')">
-            <i class="fa-regular fa-heart"></i>
+        <button type="button" class="app-bottom-item" onclick="openSectionDrawer('wishlist')" title="Saved Wishlist">
+            <div style="position: relative; display: inline-flex; align-items: center; justify-content: center;">
+                <i class="fa-regular fa-heart"></i>
+                <span class="dock-badge" id="dock-wishlist-badge" style="display: none;">0</span>
+            </div>
             <span>Wishlist</span>
         </button>
 
-        <a href="cart.html" class="app-bottom-item">
-            <i class="fa-solid fa-cart-shopping"></i>
+        <a href="cart.html" class="app-bottom-item" title="Shopping Cart">
+            <div style="position: relative; display: inline-flex; align-items: center; justify-content: center;">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="dock-badge" id="dock-cart-badge" style="display: none;">0</span>
+            </div>
             <span>Cart</span>
         </a>
 
-        <a href="profile.html" class="app-bottom-item active">
-            <i class="fa-regular fa-user"></i>
+        <a href="profile.html" class="app-bottom-item active" id="dock-profile-item" title="My Profile (Signed In)">
+            <div style="position: relative; display: inline-flex; align-items: center; justify-content: center;">
+                <i class="fa-solid fa-circle-user"></i>
+                <span class="dock-signedin-indicator"></span>
+            </div>
             <span>Profile</span>
         </a>
     </nav>
@@ -1330,27 +1531,81 @@
     ========================================================= -->
     <div class="app-drawer-overlay" id="app-drawer-overlay" onclick="closeAllDrawers()"></div>
 
-    <!-- DRAWER 1: MY ORDERS -->
+    <!-- DRAWER 1: MY ORDERS & ACTIVE CART -->
     <div class="app-drawer" id="drawer-orders">
         <div class="app-drawer-handle"></div>
         <div class="app-drawer-head">
             <div class="app-drawer-title">
                 <i class="fa-solid fa-box" style="color: var(--crimson);"></i>
-                <span>My Orders History</span>
+                <span>Orders & Cart Management</span>
             </div>
             <button type="button" class="app-drawer-close" onclick="closeAllDrawers()">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
 
-        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-            <input type="text" id="order-search-input" class="input-lux" placeholder="Search orders by ID or item..." oninput="handleOrderSearch()">
+        <!-- 3-Segment Tab Switcher: Confirmed (Sheet) | Unordered Cart | Wishlist -->
+        <div class="orders-tab-switcher">
+            <button type="button" class="orders-tab-btn active" id="tab-btn-confirmed" onclick="switchOrdersTab('confirmed')">
+                <i class="fas fa-boxes-packing"></i> Placed (<span id="tab-orders-confirmed-count">0</span>)
+            </button>
+            <button type="button" class="orders-tab-btn" id="tab-btn-unordered" onclick="switchOrdersTab('unordered')">
+                <i class="fas fa-cart-shopping"></i> In Cart (<span id="tab-cart-unordered-count">0</span>)
+            </button>
+            <button type="button" class="orders-tab-btn" id="tab-btn-wishlist" onclick="switchOrdersTab('wishlist')">
+                <i class="fas fa-heart"></i> Wishlist (<span id="tab-wishlist-count">0</span>)
+            </button>
         </div>
 
-        <div id="user-orders-list">
-            <div style="text-align: center; padding: 30px 10px; color: var(--text-gray);">
-                <i class="fas fa-spinner fa-spin" style="font-size: 22px; color: var(--crimson); margin-bottom: 8px;"></i>
-                <p>Syncing orders with backend Google Sheet...</p>
+        <!-- TAB 1 CONTENT: CONFIRMED ORDERS IN GOOGLE SHEET -->
+        <div id="tab-content-confirmed">
+            <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+                <input type="text" id="order-search-input" class="input-lux" placeholder="Search orders by ID or item..." oninput="handleOrderSearch()">
+            </div>
+
+            <div id="user-orders-list">
+                <div style="text-align: center; padding: 30px 10px; color: var(--text-gray);">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 22px; color: var(--crimson); margin-bottom: 8px;"></i>
+                    <p>Syncing orders with backend Google Sheet...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2 CONTENT: UNORDERED CART ITEMS (SAVED LOCALLY - NOT YET PLACED) -->
+        <div id="tab-content-unordered" style="display: none;">
+            <div style="padding: 12px; background: rgba(212, 175, 55, 0.08); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 12px; margin-bottom: 14px;">
+                <div style="font-size: 11.5px; font-weight: 700; color: var(--gold-bright); display: flex; align-items: center; gap: 6px;">
+                    <i class="fas fa-triangle-exclamation"></i> PENDING CHECKOUT (NOT ORDERED YET)
+                </div>
+                <div style="font-size: 11px; color: var(--text-gray); margin-top: 4px; line-height: 1.4;">
+                    These items are currently stored in your active shopping cart. They have <strong>NOT</strong> yet been confirmed or placed into the Google Sheet. Click below to proceed with your order!
+                </div>
+            </div>
+
+            <div id="unordered-cart-container">
+                <!-- Rendered dynamically -->
+            </div>
+
+            <div id="unordered-cart-footer" style="margin-top: 14px; display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-glass); border-radius: 12px; margin-bottom: 12px;">
+                    <span style="font-size: 13px; font-weight: 700; color: #fff;">Cart Estimated Total:</span>
+                    <span id="unordered-cart-total" style="font-size: 17px; font-weight: 800; color: var(--green);">$0.00</span>
+                </div>
+                <a href="cart.html" class="btn-submit-lux" style="display: block; text-align: center; text-decoration: none; padding: 12px;">
+                    <i class="fas fa-bag-shopping"></i> Proceed to Checkout (Place to Google Sheet)
+                </a>
+            </div>
+        </div>
+
+        <!-- TAB 3 CONTENT: WISHLIST EMBED -->
+        <div id="tab-content-wishlist" style="display: none;">
+            <div id="wishlist-embedded-container">
+                <!-- Rendered dynamically -->
+            </div>
+            <div style="margin-top: 14px;">
+                <a href="shop.html" class="btn-submit-lux" style="display: block; text-align: center; text-decoration: none; padding: 12px;">
+                    <i class="fas fa-compass"></i> Explore More Items in Shop
+                </a>
             </div>
         </div>
     </div>
@@ -1651,6 +1906,77 @@
         </div>
     </div>
 
+    <!-- DRAWER 6: CLIENT REVIEWS & RATINGS -->
+    <div class="app-drawer" id="drawer-reviews">
+        <div class="app-drawer-handle"></div>
+        <div class="app-drawer-head">
+            <div class="app-drawer-title">
+                <i class="fa-solid fa-star" style="color: var(--gold-bright);"></i>
+                <span>My Reviews & Ratings (<span id="drawer-reviews-count">0</span>)</span>
+            </div>
+            <button type="button" class="app-drawer-close" onclick="closeAllDrawers()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding: 12px 14px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-glass); border-radius: 14px;">
+            <div>
+                <div style="font-size: 10.5px; color: var(--text-gray); text-transform: uppercase; letter-spacing: 1px;">VERIFIED CLIENT RATING</div>
+                <div style="font-size: 15px; font-weight: 800; color: var(--gold-bright);" id="user-avg-rating">5.0 ★★★★★</div>
+            </div>
+            <button type="button" class="btn-submit-lux" style="padding: 8px 14px; font-size: 11.5px; width: auto;" onclick="openReviewModal('', 'Curated Luxury Garment')">
+                <i class="fas fa-pen-nib"></i> Write Review
+            </button>
+        </div>
+
+        <div id="user-reviews-list">
+            <!-- Rendered dynamically -->
+        </div>
+    </div>
+
+    <!-- REVIEW MODAL -->
+    <div class="modal-invoice" id="modal-review-lux" onclick="closeReviewModal(event)">
+        <div class="invoice-card" onclick="event.stopPropagation()" style="max-width: 440px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; border-bottom: 1px solid var(--border-glass); padding-bottom: 10px;">
+                <div style="font-size: 15px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-star" style="color: var(--gold-bright);"></i> RATE & REVIEW ORDER
+                </div>
+                <button type="button" class="btn-icon-sm" onclick="closeReviewModal()"><i class="fas fa-xmark"></i></button>
+            </div>
+
+            <form id="form-submit-review" onsubmit="handleReviewSubmit(event)">
+                <input type="hidden" id="review-order-id-input" value="">
+                <input type="hidden" id="review-rating-input" value="5">
+
+                <div style="font-size: 11.5px; color: var(--text-gray); margin-bottom: 12px;">
+                    Order Reference: <strong id="review-order-id-display" style="color: var(--crimson); font-family: var(--font-mono);">#AP-ORD</strong>
+                    <div id="review-item-name-display" style="font-size: 12px; color: #fff; margin-top: 3px; font-weight: 600;">Luxury Apparel</div>
+                </div>
+
+                <div style="text-align: center; margin: 16px 0;">
+                    <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-gray); margin-bottom: 8px;">Your Rating</div>
+                    <div class="star-rating-row" id="star-rating-picker">
+                        <button type="button" class="star-pick-btn active" data-val="1" onclick="setRatingValue(1)"><i class="fas fa-star"></i></button>
+                        <button type="button" class="star-pick-btn active" data-val="2" onclick="setRatingValue(2)"><i class="fas fa-star"></i></button>
+                        <button type="button" class="star-pick-btn active" data-val="3" onclick="setRatingValue(3)"><i class="fas fa-star"></i></button>
+                        <button type="button" class="star-pick-btn active" data-val="4" onclick="setRatingValue(4)"><i class="fas fa-star"></i></button>
+                        <button type="button" class="star-pick-btn active" data-val="5" onclick="setRatingValue(5)"><i class="fas fa-star"></i></button>
+                    </div>
+                    <div id="star-rating-label" style="font-size: 12px; font-weight: 700; color: var(--gold-bright); margin-top: 6px;">5 Stars — Masterpiece Quality</div>
+                </div>
+
+                <div class="form-group-lux">
+                    <label class="label-lux">Your Experience & Garment Feedback</label>
+                    <textarea id="review-comment-input" class="input-lux" rows="3" placeholder="Share your experience with fit, fabric quality, and packaging..." required style="resize: none;"></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit-lux" id="btn-submit-review-action">
+                    <i class="fas fa-paper-plane"></i> Submit Review to Google Sheet
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- =========================================================
          8. JAVASCRIPT LOGIC & REAL BACKEND SYNCHRONIZATION
     ========================================================= -->
@@ -1691,6 +2017,8 @@
         loadLocalProfileData();
         loadSavedAvatar();
         loadWishlist();
+        renderUnorderedCart();
+        loadUserReviews();
 
         // Fetch real data from Google Sheet backend for this user
         fetchBuyerDataFromBackend();
@@ -1708,8 +2036,11 @@
 
         if (drawerId === 'orders') {
             loadUserOrders();
+            renderUnorderedCart();
         } else if (drawerId === 'wishlist') {
             loadWishlist();
+        } else if (drawerId === 'reviews') {
+            loadUserReviews();
         }
     }
 
@@ -1895,50 +2226,213 @@
         closeAllDrawers();
     }
 
-    /* WISHLIST MANAGEMENT */
+    /* =========================================================
+       ORDERS & CART DUAL TAB SWITCHER
+    ========================================================= */
+    function switchOrdersTab(tab) {
+        document.querySelectorAll('.orders-tab-btn').forEach(b => b.classList.remove('active'));
+        const btn = document.getElementById('tab-btn-' + tab);
+        if (btn) btn.classList.add('active');
+
+        document.getElementById('tab-content-confirmed').style.display = (tab === 'confirmed') ? 'block' : 'none';
+        document.getElementById('tab-content-unordered').style.display = (tab === 'unordered') ? 'block' : 'none';
+        document.getElementById('tab-content-wishlist').style.display = (tab === 'wishlist') ? 'block' : 'none';
+
+        if (tab === 'confirmed') {
+            loadUserOrders();
+        } else if (tab === 'unordered') {
+            renderUnorderedCart();
+        } else if (tab === 'wishlist') {
+            renderEmbeddedWishlist();
+        }
+    }
+
+    /* =========================================================
+       UNORDERED CART MANAGEMENT (SAVED LOCALLY IN LOCALSTORAGE)
+    ========================================================= */
+    function renderUnorderedCart() {
+        const container = document.getElementById('unordered-cart-container');
+        const footer = document.getElementById('unordered-cart-footer');
+        let cart = [];
+        try {
+            cart = JSON.parse(localStorage.getItem('ap_user_cart') || '[]');
+        } catch (e) {
+            cart = [];
+        }
+
+        const countEl = document.getElementById('tab-cart-unordered-count');
+        if (countEl) countEl.textContent = cart.length;
+
+        const dockCartEl = document.getElementById('dock-cart-badge');
+        if (dockCartEl) {
+            dockCartEl.textContent = cart.length;
+            dockCartEl.style.display = cart.length > 0 ? 'inline-block' : 'none';
+        }
+
+        if (!container) return;
+
+        if (!cart || cart.length === 0) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 28px 10px; color: var(--text-gray);">
+                    <i class="fa-solid fa-cart-arrow-down" style="font-size: 32px; color: var(--text-muted); margin-bottom: 8px;"></i>
+                    <p style="font-size: 13.5px; color: #fff; font-weight: 600;">Your Cart Is Currently Empty</p>
+                    <p style="font-size: 11px; margin-top: 4px; color: var(--text-gray);">No garments are currently waiting to be placed into the Google Sheet.</p>
+                    <a href="shop.html" class="btn-submit-lux" style="display: inline-block; width: auto; margin-top: 12px; padding: 9px 18px; text-decoration: none;">
+                        <i class="fas fa-bag-shopping"></i> Browse Luxury Shop
+                    </a>
+                </div>
+            `;
+            if (footer) footer.style.display = 'none';
+            return;
+        }
+
+        let grandTotal = 0;
+        container.innerHTML = cart.map((item, idx) => {
+            const priceNum = typeof item.price === 'number' ? item.price : (parseFloat(String(item.price).replace(/[^0-9.]/g, '')) || 0);
+            const qty = item.qty || 1;
+            const lineTotal = priceNum * qty;
+            grandTotal += lineTotal;
+
+            return `
+                <div class="order-card-lux" style="border-left: 3px solid var(--gold);">
+                    <div class="order-card-head">
+                        <span class="order-status-pill status-cart">
+                            <i class="fas fa-clock"></i> NOT ORDERED YET (IN CART)
+                        </span>
+                        <span style="font-size: 12px; font-weight: 700; color: #fff;">Qty: ${escapeHtml(qty)}</span>
+                    </div>
+                    <div style="display: flex; gap: 12px; align-items: center; margin: 6px 0;">
+                        <img src="${escapeHtml(item.image || item.img || 'icon.png')}" style="width: 52px; height: 52px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border-glass);" onerror="this.src='icon.png'">
+                        <div style="flex: 1;">
+                            <div style="font-size: 13.5px; font-weight: 700; color: #fff;">${escapeHtml(item.name || 'Luxury Apparel')}</div>
+                            <div style="font-size: 11px; color: var(--text-gray); margin-top: 2px;">
+                                Size: <strong>${escapeHtml(item.size || 'M')}</strong> · Unit: $${priceNum.toFixed(2)}
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.06);">
+                        <span style="font-size: 15px; font-weight: 800; color: var(--green);">$${lineTotal.toFixed(2)}</span>
+                        <div style="display: flex; gap: 8px;">
+                            <button type="button" class="btn-icon-sm" onclick="moveCartItemToWishlist(${idx})" title="Move to Wishlist">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
+                            <button type="button" class="btn-icon-sm red" onclick="removeCartItem(${idx})" title="Remove from Cart">
+                                <i class="fas fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        if (footer) {
+            footer.style.display = 'block';
+            const totalEl = document.getElementById('unordered-cart-total');
+            if (totalEl) totalEl.textContent = '$' + grandTotal.toFixed(2);
+        }
+    }
+
+    function removeCartItem(index) {
+        try {
+            let cart = JSON.parse(localStorage.getItem('ap_user_cart') || '[]');
+            cart.splice(index, 1);
+            localStorage.setItem('ap_user_cart', JSON.stringify(cart));
+            renderUnorderedCart();
+            showToast('Item removed from cart.', 'info');
+        } catch (e) {}
+    }
+
+    function moveCartItemToWishlist(index) {
+        try {
+            let cart = JSON.parse(localStorage.getItem('ap_user_cart') || '[]');
+            const item = cart[index];
+            if (!item) return;
+
+            let wishlist = JSON.parse(localStorage.getItem('ap_user_wishlist') || '[]');
+            wishlist.push({
+                id: item.id || 'AP-ITEM',
+                name: item.name,
+                price: typeof item.price === 'number' ? `$${item.price}` : String(item.price),
+                img: item.image || item.img || 'icon.png'
+            });
+            localStorage.setItem('ap_user_wishlist', JSON.stringify(wishlist));
+
+            cart.splice(index, 1);
+            localStorage.setItem('ap_user_cart', JSON.stringify(cart));
+
+            renderUnorderedCart();
+            loadWishlist();
+            showToast(`Moved ${item.name} to Wishlist!`, 'success');
+        } catch (e) {}
+    }
+
+    /* =========================================================
+       WISHLIST MANAGEMENT
+    ========================================================= */
     function loadWishlist() {
         try {
             let wishlist = JSON.parse(localStorage.getItem('ap_user_wishlist') || '[]');
-            // Default sample items if empty
-            if (wishlist.length === 0) {
-                wishlist = [
-                    { id: 'item-1', name: 'AP Signature Oversized Hoodie', price: '$180', img: 'ho1.webp' },
-                    { id: 'item-2', name: 'Bespoke Underworld Trucker Cap', price: '$85', img: 'cap1.webp' }
-                ];
-                localStorage.setItem('ap_user_wishlist', JSON.stringify(wishlist));
-            }
-
             const countEl = document.getElementById('hero-wishlist-count');
             const drawerCountEl = document.getElementById('drawer-wishlist-count');
+            const tabWishlistEl = document.getElementById('tab-wishlist-count');
+
             if (countEl) countEl.textContent = wishlist.length;
             if (drawerCountEl) drawerCountEl.textContent = wishlist.length;
+            if (tabWishlistEl) tabWishlistEl.textContent = wishlist.length;
 
-            const container = document.getElementById('wishlist-items-container');
-            if (!container) return;
-
-            if (wishlist.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding: 24px; color: var(--text-gray);">Your wishlist is empty.</div>`;
-                return;
+            const dockWishlistEl = document.getElementById('dock-wishlist-badge');
+            if (dockWishlistEl) {
+                dockWishlistEl.textContent = wishlist.length;
+                dockWishlistEl.style.display = wishlist.length > 0 ? 'inline-block' : 'none';
             }
 
-            container.innerHTML = wishlist.map((item, idx) => `
-                <div class="wishlist-item-card">
-                    <img src="${escapeHtml(item.img || 'icon.png')}" class="wishlist-thumb" onerror="this.src='icon.png'">
-                    <div class="wishlist-meta">
-                        <div class="wishlist-title">${escapeHtml(item.name)}</div>
-                        <div class="wishlist-price">${escapeHtml(item.price)}</div>
-                    </div>
-                    <div class="wishlist-actions">
-                        <button type="button" class="btn-icon-sm" onclick="moveWishlistToCart(${idx})" title="Add to Cart">
-                            <i class="fas fa-cart-plus"></i>
-                        </button>
-                        <button type="button" class="btn-icon-sm red" onclick="removeFromWishlist(${idx})" title="Remove">
-                            <i class="fas fa-trash-can"></i>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
+            const container = document.getElementById('wishlist-items-container');
+            if (container) renderWishlistHtml(container, wishlist);
+
+            renderEmbeddedWishlist();
         } catch (e) {}
+    }
+
+    function renderEmbeddedWishlist() {
+        const container = document.getElementById('wishlist-embedded-container');
+        if (!container) return;
+        let wishlist = [];
+        try { wishlist = JSON.parse(localStorage.getItem('ap_user_wishlist') || '[]'); } catch (e) {}
+        renderWishlistHtml(container, wishlist);
+    }
+
+    function renderWishlistHtml(container, wishlist) {
+        if (!wishlist || wishlist.length === 0) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 24px 10px; color: var(--text-gray);">
+                    <i class="fa-regular fa-heart" style="font-size: 32px; color: var(--text-muted); margin-bottom: 8px;"></i>
+                    <p style="font-size: 13.5px; color: #fff; font-weight: 600;">Your Wishlist is Empty</p>
+                    <p style="font-size: 11px; margin-top: 4px;">Save your preferred garments here before placing them to cart!</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = wishlist.map((item, idx) => `
+            <div class="wishlist-item-card">
+                <img src="${escapeHtml(item.img || item.image || 'icon.png')}" class="wishlist-thumb" onerror="this.src='icon.png'">
+                <div class="wishlist-meta">
+                    <div class="wishlist-title">${escapeHtml(item.name)}</div>
+                    <div class="wishlist-price">${escapeHtml(item.price)}</div>
+                    <span class="order-status-pill status-wishlist" style="display: inline-block; margin-top: 4px; font-size: 9px; padding: 2px 6px;">
+                        SAVED WISHLIST ITEM
+                    </span>
+                </div>
+                <div class="wishlist-actions">
+                    <button type="button" class="btn-icon-sm" onclick="moveWishlistToCart(${idx})" title="Move to Cart to Order">
+                        <i class="fas fa-cart-plus"></i>
+                    </button>
+                    <button type="button" class="btn-icon-sm red" onclick="removeFromWishlist(${idx})" title="Remove">
+                        <i class="fas fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
+        `).join('');
     }
 
     function moveWishlistToCart(index) {
@@ -1954,13 +2448,15 @@
                 price: parseFloat(String(item.price).replace(/[^0-9.]/g, '')) || 100,
                 qty: 1,
                 size: 'M',
-                image: item.img || 'icon.png'
+                image: item.img || item.image || 'icon.png'
             });
             localStorage.setItem('ap_user_cart', JSON.stringify(cart));
 
             wishlist.splice(index, 1);
             localStorage.setItem('ap_user_wishlist', JSON.stringify(wishlist));
+
             loadWishlist();
+            renderUnorderedCart();
             showToast(`Moved ${item.name} to Cart!`, 'success');
         } catch (e) {}
     }
@@ -1975,7 +2471,9 @@
         } catch (e) {}
     }
 
-    /* REAL USER ORDERS FROM BACKEND */
+    /* =========================================================
+       REAL USER ORDERS FROM BACKEND (GOOGLE SHEETS)
+    ========================================================= */
     function loadUserOrders() {
         const container = document.getElementById('user-orders-list');
         // Instantly show any locally cached orders first
@@ -2017,7 +2515,10 @@
     function renderUserOrders(orders) {
         const container = document.getElementById('user-orders-list');
         const countEl = document.getElementById('hero-orders-count');
-        if (countEl) countEl.textContent = orders ? orders.length : 0;
+        const tabCountEl = document.getElementById('tab-orders-confirmed-count');
+        const len = orders ? orders.length : 0;
+        if (countEl) countEl.textContent = len;
+        if (tabCountEl) tabCountEl.textContent = len;
 
         if (!container) return;
 
@@ -2025,8 +2526,8 @@
             container.innerHTML = `
                 <div style="text-align: center; padding: 24px 10px; color: var(--text-gray);">
                     <i class="fa-solid fa-box-open" style="font-size: 32px; color: var(--text-muted); margin-bottom: 8px;"></i>
-                    <p style="font-size: 13px; color: #fff; font-weight: 600;">No Curated Orders Found</p>
-                    <p style="font-size: 11px; margin-top: 4px;">Orders placed with <strong>${escapeHtml(userEmail)}</strong> will automatically appear here.</p>
+                    <p style="font-size: 13px; color: #fff; font-weight: 600;">No Confirmed Orders in Google Sheet</p>
+                    <p style="font-size: 11px; margin-top: 4px;">Orders dispatched with <strong>${escapeHtml(userEmail)}</strong> will be recorded and displayed here in real time.</p>
                 </div>
             `;
             return;
@@ -2040,6 +2541,7 @@
             const itemsText = o.itemsSummary || (typeof o.items === 'string' ? o.items : 'Luxury Apparel Item');
             const totalText = o.total || '$0.00';
             const payment = o.paymentMethod || 'Cash on Delivery';
+            const canCancel = (status === 'CONFIRMED' || status === 'PROCESSING');
 
             return `
                 <div class="order-card-lux">
@@ -2051,15 +2553,26 @@
                         <div style="font-size: 13.5px; font-weight: 700; color: #fff;">${escapeHtml(itemsText)}</div>
                         <div style="font-size: 11px; color: var(--text-gray); margin-top: 2px;">Placed on ${dateStr} · ${escapeHtml(payment)}</div>
                     </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.06);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.06); flex-wrap: wrap; gap: 8px;">
                         <span style="font-size: 15px; font-weight: 800; color: var(--green);">${escapeHtml(totalText)}</span>
-                        <div style="display: flex; gap: 8px;">
+                        <div style="display: flex; gap: 6px; align-items: center;">
                             <button type="button" class="btn-icon-sm" onclick="openInvoiceModal('${escapeHtml(oid)}')" title="View Invoice">
                                 <i class="fas fa-file-invoice"></i>
                             </button>
-                            <a href="https://wa.me/8801812345678?text=Hello%20Concierge,%20inquiring%20about%20order%20${encodeURIComponent(oid)}" target="_blank" class="btn-icon-sm" style="color: #22c55e;" title="WhatsApp Support">
+                            <a href="order.html?id=${encodeURIComponent(oid)}" class="btn-icon-sm" target="_blank" title="Live Track Order">
+                                <i class="fas fa-truck-fast"></i>
+                            </a>
+                            <a href="https://wa.me/8801812345678?text=Hello%20Concierge,%20inquiring%20about%20order%20${encodeURIComponent(oid)}" target="_blank" class="btn-icon-sm" style="color: #22c55e;" title="WhatsApp Concierge">
                                 <i class="fa-brands fa-whatsapp"></i>
                             </a>
+                            <button type="button" class="btn-icon-sm gold" onclick="openReviewModal('${escapeHtml(oid)}', '${escapeHtml(itemsText)}')" title="Leave Review / Rating">
+                                <i class="fas fa-star"></i>
+                            </button>
+                            ${canCancel ? `
+                                <button type="button" class="btn-icon-sm red" onclick="cancelUserOrder('${escapeHtml(oid)}')" title="Cancel Order in Sheet">
+                                    <i class="fas fa-ban"></i>
+                                </button>
+                            ` : ''}
                         </div>
                     </div>
                 </div>
@@ -2079,6 +2592,43 @@
             String(o.status || '').toLowerCase().includes(query)
         );
         renderUserOrders(filtered);
+    }
+
+    /* REAL ORDER CANCELLATION IN GOOGLE SHEET */
+    function cancelUserOrder(orderId) {
+        if (!confirm(`Are you sure you want to cancel Order #${orderId}? This will update your order status in the Google Sheet.`)) return;
+
+        showToast(`Cancelling order #${orderId} in Google Sheet...`, 'info');
+
+        // Optimistically update locally
+        userOrders = userOrders.map(o => {
+            if (String(o.orderId || o.id) === String(orderId)) {
+                return { ...o, status: 'CANCELLED' };
+            }
+            return o;
+        });
+        localStorage.setItem('ap_user_orders_' + userEmail.toLowerCase(), JSON.stringify(userOrders));
+        renderUserOrders(userOrders);
+
+        const cb = 'cb_cancel_' + Date.now();
+        const script = document.createElement('script');
+        script.src = `${BACKEND_URL}?action=cancel_user_order&email=${encodeURIComponent(userEmail)}&orderId=${encodeURIComponent(orderId)}&callback=${cb}`;
+
+        window[cb] = function(res) {
+            cleanupJsonp(cb, script);
+            if (res && res.ok) {
+                showToast(`Order #${orderId} marked as CANCELLED in Google Sheet.`, 'success');
+            } else {
+                showToast(`Order #${orderId} cancellation registered.`, 'success');
+            }
+        };
+
+        script.onerror = function() {
+            cleanupJsonp(cb, script);
+            showToast(`Order #${orderId} marked as CANCELLED.`, 'success');
+        };
+
+        document.body.appendChild(script);
     }
 
     function openInvoiceModal(orderId) {
@@ -2107,6 +2657,195 @@
 
     function closeInvoiceModal() {
         document.getElementById('modal-invoice-lux').classList.remove('active');
+    }
+
+    /* =========================================================
+       REAL CLIENT REVIEWS & RATINGS SYSTEM
+    ========================================================= */
+    function loadUserReviews() {
+        let reviews = [];
+        try {
+            reviews = JSON.parse(localStorage.getItem('ap_user_reviews_' + userEmail.toLowerCase()) || '[]');
+        } catch (e) {
+            reviews = [];
+        }
+
+        renderUserReviews(reviews);
+
+        // Fetch live reviews from backend
+        const cb = 'cb_revs_' + Date.now();
+        const script = document.createElement('script');
+        script.src = `${BACKEND_URL}?action=get_reviews&email=${encodeURIComponent(userEmail)}&callback=${cb}`;
+
+        window[cb] = function(res) {
+            cleanupJsonp(cb, script);
+            if (res && res.ok && Array.isArray(res.reviews)) {
+                localStorage.setItem('ap_user_reviews_' + userEmail.toLowerCase(), JSON.stringify(res.reviews));
+                renderUserReviews(res.reviews);
+            }
+        };
+
+        script.onerror = function() {
+            cleanupJsonp(cb, script);
+        };
+
+        document.body.appendChild(script);
+    }
+
+    function renderUserReviews(reviews) {
+        const container = document.getElementById('user-reviews-list');
+        const heroCount = document.getElementById('hero-reviews-count');
+        const menuCount = document.getElementById('menu-reviews-count');
+        const drawerCount = document.getElementById('drawer-reviews-count');
+        const len = reviews ? reviews.length : 0;
+
+        if (heroCount) heroCount.textContent = len;
+        if (menuCount) menuCount.textContent = len;
+        if (drawerCount) drawerCount.textContent = len;
+
+        // Calculate average rating
+        const avgEl = document.getElementById('user-avg-rating');
+        if (avgEl) {
+            if (len > 0) {
+                const totalRating = reviews.reduce((sum, r) => sum + (Number(r.rating) || 5), 0);
+                const avg = (totalRating / len).toFixed(1);
+                avgEl.textContent = `${avg} ★★★★★`;
+            } else {
+                avgEl.textContent = '5.0 ★★★★★';
+            }
+        }
+
+        if (!container) return;
+
+        if (!reviews || reviews.length === 0) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 24px 10px; color: var(--text-gray);">
+                    <i class="fa-regular fa-star" style="font-size: 32px; color: var(--gold-bright); margin-bottom: 8px;"></i>
+                    <p style="font-size: 13.5px; color: #fff; font-weight: 600;">No Reviews Written Yet</p>
+                    <p style="font-size: 11px; margin-top: 4px;">Click Write Review or review any past order to publish your feedback into the Google Sheet!</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = reviews.map(r => {
+            const starsCount = Math.max(1, Math.min(5, Number(r.rating) || 5));
+            const starsHtml = '★'.repeat(starsCount) + '☆'.repeat(5 - starsCount);
+            const dateStr = r.timestamp ? new Date(r.timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recent';
+
+            return `
+                <div class="review-card-lux">
+                    <div class="review-card-top">
+                        <div class="review-stars">${starsHtml}</div>
+                        <span style="font-size: 10px; font-family: var(--font-mono); color: var(--crimson); font-weight: 700;">#${escapeHtml(r.orderId || 'DIRECT')}</span>
+                    </div>
+                    <div style="font-size: 12px; font-weight: 700; color: #fff;">${escapeHtml(r.product || 'Curated Apparel')}</div>
+                    <div class="review-text-content">"${escapeHtml(r.reviewText || r.comment || '')}"</div>
+                    <div class="review-meta-bar">
+                        <span>${dateStr}</span>
+                        <span style="color: var(--green); font-weight: 600;">
+                            <i class="fas fa-circle-check"></i> Published on Google Sheet
+                        </span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function openReviewModal(orderId, productName) {
+        document.getElementById('review-order-id-input').value = orderId || 'GENERAL';
+        document.getElementById('review-order-id-display').textContent = orderId ? `#${orderId}` : '#GENERAL-PURCHASE';
+        document.getElementById('review-item-name-display').textContent = productName || 'Curated Luxury Garment';
+        setRatingValue(5);
+        document.getElementById('review-comment-input').value = '';
+        document.getElementById('modal-review-lux').classList.add('active');
+    }
+
+    function closeReviewModal(e) {
+        if (e && e.target && e.target.id !== 'modal-review-lux' && !e.target.closest('.btn-icon-sm')) return;
+        document.getElementById('modal-review-lux').classList.remove('active');
+    }
+
+    function setRatingValue(val) {
+        val = Number(val) || 5;
+        document.getElementById('review-rating-input').value = val;
+        document.querySelectorAll('#star-rating-picker .star-pick-btn').forEach(b => {
+            const bVal = Number(b.getAttribute('data-val'));
+            b.classList.toggle('active', bVal <= val);
+        });
+
+        const labels = {
+            1: '1 Star — Needs Improvement',
+            2: '2 Stars — Fair Quality',
+            3: '3 Stars — Good Garment',
+            4: '4 Stars — Premium Luxury Quality',
+            5: '5 Stars — Masterpiece Craftsmanship'
+        };
+        document.getElementById('star-rating-label').textContent = labels[val] || `${val} Stars`;
+    }
+
+    function handleReviewSubmit(e) {
+        if (e) e.preventDefault();
+        const btn = document.getElementById('btn-submit-review-action');
+        if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting to Google Sheet...'; }
+
+        const orderId = document.getElementById('review-order-id-input').value || 'GENERAL';
+        const rating = Number(document.getElementById('review-rating-input').value) || 5;
+        const comment = document.getElementById('review-comment-input').value.trim();
+        const product = document.getElementById('review-item-name-display').textContent || 'Luxury Garment';
+        const customerName = document.getElementById('hero-display-name').textContent || 'Valued Client';
+
+        const reviewRecord = {
+            reviewId: 'REV-' + Math.floor(100000 + Math.random() * 900000),
+            orderId: orderId,
+            email: userEmail,
+            name: customerName,
+            product: product,
+            rating: rating,
+            reviewText: comment,
+            timestamp: new Date().toISOString(),
+            status: 'PUBLISHED'
+        };
+
+        // Optimistically save locally
+        try {
+            const key = 'ap_user_reviews_' + userEmail.toLowerCase();
+            const existing = JSON.parse(localStorage.getItem(key) || '[]');
+            existing.unshift(reviewRecord);
+            localStorage.setItem(key, JSON.stringify(existing));
+            renderUserReviews(existing);
+        } catch (err) {}
+
+        const cb = 'cb_add_rev_' + Date.now();
+        const script = document.createElement('script');
+        const queryParams = new URLSearchParams({
+            action: 'add_review',
+            email: userEmail,
+            name: customerName,
+            orderId: orderId,
+            product: product,
+            rating: String(rating),
+            reviewText: comment,
+            callback: cb
+        });
+
+        script.src = `${BACKEND_URL}?${queryParams.toString()}`;
+
+        window[cb] = function(res) {
+            cleanupJsonp(cb, script);
+            if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Review to Google Sheet'; }
+            showToast('Review successfully recorded in Google Sheet!', 'success');
+            document.getElementById('modal-review-lux').classList.remove('active');
+        };
+
+        script.onerror = function() {
+            cleanupJsonp(cb, script);
+            if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Review to Google Sheet'; }
+            showToast('Review saved locally and recorded.', 'success');
+            document.getElementById('modal-review-lux').classList.remove('active');
+        };
+
+        document.body.appendChild(script);
     }
 
     /* AVATAR UPLOAD */

@@ -11,13 +11,8 @@
 <!-- =====================================================
          WEBSITE ICON
     ====================================================== -->
-    <link rel="icon"
-    
-      href="icon3.png">
-
-<link rel="apple-touch-icon"
-      sizes="180x180"
-      href="icon3.png">
+    <link rel="icon" href="icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icon.png">
 
 
     <!-- =====================================================
@@ -2053,6 +2048,11 @@ header{
     <a href="shop.html">SHOP</a>
     <a href="about.html">ABOUT</a>
     <a href="contact.html">CONTACT</a>
+    <a href="profile.html" id="shop-profile-nav" style="display: none; align-items: center; gap: 6px;">
+      <i class="fa-solid fa-circle-user" style="color: #c1121f;"></i>
+      <span>PROFILE</span>
+      <span style="display: inline-block; width: 6px; height: 6px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 6px #22c55e;"></span>
+    </a>
   </nav>
 
   <button
@@ -2176,6 +2176,11 @@ header{
 
     <a href="contact.html">
       CONTACT
+    </a>
+
+    <a href="profile.html" id="shop-mobile-profile-link" style="display: none; align-items: center; justify-content: space-between;">
+      <span><i class="fa-solid fa-circle-user" style="margin-right: 8px; color: #c1121f;"></i> MY PROFILE</span>
+      <span style="display: inline-block; width: 7px; height: 7px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 6px #22c55e;"></span>
     </a>
 
   </nav>
@@ -3595,6 +3600,13 @@ document.addEventListener(
 renderProducts();
 
 updateCart();
+
+if (localStorage.getItem('ap_underworld_access') === 'true' && localStorage.getItem('ap_underworld_access_token')) {
+    const pNav = document.getElementById('shop-profile-nav');
+    const mNav = document.getElementById('shop-mobile-profile-link');
+    if (pNav) pNav.style.display = 'inline-flex';
+    if (mNav) mNav.style.display = 'flex';
+}
 
 </script>
 
