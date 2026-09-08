@@ -3049,29 +3049,34 @@
     background-color: #020204 !important;
   }
 
-  /* 1. Mobile Deep Obsidian Liquid Smoke Canvas (32.png) */
-  .cinematic-ambient-canvas {
+.cinematic-ambient-canvas {
     position: fixed !important;
     inset: 0 !important;
-    pointer-events: none !important;
     z-index: 0 !important;
+    pointer-events: none !important;
     overflow: hidden !important;
-    background-color: #020204 !important;
+
+    /* SAME MAIN BACKGROUND AS DESKTOP */
+    background-color: #05070d !important;
+
     background-image:
-      radial-gradient(ellipse at 50% 18%, rgba(193, 18, 31, 0.12) 0%, transparent 60%),
-      radial-gradient(ellipse at 50% 50%, rgba(2, 2, 5, 0.40) 25%, rgba(2, 2, 5, 0.94) 100%),
-      linear-gradient(180deg, rgba(2, 2, 5, 0.3) 0%, rgba(2, 2, 5, 0.65) 50%, rgba(2, 2, 5, 0.98) 100%),
+      radial-gradient(
+        ellipse at 50% 50%,
+        rgba(5, 7, 13, 0.15) 30%,
+        rgba(5, 7, 13, 0.75) 100%
+      ),
       url('32.png') !important;
+
     background-position: center top !important;
     background-size: cover !important;
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
   }
 
-  /* Deactivate blurry breathe spheres on mobile so 32.png remains sharp, deep & ink-dark */
+  /* Keep the original ambient visual system */
   .ambient-sphere-breathe,
   .ambient-ribbon-breathe {
-    display: none !important;
+    display: block !important;
   }
 
   /* 2. Floating Capsule Navbar (Dark Obsidian Glass) */
