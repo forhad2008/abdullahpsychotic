@@ -3029,10 +3029,23 @@
     /* LOGOUT */
     function handleSignOut() {
         if (!confirm('Are you sure you want to log out from Abdullah Psychotic?')) return;
+        const email = localStorage.getItem('ap_underworld_email') || userEmail || '';
+        const token = localStorage.getItem('ap_underworld_access_token');
+        if (email || token) {
+            try {
+                const script = document.createElement('script');
+                script.src = `${BACKEND_URL}?action=logout&email=${encodeURIComponent(email)}&accessToken=${encodeURIComponent(token || '')}&callback=cb_logout_${Date.now()}`;
+                document.body.appendChild(script);
+            } catch (e) {}
+        }
         localStorage.removeItem('ap_underworld_access');
         localStorage.removeItem('ap_underworld_email');
+        localStorage.removeItem('ap_underworld_phone');
         localStorage.removeItem('ap_underworld_access_token');
-        showToast('Signed out successfully.', 'info');
+        localStorage.removeItem('ap_underworld_signin_time');
+        localStorage.removeItem('ap_is_admin');
+        localStorage.removeItem('ap_active_otp');
+        showToast('Signed out. Account deactivated & data preserved.', 'info');
         setTimeout(() => { window.location.href = 'index.html'; }, 800);
     }
 

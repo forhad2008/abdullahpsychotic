@@ -1046,7 +1046,8 @@
             box-shadow: 0 0 10px rgba(34, 197, 94, 0.35);
         }
 
-        .pill-badge.status-inactive {
+        .pill-badge.status-inactive,
+        .pill-badge.status-deactivated {
             background: rgba(239, 68, 68, 0.12);
             border: 1px solid rgba(239, 68, 68, 0.3);
             color: #f87171;
@@ -1054,7 +1055,8 @@
             transition: var(--trans-smooth);
         }
 
-        .pill-badge.status-inactive:hover {
+        .pill-badge.status-inactive:hover,
+        .pill-badge.status-deactivated:hover {
             background: rgba(239, 68, 68, 0.2);
             box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
         }
@@ -3091,6 +3093,7 @@
                     <select id="user-status-filter" class="filter-select" onchange="filterUsers()">
                         <option value="ALL">All Statuses</option>
                         <option value="ACTIVE">Active Only</option>
+                        <option value="DEACTIVATED">Deactivated Only</option>
                         <option value="INACTIVE">Inactive Only</option>
                     </select>
 
@@ -3369,6 +3372,7 @@
                     <label class="form-label">Account Status</label>
                     <select id="edit-user-status" class="form-control">
                         <option value="ACTIVE">ACTIVE (Full Store Access)</option>
+                        <option value="DEACTIVATED">DEACTIVATED (Logged Out)</option>
                         <option value="INACTIVE">INACTIVE (Suspended)</option>
                     </select>
                 </div>
@@ -4127,8 +4131,8 @@
                         <span class="pill-badge role-${role}">${role}</span>
                     </td>
                     <td>
-                        <span class="pill-badge status-${status.toLowerCase()}" onclick="toggleUserStatus('${escapeAttribute(u.email)}')" title="Click to instantly toggle Active / Inactive">
-                            <i class="fas ${status === 'ACTIVE' ? 'fa-circle-check' : 'fa-circle-xmark'}"></i>
+                        <span class="pill-badge status-${status.toLowerCase()}" onclick="toggleUserStatus('${escapeAttribute(u.email)}')" title="Click to instantly toggle Active / Deactivated">
+                            <i class="fas ${status === 'ACTIVE' ? 'fa-circle-check' : (status === 'DEACTIVATED' ? 'fa-user-clock' : 'fa-circle-xmark')}"></i>
                             ${status}
                         </span>
                     </td>
@@ -4178,13 +4182,24 @@
         const user = allUsers.find(u => u.email.toLowerCase() === email.toLowerCase());
         if (!user) return;
 
-        const newStatus = String(user.status || 'ACTIVE').toUpperCase() === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
+        const current = String(user.status || 'ACTIVE').toUpperCase();
+        const newStatus = current === 'ACTIVE' ? 'DEACTIVATED' : 'ACTIVE';
         user.status = newStatus;
 
         saveUserOverride(user);
         renderUsers(allUsers);
         showToast(`User ${user.name || user.email} is now ${newStatus}.`);
         logAudit(`Toggled status for ${user.email} -> ${newStatus}`);
+
+        // Sync to backend Google Sheet
+        try {
+            const script = document.createElement('script');
+            const cb = 'adminToggle_' + Date.now();
+            window[cb] = function(res) { cleanupJsonp(cb, script); };
+            script.onerror = function() { cleanupJsonp(cb, script); };
+            script.src = `${BACKEND_URL}?action=admin_update_user&email=${encodeURIComponent(userEmail)}&accessToken=${encodeURIComponent(accessToken)}&targetEmail=${encodeURIComponent(user.email)}&status=${encodeURIComponent(newStatus)}&callback=${cb}`;
+            document.head.appendChild(script);
+        } catch (e) {}
     }
 
     function openUserDrawer(email) {

@@ -8501,7 +8501,7 @@ body:has(.ap-logout-modal.active) #welcome-screen {
                 class="ap-logout-btn"
                 id="ap-logout-btn"
                 style="background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%); color: #fff; border: 1px solid #ef4444; box-shadow: 0 4px 20px rgba(239,68,68,0.35); font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;">
-                <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> LOG OUT & DELETE TOKEN
+                <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> LOG OUT & DEACTIVATE SESSION
             </button>
 
         </div>
@@ -9291,7 +9291,7 @@ body:has(.ap-logout-modal.active) #welcome-screen {
         <h2 style="margin: 0 0 10px; color: #f3eee8; font-family: var(--font-heading); font-size: 28px; letter-spacing: 2px;">Logged Out</h2>
         <div style="width: 45px; height: 1px; margin: 15px auto 20px; background: #6f4b31;"></div>
         <p style="margin: 0 0 28px; color: #c9c0b8; font-family: var(--font-body); font-size: 12px; line-height: 1.6; letter-spacing: 1.2px; text-transform: uppercase;">
-            You have been successfully <strong>logged out</strong> & automatically <strong>unsubscribed</strong> from the list.
+            You have been successfully <strong>logged out</strong>. Your account status is <strong>DEACTIVATED</strong> in the backend, while your order history and profile remain <strong>safely preserved</strong>.
         </p>
         <button type="button" id="ap-logout-success-close-btn" style="width: min(100%, 220px); height: 46px; background: #4b2f1e; color: #fff; border: 1px solid #765039; border-radius: 4px; cursor: pointer; font-family: var(--font-body); font-size: 10px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase;">
             OKAY
@@ -10428,9 +10428,21 @@ underworldForm?.addEventListener('submit', async e => {
 });
 
 async function logoutUnderworld() {
-    const token = localStorage.getItem(UNDERWORLD_TOKEN_KEY);
+    const email = localStorage.getItem(UNDERWORLD_EMAIL_KEY) || '';
+    const token = localStorage.getItem(UNDERWORLD_TOKEN_KEY) || '';
     
-    // Completely destroy and delete all session tokens and keys
+    // Asynchronously notify backend to set user status to DEACTIVATED in Google Sheet
+    if (email || token) {
+        try {
+            callUnderworldBackend({
+                action: 'logout',
+                email: email,
+                accessToken: token
+            });
+        } catch (e) {}
+    }
+
+    // Completely destroy and delete all session tokens and keys from client
     localStorage.removeItem(UNDERWORLD_ACCESS_KEY);
     localStorage.removeItem(UNDERWORLD_EMAIL_KEY);
     localStorage.removeItem(UNDERWORLD_PHONE_KEY);
@@ -10438,16 +10450,6 @@ async function logoutUnderworld() {
     localStorage.removeItem(UNDERWORLD_SIGNIN_TIME_KEY);
     localStorage.removeItem('ap_is_admin');
     localStorage.removeItem('ap_active_otp');
-
-    // Asynchronously notify backend
-    if (token) {
-        try {
-            callUnderworldBackend({
-                action: 'logout',
-                accessToken: token
-            });
-        } catch (e) {}
-    }
 
     // Instantly update icon and hide all navigation links (before sign in state: all hidden)
     updateUnderworldIconState();
