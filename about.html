@@ -32,6 +32,7 @@
   <!-- FONT AWESOME -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
+
   <style>
     /* =========================================================
        1. GLOBAL RESET & LUXURY DESIGN TOKENS
@@ -139,10 +140,10 @@
       pointer-events: none;
       z-index: 0;
       overflow: hidden;
-      background-color: #06050a;
+      background-color: #05070d;
       background-image: 
-        radial-gradient(ellipse at 50% 50%, rgba(6, 5, 10, 0) 35%, rgba(6, 5, 10, 0.65) 100%),
-        url('luxury_liquid_bg.webp');
+        radial-gradient(ellipse at 50% 50%, rgba(5, 7, 13, 0.15) 30%, rgba(5, 7, 13, 0.75) 100%),
+        url('1.png');
       background-position: center top;
       background-size: cover;
       background-repeat: no-repeat;
@@ -151,27 +152,27 @@
     /* Soft breathing ambient caustics for organic depth */
     .ambient-sphere-breathe {
       position: absolute;
-      top: 22%;
-      left: -4%;
-      width: 42vw;
-      height: 42vw;
+      top: 20%;
+      left: -5%;
+      width: 45vw;
+      height: 45vw;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(229, 9, 20, 0.22) 0%, transparent 68%);
-      filter: blur(65px);
-      animation: ambientBreathe 7s ease-in-out infinite alternate;
+      background: radial-gradient(circle, rgba(26, 44, 76, 0.28) 0%, rgba(193, 18, 31, 0.12) 45%, transparent 70%);
+      filter: blur(80px);
+      animation: ambientBreathe 9s ease-in-out infinite alternate;
       pointer-events: none;
     }
 
     .ambient-ribbon-breathe {
       position: absolute;
-      top: 12%;
-      right: -4%;
-      width: 46vw;
-      height: 46vw;
+      top: 15%;
+      right: -5%;
+      width: 48vw;
+      height: 48vw;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(229, 9, 20, 0.18) 0%, transparent 70%);
-      filter: blur(75px);
-      animation: ambientBreathe 8.5s ease-in-out infinite alternate-reverse;
+      background: radial-gradient(circle, rgba(193, 18, 31, 0.16) 0%, rgba(20, 36, 64, 0.22) 50%, transparent 72%);
+      filter: blur(85px);
+      animation: ambientBreathe 11s ease-in-out infinite alternate-reverse;
       pointer-events: none;
     }
 
@@ -522,12 +523,6 @@
       display: inline-flex;
     }
 
-    @media (min-width: 900px) {
-      .btn-mobile-menu {
-        display: none !important;
-      }
-    }
-
     /* =========================================================
        3. HORIZONTAL STICKY CHAPTER NAV BAR (MOBILE & DESKTOP)
     ========================================================= */
@@ -722,6 +717,29 @@
       }
     }
 
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Live Different Pulse Beacon */
+    .live-dot-pulse {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #ff3344;
+      box-shadow: 0 0 8px #ff3344, 0 0 16px #ff001e;
+      animation: liveDotPulse 1.8s infinite ease-in-out;
+    }
+
     /* =========================================================
        4. HERO SHOWCASE SECTION (MATCHING MOCKUP DOUBLE CARD)
     ========================================================= */
@@ -748,9 +766,9 @@
 
     /* Left Card: Brand Thesis */
     .hero-brand-card {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.075) 0%, rgba(255, 255, 255, 0.015) 42%, rgba(10, 8, 16, 0.45) 100%);
-      backdrop-filter: blur(30px) saturate(190%);
-      -webkit-backdrop-filter: blur(30px) saturate(190%);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.018) 38%, rgba(8, 11, 20, 0.72) 100%);
+      backdrop-filter: blur(32px) saturate(180%) brightness(1.06);
+      -webkit-backdrop-filter: blur(32px) saturate(180%) brightness(1.06);
       border: 1px solid rgba(255, 255, 255, 0.18);
       border-radius: 28px;
       padding: clamp(34px, 5vw, 56px);
@@ -760,20 +778,31 @@
       position: relative;
       overflow: hidden;
       box-shadow: 
-        inset 0 1.5px 1px rgba(255, 255, 255, 0.45),
-        inset 0 -1px 1px rgba(255, 255, 255, 0.05),
-        0 25px 60px -10px rgba(0, 0, 0, 0.75);
+        inset 0 1.5px 2px rgba(255, 255, 255, 0.65),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.06),
+        0 25px 70px rgba(0, 0, 0, 0.85),
+        0 0 35px rgba(193, 18, 31, 0.10);
       transition: var(--trans-smooth);
+    }
+
+    .hero-brand-card:hover {
+      border-color: rgba(255, 255, 255, 0.35);
+      box-shadow: 
+        inset 0 1.5px 2.5px rgba(255, 255, 255, 0.8),
+        0 35px 95px rgba(0, 0, 0, 0.9),
+        0 0 45px rgba(193, 18, 31, 0.18);
+      transform: translateY(-3px);
     }
 
     .hero-brand-card::before {
       content: "";
       position: absolute;
       top: 0;
-      left: 10%;
-      right: 10%;
-      height: 1px;
+      left: 12%;
+      right: 12%;
+      height: 2px;
       background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.85), transparent);
+      filter: blur(0.2px);
     }
 
     .hero-card-eyebrow {
@@ -782,7 +811,7 @@
       font-weight: 700;
       letter-spacing: 4px;
       text-transform: uppercase;
-      color: #928e9f;
+      color: rgba(255, 255, 255, 0.65);
       margin-bottom: 20px;
     }
 
@@ -798,17 +827,17 @@
 
     .crimson-glow-text {
       color: #c1121f;
-      text-shadow: 0 0 20px rgba(193, 18, 31, 0.7), 0 0 45px rgba(193, 18, 31, 0.4);
+      text-shadow: 0 0 20px rgba(193, 18, 31, 0.75), 0 0 45px rgba(193, 18, 31, 0.45);
       letter-spacing: 3px;
     }
 
     .hero-brand-subtitle {
       font-family: var(--font-sans);
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 700;
       letter-spacing: 3.5px;
       text-transform: uppercase;
-      color: #c4c1cd;
+      color: rgba(255, 255, 255, 0.72);
       margin-bottom: 22px;
     }
 
@@ -827,33 +856,49 @@
       gap: 12px;
       padding: 13px 32px;
       border-radius: 9999px;
-      background: rgba(193, 18, 31, 0.14);
-      border: 1px solid rgba(193, 18, 31, 0.8);
+      background: linear-gradient(135deg, rgba(193, 18, 31, 0.22) 0%, rgba(255, 255, 255, 0.05) 35%, rgba(12, 10, 18, 0.75) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.22);
       color: #ffffff;
       font-family: var(--font-sans);
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 600;
       letter-spacing: 2px;
-      text-transform: uppercase;
+      text-transform: capitalize;
       text-decoration: none;
-      box-shadow: 0 0 20px rgba(193, 18, 31, 0.3);
+      box-shadow: 
+        inset 0 1px 1px rgba(255, 255, 255, 0.4),
+        inset -2px 0 12px rgba(193, 18, 31, 0.4),
+        0 12px 28px rgba(0, 0, 0, 0.6);
       transition: var(--trans-smooth);
       width: fit-content;
     }
 
     .btn-discover-pill:hover {
-      background: var(--crimson);
-      border-color: #ffffff;
-      box-shadow: 0 0 35px rgba(193, 18, 31, 0.75);
+      background: linear-gradient(135deg, rgba(193, 18, 31, 0.45) 0%, rgba(255, 255, 255, 0.12) 35%, rgba(16, 12, 24, 0.9) 100%);
+      border-color: rgba(255, 255, 255, 0.45);
+      box-shadow: 
+        inset 0 1px 1.5px rgba(255, 255, 255, 0.6),
+        0 0 35px rgba(193, 18, 31, 0.7),
+        0 16px 36px rgba(0, 0, 0, 0.75);
       transform: translateY(-2px);
       color: #fff;
     }
 
+    .btn-discover-pill i {
+      transition: transform var(--trans-fast);
+    }
+
+    .btn-discover-pill:hover i {
+      transform: translateX(4px);
+    }
+
     /* Right Card: Model Showcase */
     .hero-model-card {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.075) 0%, rgba(255, 255, 255, 0.015) 42%, rgba(10, 8, 16, 0.45) 100%);
-      backdrop-filter: blur(30px) saturate(190%);
-      -webkit-backdrop-filter: blur(30px) saturate(190%);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 40%, rgba(8, 11, 20, 0.72) 100%);
+      backdrop-filter: blur(32px) saturate(180%) brightness(1.06);
+      -webkit-backdrop-filter: blur(32px) saturate(180%) brightness(1.06);
       border: 1px solid rgba(255, 255, 255, 0.18);
       border-radius: 28px;
       padding: 14px;
@@ -861,18 +906,31 @@
       overflow: hidden;
       display: flex;
       box-shadow: 
-        inset 0 1.5px 1px rgba(255, 255, 255, 0.45),
-        0 25px 60px -10px rgba(0, 0, 0, 0.75),
-        0 0 30px rgba(193, 18, 31, 0.12);
+        inset 0 1.5px 2px rgba(255, 255, 255, 0.65),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.06),
+        0 25px 70px rgba(0, 0, 0, 0.85),
+        0 0 35px rgba(193, 18, 31, 0.14);
       transition: var(--trans-smooth);
     }
 
     .hero-model-card:hover {
-      border-color: rgba(255, 255, 255, 0.28);
+      border-color: rgba(255, 255, 255, 0.35);
       box-shadow: 
-        inset 0 1.5px 2px rgba(255, 255, 255, 0.7),
-        0 30px 80px -10px rgba(0, 0, 0, 0.9),
-        0 0 45px rgba(193, 18, 31, 0.25);
+        inset 0 1.5px 2.5px rgba(255, 255, 255, 0.8),
+        0 35px 95px rgba(0, 0, 0, 0.9),
+        0 0 45px rgba(193, 18, 31, 0.22);
+      transform: translateY(-3px);
+    }
+
+    .hero-model-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 12%;
+      right: 12%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.85), transparent);
+      filter: blur(0.2px);
     }
 
     .hero-model-frame {
@@ -880,10 +938,10 @@
       width: 100%;
       height: 100%;
       min-height: 400px;
-      border: 1px solid rgba(193, 18, 31, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: inset 0 0 25px rgba(193, 18, 31, 0.2), 0 0 25px rgba(193, 18, 31, 0.2);
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6);
     }
 
     .hero-model-img {
@@ -891,7 +949,7 @@
       height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform 0.8s ease;
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .hero-model-card:hover .hero-model-img {
@@ -902,37 +960,23 @@
       position: absolute;
       top: 18px;
       right: 18px;
-      background: rgba(10, 8, 16, 0.72);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(10, 12, 20, 0.75);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       border-radius: 9999px;
-      padding: 6px 14px;
+      padding: 7px 16px;
       font-family: var(--font-sans);
-      font-size: 10px;
+      font-size: 10.5px;
       font-weight: 700;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       color: #ffffff;
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 8px;
       z-index: 3;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    }
-
-    .live-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #ff3344;
-      box-shadow: 0 0 8px #ff3344, 0 0 16px #c1121f;
-      animation: liveDotPulse 1.8s infinite ease-in-out;
-    }
-
-    @keyframes liveDotPulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(1.3); }
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
     }
 
     /* Horizontal Neon Laser Flare Beam */
@@ -952,7 +996,7 @@
     /* Right Vertical Section Indexer */
     .vertical-story-indexer {
       position: fixed;
-      right: clamp(14px, 2vw, 30px);
+      right: clamp(14px, 2.2vw, 32px);
       top: 50%;
       transform: translateY(-50%);
       display: none;
@@ -960,16 +1004,16 @@
       align-items: center;
       gap: 12px;
       z-index: 950;
-      background: rgba(14, 10, 22, 0.68);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.13);
+      background: rgba(10, 13, 22, 0.75);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.16);
       padding: 18px 10px;
       border-radius: 9999px;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4), 0 15px 40px rgba(0, 0, 0, 0.7);
     }
 
-    @media (min-width: 1100px) {
+    @media (min-width: 1024px) {
       .vertical-story-indexer {
         display: flex;
       }
@@ -983,17 +1027,20 @@
       color: rgba(255, 255, 255, 0.45);
       text-decoration: none;
       transition: var(--trans-fast);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .index-step:hover,
     .index-step.active {
       color: #ffffff;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
-    }
-
-    .index-step.active {
-      color: #ff3344;
-      text-shadow: 0 0 12px rgba(255, 51, 68, 0.8);
+      background: rgba(193, 18, 31, 0.3);
+      box-shadow: 0 0 12px rgba(193, 18, 31, 0.6);
+      border: 1px solid rgba(193, 18, 31, 0.5);
     }
 
     .index-line {
@@ -1008,15 +1055,15 @@
     .my-story-showcase-tray {
       position: relative;
       max-width: 1220px;
-      margin: clamp(40px, 6vw, 64px) auto clamp(60px, 8vw, 90px);
+      margin: clamp(28px, 4vw, 42px) auto clamp(60px, 8vw, 90px);
       padding: 0 clamp(16px, 4vw, 40px);
       z-index: 2;
     }
 
     .mystory-tray-inner {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.075) 0%, rgba(255, 255, 255, 0.015) 42%, rgba(10, 8, 16, 0.48) 100%);
-      backdrop-filter: blur(30px) saturate(190%);
-      -webkit-backdrop-filter: blur(30px) saturate(190%);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 40%, rgba(8, 11, 20, 0.72) 100%);
+      backdrop-filter: blur(32px) saturate(180%) brightness(1.06);
+      -webkit-backdrop-filter: blur(32px) saturate(180%) brightness(1.06);
       border: 1px solid rgba(255, 255, 255, 0.18);
       border-radius: 28px;
       padding: clamp(32px, 4.5vw, 52px);
@@ -1024,10 +1071,21 @@
       grid-template-columns: 1fr;
       gap: clamp(32px, 4vw, 56px);
       box-shadow: 
-        inset 0 1.5px 1px rgba(255, 255, 255, 0.45),
-        0 25px 60px -10px rgba(0, 0, 0, 0.75);
+        inset 0 1.5px 2px rgba(255, 255, 255, 0.65),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.06),
+        0 25px 70px rgba(0, 0, 0, 0.85),
+        0 0 35px rgba(193, 18, 31, 0.10);
       position: relative;
       overflow: hidden;
+      transition: var(--trans-smooth);
+    }
+
+    .mystory-tray-inner:hover {
+      border-color: rgba(255, 255, 255, 0.35);
+      box-shadow: 
+        inset 0 1.5px 2.5px rgba(255, 255, 255, 0.8),
+        0 35px 95px rgba(0, 0, 0, 0.9),
+        0 0 45px rgba(193, 18, 31, 0.18);
     }
 
     .mystory-tray-inner::before {
@@ -1036,8 +1094,9 @@
       top: 0;
       left: 12%;
       right: 12%;
-      height: 1px;
+      height: 2px;
       background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.85), transparent);
+      filter: blur(0.2px);
     }
 
     @media (min-width: 960px) {
@@ -1132,10 +1191,10 @@
     }
 
     .stat-card {
-      background: rgba(255, 255, 255, 0.035);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.015) 50%, rgba(10, 14, 24, 0.72) 100%);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       border-radius: 18px;
       padding: 22px 14px;
       text-align: center;
@@ -1144,22 +1203,29 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.28), 0 10px 25px rgba(0, 0, 0, 0.4);
-      transition: var(--trans-fast);
+      box-shadow: 
+        inset 0 1.5px 1.5px rgba(255, 255, 255, 0.55),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.05),
+        0 14px 35px rgba(0, 0, 0, 0.55),
+        0 0 20px rgba(193, 18, 31, 0.08);
+      transition: var(--trans-smooth);
     }
 
     .stat-card:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(193, 18, 31, 0.55);
-      transform: translateY(-3px);
-      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5), 0 15px 35px rgba(193, 18, 31, 0.25);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 50%, rgba(14, 18, 32, 0.8) 100%);
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: translateY(-4px);
+      box-shadow: 
+        inset 0 1.5px 2px rgba(255, 255, 255, 0.75),
+        0 20px 45px rgba(0, 0, 0, 0.7),
+        0 0 30px rgba(193, 18, 31, 0.25);
     }
 
     .stat-icon {
       color: #ff3344;
-      font-size: 18px;
+      font-size: 20px;
       margin-bottom: 4px;
-      filter: drop-shadow(0 0 8px rgba(193, 18, 31, 0.6));
+      filter: drop-shadow(0 0 10px rgba(255, 51, 68, 0.75));
     }
 
     .stat-value {
@@ -2699,40 +2765,53 @@
 
     .liquid-glass-window,
     .luxury-visual-card,
-    .transformation-card{
-      background:linear-gradient(135deg,
-        rgba(255,255,255,.105) 0%,
-        rgba(255,255,255,.035) 32%,
-        rgba(255,255,255,.012) 55%,
-        rgba(9,7,17,.42) 100%);
-      border:1px solid var(--glass-line);
-      backdrop-filter:blur(34px) saturate(180%) brightness(1.08);
-      -webkit-backdrop-filter:blur(34px) saturate(180%) brightness(1.08);
+    .transformation-card,
+    .creed-card,
+    .discipline-pillar-card,
+    .manifesto-parchment-box,
+    .final-cta-card {
+      border-radius: 26px;
+      background: linear-gradient(145deg,
+        rgba(255, 255, 255, 0.08) 0%,
+        rgba(255, 255, 255, 0.02) 38%,
+        rgba(8, 11, 20, 0.70) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(32px) saturate(180%) brightness(1.06);
+      -webkit-backdrop-filter: blur(32px) saturate(180%) brightness(1.06);
       box-shadow:
-        inset 0 1px 1px rgba(255,255,255,.55),
-        inset 0 -1px 0 rgba(255,255,255,.05),
-        0 20px 70px rgba(0,0,0,.42),
-        0 2px 0 rgba(255,255,255,.025);
+        inset 0 1.5px 2px rgba(255, 255, 255, 0.65),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.06),
+        0 25px 70px rgba(0, 0, 0, 0.82),
+        0 0 35px rgba(193, 18, 31, 0.10);
     }
 
     .liquid-glass-window::before,
     .luxury-visual-card::before,
-    .transformation-card::before{
-      height:2px;
-      left:12%;right:12%;
-      background:linear-gradient(90deg,transparent,rgba(255,255,255,.82),transparent);
-      filter:blur(.15px);
+    .transformation-card::before,
+    .creed-card::before,
+    .discipline-pillar-card::before,
+    .manifesto-parchment-box::before,
+    .final-cta-card::before {
+      height: 2px;
+      left: 12%;
+      right: 12%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.85), transparent);
+      filter: blur(0.2px);
     }
 
     .liquid-glass-window:hover,
     .luxury-visual-card:hover,
-    .transformation-card:hover{
-      border-color:rgba(255,255,255,.30);
+    .transformation-card:hover,
+    .creed-card:hover,
+    .discipline-pillar-card:hover,
+    .manifesto-parchment-box:hover,
+    .final-cta-card:hover {
+      border-color: rgba(255, 255, 255, 0.35);
       box-shadow:
-        inset 0 1px 1.5px rgba(255,255,255,.72),
-        inset 0 -1px 0 rgba(255,255,255,.07),
-        0 30px 90px rgba(0,0,0,.52),
-        0 0 45px rgba(193,18,31,.10);
+        inset 0 1.5px 2.5px rgba(255, 255, 255, 0.8),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+        0 35px 95px rgba(0, 0, 0, 0.9),
+        0 0 45px rgba(193, 18, 31, 0.18);
     }
 
     .liquid-window-bar{
@@ -2766,7 +2845,222 @@
       .liquid-glass-window,.luxury-visual-card,.transformation-card{backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);}
     }
 
-  </style>
+  
+
+    /* =========================================================
+       ULTRA-CLEAR PREMIUM LIQUID GLASS
+       SOFT RED + BLUE / BACKGROUND REMAINS CLEARLY VISIBLE
+       FINAL OVERRIDE — KEEP THIS AT THE END OF THE STYLE BLOCK
+       ========================================================= */
+
+    .liquid-glass-window,
+    .luxury-visual-card,
+    .transformation-card,
+    .creed-card,
+    .discipline-pillar-card,
+    .manifesto-parchment-box,
+    .final-cta-card,
+    .hero-brand-card,
+    .hero-model-card,
+    .mystory-tray-inner,
+    .stat-card {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+
+      /* Clear glass: only a very soft red/blue optical tint */
+      background:
+        radial-gradient(circle at 100% 0%, rgba(70, 140, 230, .055), transparent 48%),
+        radial-gradient(circle at 0% 100%, rgba(193, 18, 31, .045), transparent 48%),
+        rgba(255, 255, 255, .030);
+
+      backdrop-filter: blur(14px) saturate(118%) brightness(1.035);
+      -webkit-backdrop-filter: blur(14px) saturate(118%) brightness(1.035);
+
+      border-color: rgba(220, 235, 255, .23);
+
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.58),
+        inset 0 -1px 0 rgba(255,255,255,.035),
+        inset 0 0 24px rgba(150,190,230,.025),
+        0 18px 48px rgba(0,0,0,.34),
+        9px 0 32px rgba(65,130,220,.024),
+        -9px 0 32px rgba(193,18,31,.017);
+    }
+
+    .liquid-glass-window::before,
+    .luxury-visual-card::before,
+    .transformation-card::before,
+    .creed-card::before,
+    .discipline-pillar-card::before,
+    .manifesto-parchment-box::before,
+    .final-cta-card::before,
+    .hero-brand-card::before,
+    .hero-model-card::before,
+    .mystory-tray-inner::before,
+    .stat-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        linear-gradient(120deg,
+          rgba(255,255,255,.042) 0%,
+          transparent 20%,
+          transparent 70%,
+          rgba(100,160,225,.016) 100%);
+    }
+
+    .liquid-glass-window::after,
+    .luxury-visual-card::after,
+    .transformation-card::after,
+    .creed-card::after,
+    .discipline-pillar-card::after,
+    .manifesto-parchment-box::after,
+    .final-cta-card::after,
+    .hero-brand-card::after,
+    .hero-model-card::after,
+    .mystory-tray-inner::after,
+    .stat-card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 8%;
+      right: 8%;
+      height: 1px;
+      z-index: 5;
+      pointer-events: none;
+      background: linear-gradient(90deg,
+        transparent,
+        rgba(255,255,255,.38),
+        rgba(225,240,255,.62),
+        rgba(255,255,255,.30),
+        transparent);
+      box-shadow: 0 0 7px rgba(220,235,255,.16);
+    }
+
+    .liquid-glass-window > *,
+    .luxury-visual-card > *,
+    .transformation-card > *,
+    .creed-card > *,
+    .discipline-pillar-card > *,
+    .manifesto-parchment-box > *,
+    .final-cta-card > *,
+    .hero-brand-card > *,
+    .hero-model-card > *,
+    .mystory-tray-inner > *,
+    .stat-card > * {
+      position: relative;
+      z-index: 3;
+    }
+
+    /* Main hero glass gets a slightly clearer optical layer */
+    .hero-brand-card,
+    .hero-model-card {
+      background:
+        radial-gradient(circle at 100% 0%, rgba(75,145,230,.065), transparent 50%),
+        radial-gradient(circle at 0% 100%, rgba(193,18,31,.050), transparent 50%),
+        rgba(255,255,255,.025);
+      backdrop-filter: blur(13px) saturate(120%) brightness(1.035);
+      -webkit-backdrop-filter: blur(13px) saturate(120%) brightness(1.035);
+      border-color: rgba(220,235,255,.25);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.60),
+        inset 0 0 22px rgba(130,175,220,.022),
+        0 20px 50px rgba(0,0,0,.35),
+        9px 0 34px rgba(70,140,220,.028),
+        -9px 0 34px rgba(193,18,31,.018);
+    }
+
+    /* Window header: transparent so content behind it remains readable */
+    .liquid-window-bar {
+      background: rgba(255,255,255,.025) !important;
+      backdrop-filter: blur(10px) saturate(115%);
+      -webkit-backdrop-filter: blur(10px) saturate(115%);
+      border-bottom-color: rgba(220,235,255,.09);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.24);
+    }
+
+    /* Clear glass model frame */
+    .hero-model-frame {
+      background: rgba(255,255,255,.018) !important;
+      border-color: rgba(220,235,255,.20) !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.40),
+        inset 0 0 24px rgba(120,170,220,.018),
+        0 0 25px rgba(100,150,210,.045) !important;
+    }
+
+    /* Small badges remain glassy instead of becoming solid */
+    .hero-eyebrow,
+    .hero-badge-pill,
+    .editorial-divider-pill,
+    .floating-accent-badge,
+    .window-meta-tag,
+    .chapter-pill,
+    .hero-live-badge {
+      background:
+        radial-gradient(circle at 100% 0%, rgba(70,135,220,.060), transparent 60%),
+        radial-gradient(circle at 0% 100%, rgba(193,18,31,.045), transparent 60%),
+        rgba(255,255,255,.040) !important;
+      backdrop-filter: blur(9px) saturate(115%);
+      -webkit-backdrop-filter: blur(9px) saturate(115%);
+      border-color: rgba(220,235,255,.18) !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.38),
+        0 6px 18px rgba(0,0,0,.20);
+    }
+
+    .liquid-glass-window:hover,
+    .luxury-visual-card:hover,
+    .transformation-card:hover,
+    .creed-card:hover,
+    .discipline-pillar-card:hover,
+    .manifesto-parchment-box:hover,
+    .final-cta-card:hover,
+    .hero-brand-card:hover,
+    .hero-model-card:hover,
+    .mystory-tray-inner:hover,
+    .stat-card:hover {
+      border-color: rgba(225,240,255,.32);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.66),
+        inset 0 0 28px rgba(140,185,230,.030),
+        0 22px 58px rgba(0,0,0,.40),
+        10px 0 38px rgba(70,140,220,.035),
+        -10px 0 38px rgba(193,18,31,.024);
+    }
+
+    @media (max-width: 768px) {
+      .liquid-glass-window,
+      .luxury-visual-card,
+      .transformation-card,
+      .creed-card,
+      .discipline-pillar-card,
+      .manifesto-parchment-box,
+      .final-cta-card,
+      .hero-brand-card,
+      .hero-model-card,
+      .mystory-tray-inner,
+      .stat-card {
+        backdrop-filter: blur(11px) saturate(112%) brightness(1.025);
+        -webkit-backdrop-filter: blur(11px) saturate(112%) brightness(1.025);
+        background:
+          radial-gradient(circle at 100% 0%, rgba(70,140,230,.042), transparent 50%),
+          radial-gradient(circle at 0% 100%, rgba(193,18,31,.030), transparent 50%),
+          rgba(255,255,255,.022);
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,.50),
+          0 15px 38px rgba(0,0,0,.34);
+      }
+    }
+
+</style>
+
+
+
+
 </head>
 
 <body>
@@ -2787,10 +3081,6 @@
       <a href="index.html" class="brand-logo-pill" aria-label="Abdullah Psychotic Home">
         <span class="logo-a">A.</span><span class="logo-p">P</span>
       </a>
-
-      <button type="button" class="header-icon-btn btn-mobile-menu" id="mobile-menu-toggle-btn" aria-label="Open navigation menu">
-        <i class="fas fa-bars"></i>
-      </button>
     </div>
 
     <nav class="desktop-nav" aria-label="Primary navigation">
@@ -2810,6 +3100,10 @@
         <i class="fas fa-user"></i>
       </a>
 
+      <button type="button" class="header-icon-btn btn-mobile-menu" id="mobile-menu-toggle-btn" aria-label="Open navigation menu">
+        <i class="fas fa-bars"></i>
+      </button>
+
       <button type="button" class="header-icon-btn" id="header-cart-btn" aria-label="Open shopping bag">
         <i class="fas fa-bag-shopping"></i>
         <span class="cart-badge-counter" id="cart-counter-badge">0</span>
@@ -2823,18 +3117,18 @@
   <aside class="vertical-story-indexer" aria-label="Story section progression">
     <a href="#hero-top" class="index-step active" onclick="smoothJumpTo(event, 'hero-top')">01</a>
     <span class="index-line"></span>
-    <a href="#mystory" class="index-step" onclick="smoothJumpTo(event, 'mystory')">02</a>
+    <a href="#beginning" class="index-step" onclick="smoothJumpTo(event, 'beginning')">02</a>
     <span class="index-line"></span>
-    <a href="#beginning" class="index-step" onclick="smoothJumpTo(event, 'beginning')">03</a>
+    <a href="#decision" class="index-step" onclick="smoothJumpTo(event, 'decision')">03</a>
   </aside>
 
   <!-- =========================================================
-       3. HERO SHOWCASE SECTION (MATCHING MOCKUP DOUBLE CARD)
+       3. HERO SHOWCASE SECTION (100% PURE HTML/CSS LIQUID GLASS)
   ========================================================= -->
   <section class="hero-showcase-section" id="hero-top">
     <div class="hero-double-grid">
 
-      <!-- Left Card: Brand Thesis -->
+      <!-- Left Card: Brand Thesis Glass Window -->
       <div class="hero-brand-card">
         <div class="hero-card-eyebrow">ABOUT</div>
         <h1 class="hero-brand-title">
@@ -2851,13 +3145,13 @@
         </a>
       </div>
 
-      <!-- Right Card: Model Visual Showcase -->
+      <!-- Right Card: Model Visual Showcase Glass Window -->
       <div class="hero-model-card">
         <div class="hero-model-frame">
           <div class="hero-live-badge">
-            <span class="live-dot"></span> Live Different
+            <span class="live-dot-pulse"></span> Live Different
           </div>
-          <img src="hero_model_clean.webp" alt="Abdullah Psychotic - Live Different" class="hero-model-img">
+          <img src="hero_model_v4.webp" alt="Abdullah Psychotic - Live Different" class="hero-model-img" loading="eager" fetchpriority="high">
           <div class="laser-flare-beam"></div>
         </div>
       </div>
@@ -2866,7 +3160,7 @@
   </section>
 
   <!-- =========================================================
-       4. "MY STORY" SHOWCASE TRAY (MATCHING MOCKUP LOWER CARD)
+       4. "MY STORY" SHOWCASE TRAY (100% PURE HTML/CSS LIQUID GLASS)
   ========================================================= -->
   <section class="my-story-showcase-tray" id="mystory">
     <div class="mystory-tray-inner">
@@ -2890,22 +3184,22 @@
       <!-- Right Column: 4 Stat Metric Tiles & Cursive Signature -->
       <div class="mystory-right-col">
         <div class="stats-metric-grid">
-          <div class="stat-card">
+          <div class="stat-card" onclick="smoothJumpTo(event, 'philosophy')" title="100% Self Made · Discipline & Dedication">
             <i class="fa-solid fa-crown stat-icon"></i>
             <div class="stat-value">100%</div>
             <div class="stat-label">Self Made</div>
           </div>
-          <div class="stat-card">
+          <div class="stat-card" onclick="smoothJumpTo(event, 'transformation')" title="∞ Bigger Dreams · Uncapped Ambition">
             <i class="fa-solid fa-gem stat-icon"></i>
             <div class="stat-value">∞</div>
             <div class="stat-label">Bigger Dreams</div>
           </div>
-          <div class="stat-card">
+          <div class="stat-card" onclick="smoothJumpTo(event, 'manifesto')" title="0 Limits · The Boundary Is an Illusion">
             <i class="fa-regular fa-star stat-icon"></i>
             <div class="stat-value">0</div>
             <div class="stat-label">Limits</div>
           </div>
-          <div class="stat-card">
+          <div class="stat-card" onclick="smoothJumpTo(event, 'beginning')" title="1 Mission · The Architecture of Becoming">
             <i class="fa-solid fa-mountain stat-icon"></i>
             <div class="stat-value">1</div>
             <div class="stat-label">Mission</div>
@@ -2913,7 +3207,7 @@
         </div>
 
         <div class="signature-vision-row">
-          <img src="signature_clean.png" alt="Abdullah Psychotic" class="founder-signature-img">
+          <img src="signature_clean.png" alt="Abdullah Psychotic" class="founder-signature-img" loading="lazy">
           <div class="vision-tag-wrap">
             <span class="vision-dash"></span>
             <div class="vision-labels">
@@ -3438,402 +3732,420 @@
           <a href="https://x.com/abdullahtheLeg" target="_blank" rel="noopener" class="footer-social-btn" aria-label="Twitter">
             <i class="fab fa-x-twitter"></i>
           </a>
-          <a href="https://www.youtube.com/@abdullahforhadthelegend" target="_blank" rel="noopener" class="footer-social-btn" aria-label="YouTube">
-            <i class="fab fa-youtube"></i>
-          </a>
-        </div>
-      </div>
-
-      <div class="footer-col">
-        <h4>COLLECTIONS</h4>
-        <ul>
-          <li><a href="index.html#shop">Heavyweight Hoodies</a></li>
-          <li><a href="index.html#shop">Architectural Tees</a></li>
-          <li><a href="index.html#shop">Footwear & Boots</a></li>
-          <li><a href="index.html#shop">Artisanal Perfumes</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>PATRON SERVICE</h4>
-        <ul>
-          <li><a href="order.html">Track Real Order</a></li>
-          <li><a href="profile.html">Client Dossier</a></li>
-          <li><a href="size.html">Sizing Guide</a></li>
-          <li><a href="faq.html">VIP Help & FAQs</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>EXECUTIVE</h4>
-        <ul>
-          <li><a href="about.html">Brand Philosophy</a></li>
-          <li><a href="contact.html">Concierge Desk</a></li>
-          <li><a href="privacy.html">Privacy Policy</a></li>
-          <li><a href="admin.html">Staff Console</a></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="footer-bottom-copyright">
-      &copy; 2026 ABDULLAH PSYCHOTIC LIFESTYLE. ALL INTELLECTUAL PROPERTY RESERVED. CRAFTED FOR THE OUTLIERS.
-    </div>
-  </footer>
-
-  <!-- =========================================================
-       13. MOBILE FLOATING DOCK (THUMB-ZONE NAVIGATION)
-  ========================================================= -->
-  <nav class="mobile-floating-dock" aria-label="Mobile quick actions">
-    <a href="index.html" class="dock-tab" title="Home">
-      <i class="fas fa-house"></i>
-      <span>Home</span>
-    </a>
-    <a href="index.html#shop" class="dock-tab" title="Shop Collection">
-      <i class="fas fa-store"></i>
-      <span>Shop</span>
-    </a>
-    <a href="about.html" class="dock-tab active" title="Our Story">
-      <i class="fas fa-book-open"></i>
-      <span>Story</span>
-    </a>
-    <a href="order.html" class="dock-tab" title="Track Live Order">
-      <i class="fas fa-truck-fast"></i>
-      <span>Track</span>
-    </a>
-    <button type="button" class="dock-tab" id="dock-cart-btn" style="background: none; border: none;" title="View Shopping Bag">
-      <i class="fas fa-bag-shopping"></i>
-      <span>Bag</span>
-      <span class="dock-cart-badge" id="dock-cart-badge">0</span>
-    </button>
-  </nav>
-
-  <!-- =========================================================
-       14. DRAWERS (SIDE MENU & SHOPPING CART)
-  ========================================================= -->
-  <div class="drawer-backdrop" id="drawer-backdrop"></div>
-
-  <!-- Mobile Side Menu -->
-  <aside class="side-nav-drawer" id="side-menu-drawer" aria-hidden="true">
-    <div class="drawer-header">
-      <div class="drawer-brand-col">
-        <span class="drawer-brand">ABDULLAH PSYCHOTIC</span>
-        <span class="drawer-badge-pill"><i class="fas fa-crown"></i> VIP Concierge</span>
-      </div>
-      <button type="button" class="drawer-close-btn" id="close-menu-btn" aria-label="Close menu">&times;</button>
-    </div>
-    <div class="drawer-menu-links">
-      <a href="index.html">
-        <span class="drawer-link-inner"><i class="fas fa-house"></i> <span>Home</span></span>
-        <i class="fas fa-chevron-right drawer-arrow"></i>
-      </a>
-      <a href="index.html#shop">
-        <span class="drawer-link-inner"><i class="fas fa-shirt"></i> <span>Collections</span></span>
-        <i class="fas fa-chevron-right drawer-arrow"></i>
-      </a>
-      <a href="about.html" class="active">
-        <span class="drawer-link-inner"><i class="fas fa-book-open"></i> <span>Our Story & Code</span></span>
-        <i class="fas fa-chevron-right drawer-arrow"></i>
-      </a>
-      <a href="order.html">
-        <span class="drawer-link-inner"><i class="fas fa-truck-fast"></i> <span>Track Order</span></span>
-        <i class="fas fa-chevron-right drawer-arrow"></i>
-      </a>
-      <a href="profile.html">
-        <span class="drawer-link-inner"><i class="fas fa-user-astronaut"></i> <span>VIP Dossier</span></span>
-        <i class="fas fa-chevron-right drawer-arrow"></i>
-      </a>
-      <a href="contact.html">
-        <span class="drawer-link-inner"><i class="fas fa-headset"></i> <span>Concierge Desk</span></span>
-        <i class="fas fa-chevron-right drawer-arrow"></i>
-      </a>
-    </div>
-    <div class="drawer-footer-action">
-      <a href="index.html#shop" class="drawer-shop-btn">
-        <i class="fas fa-bag-shopping"></i> Explore Collection
-      </a>
-    </div>
-  </aside>
-
-  <!-- Shopping Bag Drawer -->
-  <aside class="side-cart-drawer" id="side-cart-drawer" aria-hidden="true">
-    <div class="cart-drawer-header">
-      <h3>YOUR SHOPPING BAG</h3>
-      <button type="button" class="drawer-close-btn" id="close-cart-btn" aria-label="Close cart">&times;</button>
-    </div>
-    <div class="cart-drawer-items" id="cart-drawer-items-list">
-      <!-- Items dynamically populated from localStorage['ap_user_cart'] -->
-    </div>
-    <div class="cart-drawer-footer">
-      <div class="cart-subtotal-line">
-        <span>SUBTOTAL</span>
-        <strong id="cart-subtotal-display">$0.00</strong>
-      </div>
-      <a href="cart.html" class="cart-checkout-btn">PROCEED TO CHECKOUT</a>
-    </div>
-  </aside>
-
-  <!-- =========================================================
-       15. QUICK SCROLL (BOTTOM / TOP) BUTTON
-  ========================================================= -->
-  <button type="button" class="quick-scroll-btn" id="quick-scroll-btn" aria-label="Scroll page" title="Scroll to bottom">
-    <i class="fas fa-chevron-down" id="quick-scroll-icon"></i>
-  </button>
-
-  <!-- =========================================================
-       16. LIVE SCRIPTS & INTERACTION LOGIC
-  ========================================================= -->
-  <script>
-    'use strict';
-
-    /* ================= CART SYNCHRONIZATION ================= */
-    let cart = [];
-    try {
-      cart = JSON.parse(localStorage.getItem('ap_user_cart') || '[]');
-    } catch (e) {
-      cart = [];
-    }
-
-    function updateCartUI() {
-      const topBadge = document.getElementById('cart-counter-badge');
-      const dockBadge = document.getElementById('dock-cart-badge');
-      const itemsContainer = document.getElementById('cart-drawer-items-list');
-      const subtotalEl = document.getElementById('cart-subtotal-display');
-
-      let totalCount = 0;
-      let subtotal = 0;
-
-      if (!cart || cart.length === 0) {
-        itemsContainer.innerHTML = `
-          <div class="cart-empty-state">
-            <i class="fas fa-bag-shopping" style="font-size: 32px; margin-bottom: 12px; color: var(--text-sub);"></i>
-            <p>Your shopping bag is currently empty.</p>
-            <a href="index.html#shop" style="display: inline-block; margin-top: 14px; font-size: 11px; font-weight: 700; color: var(--crimson); letter-spacing: 1px; text-transform: uppercase;">
-              Explore Collection &rarr;
-            </a>
-          </div>
-        `;
-      } else {
-        itemsContainer.innerHTML = cart.map((item, idx) => {
-          const qty = Number(item.qty || 1);
-          const rawP = typeof item.price === 'number' ? item.price : (parseFloat(String(item.price).replace(/[^0-9.]/g, '')) || 0);
-          totalCount += qty;
-          subtotal += (rawP * qty);
-
-          const imgSrc = item.image || item.img || 'icon.png';
-          const name = item.name || 'AP Essential Piece';
-
-          return `
-            <div class="cart-drawer-item">
-              <img src="${imgSrc}" alt="${name}" class="cart-item-thumb">
-              <div class="cart-item-meta">
-                <div class="cart-item-name">${name}</div>
-                <div class="cart-item-price">$${rawP.toFixed(2)}</div>
-                <div class="cart-qty-row">
-                  <button class="cart-qty-btn" onclick="updateQty(${idx}, -1)" aria-label="Decrease quantity">&minus;</button>
-                  <span style="font-size: 11px; font-weight: 700;">${qty}</span>
-                  <button class="cart-qty-btn" onclick="updateQty(${idx}, 1)" aria-label="Increase quantity">&plus;</button>
-                  <button class="cart-qty-btn" onclick="removeCartItem(${idx})" style="margin-left: auto; color: #ef4444;" aria-label="Remove item">
-                    <i class="fas fa-trash-can"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          `;
-        }).join('');
-      }
-
-      if (topBadge) topBadge.textContent = totalCount;
-      if (dockBadge) dockBadge.textContent = totalCount;
-      if (subtotalEl) subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
-    }
-
-    function updateQty(index, delta) {
-      if (!cart[index]) return;
-      cart[index].qty = (Number(cart[index].qty) || 1) + delta;
-      if (cart[index].qty <= 0) {
-        cart.splice(index, 1);
-      }
-      saveCart();
-    }
-
-    function removeCartItem(index) {
-      cart.splice(index, 1);
-      saveCart();
-    }
-
-    function saveCart() {
-      try {
-        localStorage.setItem('ap_user_cart', JSON.stringify(cart));
-      } catch (e) {}
-      updateCartUI();
-    }
-
-    /* ================= DRAWER TOGGLE HANDLERS ================= */
-    const backdrop = document.getElementById('drawer-backdrop');
-    const sideMenu = document.getElementById('side-menu-drawer');
-    const sideCart = document.getElementById('side-cart-drawer');
-
-    function openMenu() {
-      closeDrawers();
-      sideMenu.classList.add('active');
-      backdrop.classList.add('active');
-      document.body.classList.add('no-scroll');
-    }
-
-    function openCart() {
-      closeDrawers();
-      sideCart.classList.add('active');
-      backdrop.classList.add('active');
-      document.body.classList.add('no-scroll');
-    }
-
-    function closeDrawers() {
-      sideMenu.classList.remove('active');
-      sideCart.classList.remove('active');
-      backdrop.classList.remove('active');
-      document.body.classList.remove('no-scroll');
-    }
-
-    document.getElementById('mobile-menu-toggle-btn')?.addEventListener('click', openMenu);
-    document.getElementById('header-cart-btn')?.addEventListener('click', openCart);
-    document.getElementById('dock-cart-btn')?.addEventListener('click', openCart);
-    document.getElementById('close-menu-btn')?.addEventListener('click', closeDrawers);
-    document.getElementById('close-cart-btn')?.addEventListener('click', closeDrawers);
-    backdrop?.addEventListener('click', closeDrawers);
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeDrawers();
-    });
-
-    /* ================= SCROLL HEADER EFFECTS & PILL HIGHLIGHT ================= */
-    const mainHeader = document.getElementById('main-header');
-    const chapterBar = document.getElementById('chapter-subbar');
-    const chapters = document.querySelectorAll('.story-chapter, .quote-breakout-strip, .transformation-section, .manifesto-section');
-    const pills = document.querySelectorAll('.chapter-pill');
-    const quickScrollBtn = document.getElementById('quick-scroll-btn');
-    const quickScrollIcon = document.getElementById('quick-scroll-icon');
-
-    function syncHeaderHeight() {
-      if (chapterBar && mainHeader) {
-        const headerBottom = mainHeader.offsetTop + mainHeader.offsetHeight;
-        chapterBar.style.top = (headerBottom + 4) + 'px';
-      }
-    }
-    syncHeaderHeight();
-    window.addEventListener('resize', syncHeaderHeight);
-
-    window.addEventListener('scroll', () => {
-      const scrollY = window.scrollY;
-
-      // Header shrunk style
-      if (scrollY > 30) {
-        mainHeader.classList.add('scrolled');
-      } else {
-        mainHeader.classList.remove('scrolled');
-      }
-      syncHeaderHeight();
-
-      // Auto highlight vertical indexer steps (01, 02, 03)
-      const storySec = document.getElementById('mystory');
-      const beginSec = document.getElementById('beginning');
-      const indexSteps = document.querySelectorAll('.vertical-story-indexer .index-step');
-      if (indexSteps.length >= 3 && storySec && beginSec) {
-        const storyTop = storySec.offsetTop - 260;
-        const beginTop = beginSec.offsetTop - 260;
-        indexSteps.forEach(s => s.classList.remove('active'));
-        if (scrollY < storyTop) {
-          indexSteps[0].classList.add('active');
-        } else if (scrollY < beginTop) {
-          indexSteps[1].classList.add('active');
-        } else {
-          indexSteps[2].classList.add('active');
-        }
-      }
-
-      // Auto highlight active chapter pill during scroll
-      let currentSection = '';
-      chapters.forEach(sec => {
-        const top = sec.offsetTop - 180;
-        const h = sec.offsetHeight;
-        if (scrollY >= top && scrollY < top + h) {
-          currentSection = sec.getAttribute('id');
-        }
-      });
-
-      if (currentSection) {
-        pills.forEach(pill => {
-          if (pill.getAttribute('href') === `#${currentSection}`) {
-            pill.classList.add('active');
-            // Safely scroll horizontal subbar container WITHOUT hijacking window vertical scroll!
-            if (chapterBar) {
-              const pillLeft = pill.offsetLeft;
-              const pillWidth = pill.offsetWidth;
-              const barWidth = chapterBar.clientWidth;
-              chapterBar.scrollTo({
-                left: pillLeft - (barWidth / 2) + (pillWidth / 2),
-                behavior: 'smooth'
-              });
-            }
-          } else {
-            pill.classList.remove('active');
-          }
-        });
-      }
-
-      // Toggle quick scroll button direction (down vs up)
-      if (quickScrollBtn && quickScrollIcon) {
-        const isNearBottom = (window.innerHeight + scrollY) >= (document.body.offsetHeight - 500);
-        if (isNearBottom) {
-          quickScrollIcon.className = 'fas fa-chevron-up';
-          quickScrollBtn.setAttribute('title', 'Back to top');
-        } else {
-          quickScrollIcon.className = 'fas fa-chevron-down';
-          quickScrollBtn.setAttribute('title', 'Scroll to bottom');
-        }
-      }
-    });
-
-    if (quickScrollBtn) {
-      quickScrollBtn.addEventListener('click', () => {
-        const isNearBottom = (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 500);
-        if (isNearBottom) {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-          window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-        }
-      });
-    }
-
-    function smoothJumpTo(event, sectionId) {
-      if (event) event.preventDefault();
-      const el = document.getElementById(sectionId);
-      if (el) {
-        const yOffset = -120;
-        const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
-        window.scrollTo({ top: y, behavior: 'smooth' });
-      }
-    }
-
-    function highlightPill(element) {
-      pills.forEach(p => p.classList.remove('active'));
-      element.classList.add('active');
-    }
-
-    /* ================= LIQUID GLASS REFRACTIVE SHINE ================= */
-    const liquidCards = document.querySelectorAll('.liquid-glass-window, .luxury-visual-card, .transformation-card, .creed-card, .discipline-pillar-card, .manifesto-parchment-box, .final-cta-card, .hero-brand-card, .hero-model-card, .mystory-tray-inner, .stat-card');
-    liquidCards.forEach(card => {
-      card.addEventListener('pointermove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        card.style.setProperty('--mouse-x', `${x}px`);
-        card.style.setProperty('--mouse-y', `${y}px`);
-      });
-    });
-
-    // Initialize on load
-    updateCartUI();
-  </script>
-
-</body>
+          <a href="https://www.youtube.com/@abdullahforhadthelegend" target="_blank" rel="noopener" class="footer-social-btn" aria-label="YouTube"> 
+            <i class="fab fa-youtube"></i> 
+          </a> 
+        </div> 
+      </div> 
+ 
+      <div class="footer-col"> 
+        <h4>COLLECTIONS</h4> 
+        <ul> 
+          <li><a href="index.html#shop">Heavyweight Hoodies</a></li> 
+          <li><a href="index.html#shop">Architectural Tees</a></li> 
+          <li><a href="index.html#shop">Footwear & Boots</a></li> 
+          <li><a href="index.html#shop">Artisanal Perfumes</a></li> 
+        </ul> 
+      </div> 
+ 
+      <div class="footer-col"> 
+        <h4>PATRON SERVICE</h4> 
+        <ul> 
+          <li><a href="order.html">Track Real Order</a></li> 
+          <li><a href="profile.html">Client Dossier</a></li> 
+          <li><a href="size.html">Sizing Guide</a></li> 
+          <li><a href="faq.html">VIP Help & FAQs</a></li> 
+        </ul> 
+      </div> 
+ 
+      <div class="footer-col"> 
+        <h4>EXECUTIVE</h4> 
+        <ul> 
+          <li><a href="about.html">Brand Philosophy</a></li> 
+          <li><a href="contact.html">Concierge Desk</a></li> 
+          <li><a href="privacy.html">Privacy Policy</a></li> 
+          <li><a href="admin.html">Staff Console</a></li> 
+        </ul> 
+      </div> 
+    </div> 
+ 
+    <div class="footer-bottom-copyright"> 
+      &copy; 2026 ABDULLAH PSYCHOTIC LIFESTYLE. ALL INTELLECTUAL PROPERTY RESERVED. CRAFTED FOR THE OUTLIERS. 
+    </div> 
+  </footer> 
+ 
+  <!-- ========================================================= 
+       13. MOBILE FLOATING DOCK (THUMB-ZONE NAVIGATION) 
+  ========================================================= --> 
+  <nav class="mobile-floating-dock" aria-label="Mobile quick actions"> 
+    <a href="index.html" class="dock-tab" title="Home"> 
+      <i class="fas fa-house"></i> 
+      <span>Home</span> 
+    </a> 
+    <a href="index.html#shop" class="dock-tab" title="Shop Collection"> 
+      <i class="fas fa-store"></i> 
+      <span>Shop</span> 
+    </a> 
+    <a href="about.html" class="dock-tab active" title="Our Story"> 
+      <i class="fas fa-book-open"></i> 
+      <span>Story</span> 
+    </a> 
+    <a href="order.html" class="dock-tab" title="Track Live Order"> 
+      <i class="fas fa-truck-fast"></i> 
+      <span>Track</span> 
+    </a> 
+    <button type="button" class="dock-tab" id="dock-cart-btn" style="background: none; border: none;" title="View Shopping Bag"> 
+      <i class="fas fa-bag-shopping"></i> 
+      <span>Bag</span> 
+      <span class="dock-cart-badge" id="dock-cart-badge">0</span> 
+    </button> 
+  </nav> 
+ 
+  <!-- ========================================================= 
+       14. DRAWERS (SIDE MENU & SHOPPING CART) 
+  ========================================================= --> 
+  <div class="drawer-backdrop" id="drawer-backdrop"></div> 
+ 
+  <!-- Mobile Side Menu --> 
+  <aside class="side-nav-drawer" id="side-menu-drawer" aria-hidden="true"> 
+    <div class="drawer-header"> 
+      <div class="drawer-brand-col"> 
+        <span class="drawer-brand">ABDULLAH PSYCHOTIC</span> 
+        <span class="drawer-badge-pill"><i class="fas fa-crown"></i> VIP Concierge</span> 
+      </div> 
+      <button type="button" class="drawer-close-btn" id="close-menu-btn" aria-label="Close menu">&times;</button> 
+    </div> 
+    <div class="drawer-menu-links"> 
+      <a href="index.html"> 
+        <span class="drawer-link-inner"><i class="fas fa-house"></i> <span>Home</span></span> 
+        <i class="fas fa-chevron-right drawer-arrow"></i> 
+      </a> 
+      <a href="index.html#shop"> 
+        <span class="drawer-link-inner"><i class="fas fa-shirt"></i> <span>Collections</span></span> 
+        <i class="fas fa-chevron-right drawer-arrow"></i> 
+      </a> 
+      <a href="about.html" class="active"> 
+        <span class="drawer-link-inner"><i class="fas fa-book-open"></i> <span>Our Story & Code</span></span> 
+        <i class="fas fa-chevron-right drawer-arrow"></i> 
+      </a> 
+      <a href="order.html"> 
+        <span class="drawer-link-inner"><i class="fas fa-truck-fast"></i> <span>Track Order</span></span> 
+        <i class="fas fa-chevron-right drawer-arrow"></i> 
+      </a> 
+      <a href="profile.html"> 
+        <span class="drawer-link-inner"><i class="fas fa-user-astronaut"></i> <span>VIP Dossier</span></span> 
+        <i class="fas fa-chevron-right drawer-arrow"></i> 
+      </a> 
+      <a href="contact.html"> 
+        <span class="drawer-link-inner"><i class="fas fa-headset"></i> <span>Concierge Desk</span></span> 
+        <i class="fas fa-chevron-right drawer-arrow"></i> 
+      </a> 
+    </div> 
+    <div class="drawer-footer-action"> 
+      <a href="index.html#shop" class="drawer-shop-btn"> 
+        <i class="fas fa-bag-shopping"></i> Explore Collection 
+      </a> 
+    </div> 
+  </aside> 
+ 
+  <!-- Shopping Bag Drawer --> 
+  <aside class="side-cart-drawer" id="side-cart-drawer" aria-hidden="true"> 
+    <div class="cart-drawer-header"> 
+      <h3>YOUR SHOPPING BAG</h3> 
+      <button type="button" class="drawer-close-btn" id="close-cart-btn" aria-label="Close cart">&times;</button> 
+    </div> 
+    <div class="cart-drawer-items" id="cart-drawer-items-list"> 
+      <!-- Items dynamically populated from localStorage['ap_user_cart'] --> 
+    </div> 
+    <div class="cart-drawer-footer"> 
+      <div class="cart-subtotal-line"> 
+        <span>SUBTOTAL</span> 
+        <strong id="cart-subtotal-display">$0.00</strong> 
+      </div> 
+      <a href="cart.html" class="cart-checkout-btn">PROCEED TO CHECKOUT</a> 
+    </div> 
+  </aside> 
+ 
+  <!-- ========================================================= 
+       15. QUICK SCROLL (BOTTOM / TOP) BUTTON 
+  ========================================================= --> 
+  <button type="button" class="quick-scroll-btn" id="quick-scroll-btn" aria-label="Scroll page" title="Scroll to bottom"> 
+    <i class="fas fa-chevron-down" id="quick-scroll-icon"></i> 
+  </button> 
+ 
+  <!-- ========================================================= 
+       16. LIVE SCRIPTS & INTERACTION LOGIC 
+  ========================================================= --> 
+  <script> 
+    'use strict'; 
+ 
+    /* ================= CART SYNCHRONIZATION ================= */ 
+    let cart = []; 
+    try { 
+      cart = JSON.parse(localStorage.getItem('ap_user_cart') || '[]'); 
+    } catch (e) { 
+      cart = []; 
+    } 
+ 
+    function updateCartUI() { 
+      const topBadge = document.getElementById('cart-counter-badge'); 
+      const dockBadge = document.getElementById('dock-cart-badge'); 
+      const itemsContainer = document.getElementById('cart-drawer-items-list'); 
+      const subtotalEl = document.getElementById('cart-subtotal-display'); 
+ 
+      let totalCount = 0; 
+      let subtotal = 0; 
+ 
+      if (!cart || cart.length === 0) { 
+        itemsContainer.innerHTML = ` 
+          <div class="cart-empty-state"> 
+            <i class="fas fa-bag-shopping" style="font-size: 32px; margin-bottom: 12px; color: var(--text-sub);"></i> 
+            <p>Your shopping bag is currently empty.</p> 
+            <a href="index.html#shop" style="display: inline-block; margin-top: 14px; font-size: 11px; font-weight: 700; color: var(--crimson); letter-spacing: 1px; text-transform: uppercase;"> 
+              Explore Collection &rarr; 
+            </a> 
+          </div> 
+        `; 
+      } else { 
+        itemsContainer.innerHTML = cart.map((item, idx) => { 
+          const qty = Number(item.qty || 1); 
+          const rawP = typeof item.price === 'number' ? item.price : (parseFloat(String(item.price).replace(/[^0-9.]/g, '')) || 0); 
+          totalCount += qty; 
+          subtotal += (rawP * qty); 
+ 
+          const imgSrc = item.image || item.img || 'icon.png'; 
+          const name = item.name || 'AP Essential Piece'; 
+ 
+          return ` 
+            <div class="cart-drawer-item"> 
+              <img src="${imgSrc}" alt="${name}" class="cart-item-thumb"> 
+              <div class="cart-item-meta"> 
+                <div class="cart-item-name">${name}</div> 
+                <div class="cart-item-price">$${rawP.toFixed(2)}</div> 
+                <div class="cart-qty-row"> 
+                  <button class="cart-qty-btn" onclick="updateQty(${idx}, -1)" aria-label="Decrease quantity">&minus;</button> 
+                  <span style="font-size: 11px; font-weight: 700;">${qty}</span> 
+                  <button class="cart-qty-btn" onclick="updateQty(${idx}, 1)" aria-label="Increase quantity">&plus;</button> 
+                  <button class="cart-qty-btn" onclick="removeCartItem(${idx})" style="margin-left: auto; color: #ef4444;" aria-label="Remove item"> 
+                    <i class="fas fa-trash-can"></i> 
+                  </button> 
+                </div> 
+              </div> 
+            </div> 
+          `; 
+        }).join(''); 
+      } 
+ 
+      if (topBadge) topBadge.textContent = totalCount; 
+      if (dockBadge) dockBadge.textContent = totalCount; 
+      if (subtotalEl) subtotalEl.textContent = `$${subtotal.toFixed(2)}`; 
+    } 
+ 
+    function updateQty(index, delta) { 
+      if (!cart[index]) return; 
+      cart[index].qty = (Number(cart[index].qty) || 1) + delta; 
+      if (cart[index].qty <= 0) { 
+        cart.splice(index, 1); 
+      } 
+      saveCart(); 
+    } 
+ 
+    function removeCartItem(index) { 
+      cart.splice(index, 1); 
+      saveCart(); 
+    } 
+ 
+    function saveCart() { 
+      try { 
+        localStorage.setItem('ap_user_cart', JSON.stringify(cart)); 
+      } catch (e) {} 
+      updateCartUI(); 
+    } 
+ 
+    /* ================= DRAWER TOGGLE HANDLERS ================= */ 
+    const backdrop = document.getElementById('drawer-backdrop'); 
+    const sideMenu = document.getElementById('side-menu-drawer'); 
+    const sideCart = document.getElementById('side-cart-drawer'); 
+ 
+    function openMenu() { 
+      closeDrawers(); 
+      sideMenu.classList.add('active'); 
+      backdrop.classList.add('active'); 
+      document.body.classList.add('no-scroll'); 
+    } 
+ 
+    function openCart() { 
+      closeDrawers(); 
+      sideCart.classList.add('active'); 
+      backdrop.classList.add('active'); 
+      document.body.classList.add('no-scroll'); 
+    } 
+ 
+    function closeDrawers() { 
+      sideMenu.classList.remove('active'); 
+      sideCart.classList.remove('active'); 
+      backdrop.classList.remove('active'); 
+      document.body.classList.remove('no-scroll'); 
+    } 
+ 
+    document.getElementById('mobile-menu-toggle-btn')?.addEventListener('click', openMenu); 
+    document.getElementById('header-cart-btn')?.addEventListener('click', openCart); 
+    document.getElementById('dock-cart-btn')?.addEventListener('click', openCart); 
+    document.getElementById('close-menu-btn')?.addEventListener('click', closeDrawers); 
+    document.getElementById('close-cart-btn')?.addEventListener('click', closeDrawers); 
+    backdrop?.addEventListener('click', closeDrawers); 
+ 
+    document.addEventListener('keydown', (e) => { 
+      if (e.key === 'Escape') closeDrawers(); 
+    }); 
+ 
+    /* ================= SCROLL HEADER EFFECTS & PILL HIGHLIGHT ================= */ 
+    const mainHeader = document.getElementById('main-header'); 
+    const chapterBar = document.getElementById('chapter-subbar'); 
+    const chapters = document.querySelectorAll('.story-chapter, .quote-breakout-strip, .transformation-section, .manifesto-section'); 
+    const pills = document.querySelectorAll('.chapter-pill'); 
+    const quickScrollBtn = document.getElementById('quick-scroll-btn'); 
+    const quickScrollIcon = document.getElementById('quick-scroll-icon'); 
+ 
+    function syncHeaderHeight() { 
+      if (chapterBar && mainHeader) { 
+        const headerBottom = mainHeader.offsetTop + mainHeader.offsetHeight; 
+        chapterBar.style.top = (headerBottom + 4) + 'px'; 
+      } 
+    } 
+    syncHeaderHeight(); 
+    window.addEventListener('resize', syncHeaderHeight); 
+ 
+    window.addEventListener('scroll', () => { 
+      const scrollY = window.scrollY; 
+ 
+      // Header shrunk style 
+      if (scrollY > 30) { 
+        mainHeader.classList.add('scrolled'); 
+      } else { 
+        mainHeader.classList.remove('scrolled'); 
+      } 
+      syncHeaderHeight(); 
+ 
+      // Toggle vertical indexer visibility on desktop past master hero 
+      if (scrollY > 380) { 
+        document.body.classList.add('scrolled-past-hero'); 
+      } else { 
+        document.body.classList.remove('scrolled-past-hero'); 
+      } 
+ 
+      // Auto highlight vertical indexer steps (01, 02, 03) 
+      const storySec = document.getElementById('mystory'); 
+      const beginSec = document.getElementById('beginning'); 
+      const indexSteps = document.querySelectorAll('.vertical-story-indexer .index-step'); 
+      if (indexSteps.length >= 3 && storySec && beginSec) { 
+        const storyTop = storySec.offsetTop - 260; 
+        const beginTop = beginSec.offsetTop - 260; 
+        indexSteps.forEach(s => s.classList.remove('active')); 
+        if (scrollY < storyTop) { 
+          indexSteps[0].classList.add('active'); 
+        } else if (scrollY < beginTop) { 
+          indexSteps[1].classList.add('active'); 
+        } else { 
+          indexSteps[2].classList.add('active'); 
+        } 
+      } 
+ 
+      // Auto highlight active chapter pill during scroll 
+      let currentSection = ''; 
+      chapters.forEach(sec => { 
+        const top = sec.offsetTop - 180; 
+        const h = sec.offsetHeight; 
+        if (scrollY >= top && scrollY < top + h) { 
+          currentSection = sec.getAttribute('id'); 
+        } 
+      }); 
+ 
+      if (currentSection) { 
+        pills.forEach(pill => { 
+          if (pill.getAttribute('href') === `#${currentSection}`) { 
+            pill.classList.add('active'); 
+            // Safely scroll horizontal subbar container WITHOUT hijacking window vertical scroll! 
+            if (chapterBar) { 
+              const pillLeft = pill.offsetLeft; 
+              const pillWidth = pill.offsetWidth; 
+              const barWidth = chapterBar.clientWidth; 
+              chapterBar.scrollTo({ 
+                left: pillLeft - (barWidth / 2) + (pillWidth / 2), 
+                behavior: 'smooth' 
+              }); 
+            } 
+          } else { 
+            pill.classList.remove('active'); 
+          } 
+        }); 
+      } 
+ 
+      // Toggle quick scroll button direction (down vs up) 
+      if (quickScrollBtn && quickScrollIcon) { 
+        const isNearBottom = (window.innerHeight + scrollY) >= (document.body.offsetHeight - 500); 
+        if (isNearBottom) { 
+          quickScrollIcon.className = 'fas fa-chevron-up'; 
+          quickScrollBtn.setAttribute('title', 'Back to top'); 
+        } else { 
+          quickScrollIcon.className = 'fas fa-chevron-down'; 
+          quickScrollBtn.setAttribute('title', 'Scroll to bottom'); 
+        } 
+      } 
+    }); 
+ 
+    if (quickScrollBtn) { 
+      quickScrollBtn.addEventListener('click', () => { 
+        const isNearBottom = (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 500); 
+        if (isNearBottom) { 
+          window.scrollTo({ top: 0, behavior: 'smooth' }); 
+        } else { 
+          window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); 
+        } 
+      }); 
+    } 
+ 
+    function smoothJumpTo(event, sectionId) { 
+      if (event) event.preventDefault(); 
+      let el = document.getElementById(sectionId); 
+      if (!el || (el.offsetParent === null && el.offsetWidth === 0 && el.offsetHeight === 0)) { 
+        if (sectionId === 'hero-top') { 
+          el = document.getElementById('hero-top-mobile') || document.body; 
+        } else if (sectionId === 'mystory') { 
+          el = document.getElementById('beginning'); 
+        } 
+      } 
+      if (el) { 
+        if (el === document.body) { 
+          window.scrollTo({ top: 0, behavior: 'smooth' }); 
+        } else { 
+          const yOffset = -100; 
+          const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset; 
+          window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' }); 
+        } 
+      } 
+    } 
+ 
+    function highlightPill(element) { 
+      pills.forEach(p => p.classList.remove('active')); 
+      element.classList.add('active'); 
+    } 
+ 
+    /* ================= LIQUID GLASS REFRACTIVE SHINE ================= */ 
+    const liquidCards = document.querySelectorAll('.liquid-glass-window, .luxury-visual-card, .transformation-card, .creed-card, .discipline-pillar-card, .manifesto-parchment-box, .final-cta-card, .hero-brand-card, .hero-model-card, .mystory-tray-inner, .stat-card'); 
+    liquidCards.forEach(card => { 
+      card.addEventListener('pointermove', (e) => { 
+        const rect = card.getBoundingClientRect(); 
+        const x = e.clientX - rect.left; 
+        const y = e.clientY - rect.top; 
+        card.style.setProperty('--mouse-x', `${x}px`); 
+        card.style.setProperty('--mouse-y', `${y}px`); 
+      }); 
+    }); 
+ 
+    // Initialize on load 
+    updateCartUI(); 
+  </script> 
+ 
+</body> 
 </html>
