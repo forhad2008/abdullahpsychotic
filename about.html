@@ -2608,12 +2608,38 @@
     }
 
     /* =========================================================
-       13. FOOTER
+       13. FOOTER (LUXURY LIQUID GLASS)
     ========================================================= */
     footer.site-footer {
-      border-top: 1px solid var(--border-subtle);
-      background: #030305;
-      padding: clamp(50px, 8vw, 80px) clamp(20px, 4vw, 64px) clamp(90px, 12vw, 110px);
+      position: relative !important;
+      z-index: 10 !important;
+      background: linear-gradient(180deg, rgba(8, 10, 20, 0.85) 0%, rgba(4, 5, 10, 0.98) 100%);
+      backdrop-filter: blur(28px) saturate(140%);
+      -webkit-backdrop-filter: blur(28px) saturate(140%);
+      border-top: 1px solid rgba(220, 235, 255, 0.18);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.35),
+        0 -15px 45px rgba(0, 0, 0, 0.6);
+      padding: clamp(60px, 8vw, 85px) clamp(20px, 4vw, 64px) clamp(100px, 12vw, 125px);
+      overflow: hidden;
+    }
+
+    footer.site-footer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 6%;
+      right: 6%;
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.45),
+        rgba(220, 240, 255, 0.85),
+        rgba(255, 255, 255, 0.45),
+        transparent);
+      box-shadow: 0 0 12px rgba(220, 240, 255, 0.35);
+      pointer-events: none;
+      z-index: 3;
     }
 
     .footer-container {
@@ -2622,6 +2648,8 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 40px;
+      position: relative;
+      z-index: 4;
     }
 
     @media (min-width: 768px) {
@@ -2645,11 +2673,12 @@
     }
 
     .footer-social-btn {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(220, 235, 255, 0.18);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -2661,6 +2690,7 @@
     .footer-social-btn:hover {
       background: var(--crimson);
       border-color: var(--crimson);
+      box-shadow: 0 0 14px var(--crimson-glow);
       transform: translateY(-2px);
     }
 
@@ -2689,7 +2719,7 @@
     }
 
     .footer-col a:hover {
-      color: var(--crimson);
+      color: #ff3b4e;
       padding-left: 4px;
     }
 
@@ -2697,13 +2727,15 @@
       max-width: 1280px;
       margin: 40px auto 0;
       padding-top: 24px;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
       text-align: center;
       font-family: var(--font-sans);
       font-size: 10px;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--text-sub);
+      position: relative;
+      z-index: 4;
     }
 
     /* Floating Quick Scroll to Bottom / Top Button */
@@ -2847,9 +2879,8 @@
   
 
     /* =========================================================
-       ULTRA-CLEAR PREMIUM LIQUID GLASS
-       SOFT RED + BLUE / BACKGROUND REMAINS CLEARLY VISIBLE
-       FINAL OVERRIDE — KEEP THIS AT THE END OF THE STYLE BLOCK
+       ULTRA-CLEAN SOFT LIQUID GLASS WINDOW SYSTEM (MODERN VIBE)
+       SOFT DIFFUSED CAUSTICS + ORGANIC REFRACTION + SILKY SPECULAR
        ========================================================= */
 
     .liquid-glass-window,
@@ -2866,25 +2897,34 @@
       position: relative;
       isolation: isolate;
       overflow: hidden;
+      border-radius: 26px;
 
-      /* Clear glass: only a very soft red/blue optical tint */
+      /* Soft clean liquid glass: watery refraction caustics */
       background:
-        radial-gradient(circle at 100% 0%, rgba(70, 140, 230, .055), transparent 48%),
-        radial-gradient(circle at 0% 100%, rgba(193, 18, 31, .045), transparent 48%),
-        rgba(255, 255, 255, .030);
+        radial-gradient(ellipse 70% 55% at 90% 8%, rgba(85, 165, 255, 0.075), transparent 60%),
+        radial-gradient(ellipse 65% 55% at 10% 92%, rgba(255, 55, 80, 0.055), transparent 60%),
+        linear-gradient(155deg,
+          rgba(255, 255, 255, 0.045) 0%,
+          rgba(255, 255, 255, 0.012) 45%,
+          rgba(10, 14, 28, 0.35) 100%);
 
-      backdrop-filter: blur(14px) saturate(118%) brightness(1.035);
-      -webkit-backdrop-filter: blur(14px) saturate(118%) brightness(1.035);
+      backdrop-filter: blur(26px) saturate(142%) brightness(1.045);
+      -webkit-backdrop-filter: blur(26px) saturate(142%) brightness(1.045);
 
-      border-color: rgba(220, 235, 255, .23);
+      border: 1px solid rgba(220, 235, 255, 0.18);
+      border-top: 1px solid rgba(255, 255, 255, 0.42);
 
       box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.58),
-        inset 0 -1px 0 rgba(255,255,255,.035),
-        inset 0 0 24px rgba(150,190,230,.025),
-        0 18px 48px rgba(0,0,0,.34),
-        9px 0 32px rgba(65,130,220,.024),
-        -9px 0 32px rgba(193,18,31,.017);
+        inset 0 1.5px 1px rgba(255, 255, 255, 0.52),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+        inset 0 0 35px rgba(125, 185, 255, 0.035),
+        0 24px 60px rgba(0, 0, 0, 0.42),
+        0 4px 18px rgba(0, 0, 0, 0.22),
+        0 0 40px rgba(70, 140, 240, 0.035);
+
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.4s ease,
+                  box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .liquid-glass-window::before,
@@ -2904,11 +2944,13 @@
       z-index: 1;
       pointer-events: none;
       background:
-        linear-gradient(120deg,
-          rgba(255,255,255,.042) 0%,
-          transparent 20%,
-          transparent 70%,
-          rgba(100,160,225,.016) 100%);
+        radial-gradient(circle 380px at var(--mouse-x, 50%) var(--mouse-y, 25%), rgba(255, 255, 255, 0.065), transparent 70%),
+        linear-gradient(130deg,
+          rgba(255, 255, 255, 0.038) 0%,
+          transparent 32%,
+          transparent 68%,
+          rgba(100, 175, 245, 0.02) 100%);
+      transition: opacity 0.4s ease;
     }
 
     .liquid-glass-window::after,
@@ -2925,18 +2967,19 @@
       content: "";
       position: absolute;
       top: 0;
-      left: 8%;
-      right: 8%;
+      left: 10%;
+      right: 10%;
       height: 1px;
       z-index: 5;
       pointer-events: none;
       background: linear-gradient(90deg,
         transparent,
-        rgba(255,255,255,.38),
-        rgba(225,240,255,.62),
-        rgba(255,255,255,.30),
+        rgba(255, 255, 255, 0.25),
+        rgba(220, 240, 255, 0.78),
+        rgba(255, 255, 255, 0.25),
         transparent);
-      box-shadow: 0 0 7px rgba(220,235,255,.16);
+      box-shadow: 0 0 12px rgba(210, 235, 255, 0.35);
+      filter: blur(0.2px);
     }
 
     .liquid-glass-window > *,
@@ -2954,44 +2997,79 @@
       z-index: 3;
     }
 
-    /* Main hero glass gets a slightly clearer optical layer */
+    /* Main hero glass with subtle liquid caustics */
     .hero-brand-card,
     .hero-model-card {
       background:
-        radial-gradient(circle at 100% 0%, rgba(75,145,230,.065), transparent 50%),
-        radial-gradient(circle at 0% 100%, rgba(193,18,31,.050), transparent 50%),
-        rgba(255,255,255,.025);
-      backdrop-filter: blur(13px) saturate(120%) brightness(1.035);
-      -webkit-backdrop-filter: blur(13px) saturate(120%) brightness(1.035);
-      border-color: rgba(220,235,255,.25);
+        radial-gradient(ellipse 70% 55% at 90% 8%, rgba(85, 165, 255, 0.08), transparent 60%),
+        radial-gradient(ellipse 65% 55% at 10% 92%, rgba(255, 55, 80, 0.06), transparent 60%),
+        linear-gradient(155deg,
+          rgba(255, 255, 255, 0.045) 0%,
+          rgba(255, 255, 255, 0.012) 45%,
+          rgba(10, 14, 28, 0.35) 100%);
+      backdrop-filter: blur(26px) saturate(145%) brightness(1.045);
+      -webkit-backdrop-filter: blur(26px) saturate(145%) brightness(1.045);
+      border-color: rgba(220, 235, 255, 0.20);
+      border-top-color: rgba(255, 255, 255, 0.45);
       box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.60),
-        inset 0 0 22px rgba(130,175,220,.022),
-        0 20px 50px rgba(0,0,0,.35),
-        9px 0 34px rgba(70,140,220,.028),
-        -9px 0 34px rgba(193,18,31,.018);
+        inset 0 1.5px 1px rgba(255, 255, 255, 0.55),
+        inset 0 0 35px rgba(125, 185, 255, 0.035),
+        0 26px 65px rgba(0, 0, 0, 0.44),
+        0 4px 18px rgba(0, 0, 0, 0.22),
+        0 0 40px rgba(70, 140, 240, 0.04);
     }
 
-    /* Window header: transparent so content behind it remains readable */
+    /* Pure liquid window header bar: soft frosted divider */
     .liquid-window-bar {
-      background: rgba(255,255,255,.025) !important;
-      backdrop-filter: blur(10px) saturate(115%);
-      -webkit-backdrop-filter: blur(10px) saturate(115%);
-      border-bottom-color: rgba(220,235,255,.09);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.24);
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.042) 0%, rgba(255, 255, 255, 0.015) 100%) !important;
+      backdrop-filter: blur(16px) saturate(125%);
+      -webkit-backdrop-filter: blur(16px) saturate(125%);
+      border-bottom: 1px solid rgba(220, 235, 255, 0.10);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.26);
+      padding: 13px 20px;
+    }
+
+    .window-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .window-dot {
+      width: 9.5px;
+      height: 9.5px;
+      border-radius: 50%;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .window-dot.red {
+      background: #ff4d5a !important;
+      box-shadow: 0 0 10px rgba(255, 77, 90, 0.65) !important;
+    }
+
+    .window-dot.yellow {
+      background: #ffbe2e !important;
+      box-shadow: 0 0 10px rgba(255, 190, 46, 0.65) !important;
+    }
+
+    .window-dot.green {
+      background: #2bd67b !important;
+      box-shadow: 0 0 10px rgba(43, 214, 123, 0.65) !important;
     }
 
     /* Clear glass model frame */
     .hero-model-frame {
-      background: rgba(255,255,255,.018) !important;
-      border-color: rgba(220,235,255,.20) !important;
+      background: rgba(255, 255, 255, 0.02) !important;
+      border: 1px solid rgba(220, 235, 255, 0.18) !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.38) !important;
+      border-radius: 20px !important;
       box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.40),
-        inset 0 0 24px rgba(120,170,220,.018),
-        0 0 25px rgba(100,150,210,.045) !important;
+        inset 0 1px 1px rgba(255, 255, 255, 0.35),
+        inset 0 0 30px rgba(120, 175, 240, 0.025),
+        0 14px 40px rgba(0, 0, 0, 0.38) !important;
     }
 
-    /* Small badges remain glassy instead of becoming solid */
+    /* Small badges with soft liquid glow */
     .hero-eyebrow,
     .hero-badge-pill,
     .editorial-divider-pill,
@@ -3000,15 +3078,15 @@
     .chapter-pill,
     .hero-live-badge {
       background:
-        radial-gradient(circle at 100% 0%, rgba(70,135,220,.060), transparent 60%),
-        radial-gradient(circle at 0% 100%, rgba(193,18,31,.045), transparent 60%),
-        rgba(255,255,255,.040) !important;
-      backdrop-filter: blur(9px) saturate(115%);
-      -webkit-backdrop-filter: blur(9px) saturate(115%);
-      border-color: rgba(220,235,255,.18) !important;
+        radial-gradient(circle at 90% 10%, rgba(85, 160, 240, 0.07), transparent 60%),
+        rgba(255, 255, 255, 0.045) !important;
+      backdrop-filter: blur(14px) saturate(125%);
+      -webkit-backdrop-filter: blur(14px) saturate(125%);
+      border: 1px solid rgba(220, 235, 255, 0.18) !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.40) !important;
       box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.38),
-        0 6px 18px rgba(0,0,0,.20);
+        inset 0 1px 0 rgba(255, 255, 255, 0.35),
+        0 6px 20px rgba(0, 0, 0, 0.25);
     }
 
     .liquid-glass-window:hover,
@@ -3022,13 +3100,14 @@
     .hero-model-card:hover,
     .mystory-tray-inner:hover,
     .stat-card:hover {
-      border-color: rgba(225,240,255,.32);
+      border-color: rgba(225, 240, 255, 0.30);
       box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.66),
-        inset 0 0 28px rgba(140,185,230,.030),
-        0 22px 58px rgba(0,0,0,.40),
-        10px 0 38px rgba(70,140,220,.035),
-        -10px 0 38px rgba(193,18,31,.024);
+        inset 0 1.5px 1.5px rgba(255, 255, 255, 0.68),
+        inset 0 0 35px rgba(140, 195, 255, 0.045),
+        0 30px 75px rgba(0, 0, 0, 0.48),
+        0 6px 22px rgba(0, 0, 0, 0.28),
+        0 0 45px rgba(70, 140, 240, 0.05);
+      transform: translateY(-2px);
     }
 
 /* =========================================================
@@ -3115,7 +3194,7 @@
     box-shadow: 0 0 14px rgba(193, 18, 31, 0.45) !important;
   }
 
-  /* 4. Deep Obsidian Liquid Glass Windows & Cards */
+  /* 4. Pure Liquid Clean Glass Windows & Cards (Modern Vibe) */
   .liquid-glass-window,
   .luxury-visual-card,
   .transformation-card,
@@ -3127,22 +3206,31 @@
   .hero-model-card,
   .mystory-tray-inner,
   .stat-card {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: 24px !important;
     background:
-      radial-gradient(circle at 100% 0%, rgba(193, 18, 31, 0.07), transparent 50%),
-      radial-gradient(circle at 0% 100%, rgba(30, 65, 130, 0.06), transparent 50%),
-      linear-gradient(160deg, rgba(16, 17, 26, 0.90) 0%, rgba(8, 9, 15, 0.96) 100%) !important;
-    backdrop-filter: blur(24px) saturate(170%) brightness(0.88) contrast(110%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(170%) brightness(0.88) contrast(110%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.09) !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.22) !important;
+      radial-gradient(ellipse 70% 55% at 90% 8%, rgba(85, 165, 255, 0.08), transparent 60%),
+      radial-gradient(ellipse 65% 55% at 10% 92%, rgba(255, 55, 80, 0.06), transparent 60%),
+      linear-gradient(155deg,
+        rgba(255, 255, 255, 0.048) 0%,
+        rgba(255, 255, 255, 0.015) 45%,
+        rgba(10, 14, 28, 0.38) 100%) !important;
+    backdrop-filter: blur(24px) saturate(145%) brightness(1.045) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(145%) brightness(1.045) !important;
+    border: 1px solid rgba(220, 235, 255, 0.18) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.42) !important;
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.20),
-      inset 0 0 30px rgba(0, 0, 0, 0.65),
-      0 20px 55px rgba(0, 0, 0, 0.92),
-      0 0 25px rgba(193, 18, 31, 0.06) !important;
+      inset 0 1.5px 1px rgba(255, 255, 255, 0.52),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+      inset 0 0 32px rgba(125, 185, 255, 0.035),
+      0 20px 50px rgba(0, 0, 0, 0.44),
+      0 4px 16px rgba(0, 0, 0, 0.22),
+      0 0 35px rgba(70, 140, 240, 0.035) !important;
   }
 
-  /* Specular top sheen line */
+  /* Specular top sheen laser line */
   .liquid-glass-window::after,
   .luxury-visual-card::after,
   .transformation-card::after,
@@ -3154,29 +3242,61 @@
   .hero-model-card::after,
   .mystory-tray-inner::after,
   .stat-card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    z-index: 5;
+    pointer-events: none;
     background: linear-gradient(90deg,
       transparent,
-      rgba(255, 255, 255, 0.32),
-      rgba(255, 42, 61, 0.35),
-      rgba(255, 255, 255, 0.22),
+      rgba(255, 255, 255, 0.25),
+      rgba(220, 240, 255, 0.78),
+      rgba(255, 255, 255, 0.25),
       transparent) !important;
-    box-shadow: 0 0 8px rgba(255, 42, 61, 0.2) !important;
+    box-shadow: 0 0 12px rgba(210, 235, 255, 0.35) !important;
+    filter: blur(0.2px) !important;
   }
 
-  /* Window Top Title Bar */
+  /* Pure Liquid Window Top Title Bar */
   .liquid-window-bar {
-    background: rgba(5, 5, 10, 0.88) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
-    padding: 11px 16px !important;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.042) 0%, rgba(255, 255, 255, 0.015) 100%) !important;
+    backdrop-filter: blur(16px) saturate(125%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(125%) !important;
+    border-bottom: 1px solid rgba(220, 235, 255, 0.10) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.26) !important;
+    padding: 13px 18px !important;
   }
 
   .window-tab-title {
-    color: rgba(245, 244, 250, 0.9) !important;
-    font-size: 9.5px !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    letter-spacing: 1.5px !important;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8) !important;
+  }
+
+  .window-dot {
+    width: 9.5px !important;
+    height: 9.5px !important;
+    border-radius: 50% !important;
   }
 
   .window-dot.red {
-    box-shadow: 0 0 8px rgba(239, 68, 68, 0.7) !important;
+    background: #ff4d5a !important;
+    box-shadow: 0 0 10px rgba(255, 77, 90, 0.65) !important;
+  }
+
+  .window-dot.yellow {
+    background: #ffbe2e !important;
+    box-shadow: 0 0 10px rgba(255, 190, 46, 0.65) !important;
+  }
+
+  .window-dot.green {
+    background: #2bd67b !important;
+    box-shadow: 0 0 10px rgba(43, 214, 123, 0.65) !important;
   }
 
   /* 5. Hero Section Specific Mobile Polish */
@@ -3246,9 +3366,13 @@
   .hero-model-frame {
     height: 380px !important;
     min-height: 380px !important;
-    border-radius: 16px !important;
-    border-color: rgba(255, 255, 255, 0.12) !important;
-    background: #04050a !important;
+    border-radius: 18px !important;
+    border: 1px solid rgba(220, 235, 255, 0.22) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.45) !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 14px 38px rgba(0, 0, 0, 0.45) !important;
   }
 
   .hero-model-frame::after {
@@ -3269,9 +3393,12 @@
     right: 14px !important;
     padding: 6px 14px !important;
     font-size: 9.5px !important;
-    background: rgba(5, 6, 12, 0.92) !important;
-    border: 1px solid rgba(255, 255, 255, 0.18) !important;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.85) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(220, 235, 255, 0.22) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.45) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 16px rgba(0, 0, 0, 0.5) !important;
     z-index: 4 !important;
   }
 
@@ -3325,12 +3452,21 @@
   }
 
   .stat-card {
-    padding: 16px 10px !important;
-    border-radius: 14px !important;
-    background: linear-gradient(155deg, rgba(18, 20, 32, 0.94) 0%, rgba(8, 9, 15, 0.98) 100%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.10) !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.24) !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.20), 0 12px 28px rgba(0, 0, 0, 0.88) !important;
+    padding: 16px 12px !important;
+    border-radius: 18px !important;
+    background:
+      radial-gradient(circle at 90% 10%, rgba(85, 165, 255, 0.08), transparent 60%),
+      radial-gradient(circle at 10% 90%, rgba(255, 55, 80, 0.06), transparent 60%),
+      rgba(255, 255, 255, 0.038) !important;
+    backdrop-filter: blur(20px) saturate(135%) brightness(1.04) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(135%) brightness(1.04) !important;
+    border: 1px solid rgba(220, 235, 255, 0.18) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.42) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.45),
+      inset 0 0 20px rgba(120, 180, 255, 0.025),
+      0 12px 28px rgba(0, 0, 0, 0.38),
+      0 0 25px rgba(70, 140, 240, 0.03) !important;
   }
 
   .stat-icon {
@@ -3461,8 +3597,12 @@
     top: 12px !important;
     left: 12px !important;
     padding: 8px 12px !important;
-    background: rgba(6, 7, 13, 0.90) !important;
-    border-color: rgba(255, 255, 255, 0.16) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(220, 235, 255, 0.22) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.45) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 16px rgba(0, 0, 0, 0.4) !important;
   }
 
   /* 8. Quote Breakout Strip */
@@ -3472,11 +3612,20 @@
   }
 
   .quote-breakout-inner {
-    padding: 28px 20px !important;
-    background: linear-gradient(155deg, rgba(20, 15, 26, 0.92) 0%, rgba(8, 6, 12, 0.98) 100%) !important;
-    border: 1px solid rgba(193, 18, 31, 0.35) !important;
-    border-radius: 20px !important;
-    box-shadow: 0 0 30px rgba(193, 18, 31, 0.15), 0 20px 50px rgba(0, 0, 0, 0.92) !important;
+    padding: 32px 22px !important;
+    background:
+      radial-gradient(ellipse 70% 60% at 85% 15%, rgba(193, 18, 31, 0.10), transparent 65%),
+      radial-gradient(ellipse 65% 55% at 15% 85%, rgba(85, 165, 255, 0.08), transparent 65%),
+      rgba(255, 255, 255, 0.038) !important;
+    backdrop-filter: blur(24px) saturate(145%) brightness(1.04) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(145%) brightness(1.04) !important;
+    border: 1px solid rgba(220, 235, 255, 0.18) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.45) !important;
+    border-radius: 24px !important;
+    box-shadow:
+      inset 0 1.5px 1px rgba(255, 255, 255, 0.50),
+      0 20px 50px rgba(0, 0, 0, 0.48),
+      0 0 35px rgba(193, 18, 31, 0.10) !important;
   }
 
   .quote-glyph {
@@ -3499,12 +3648,20 @@
 
   /* 9. Discipline Pillars & Transformation */
   .discipline-pillar-card {
-    background: linear-gradient(145deg, rgba(18, 18, 28, 0.94) 0%, rgba(8, 8, 14, 0.98) 100%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.09) !important;
-    border-left: 3px solid #ff2a3d !important;
-    color: #e2dfef !important;
+    border-radius: 18px !important;
+    background:
+      radial-gradient(circle at 90% 10%, rgba(85, 160, 240, 0.06), transparent 60%),
+      rgba(255, 255, 255, 0.038) !important;
+    backdrop-filter: blur(18px) saturate(135%) brightness(1.03) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(135%) brightness(1.03) !important;
+    border: 1px solid rgba(220, 235, 255, 0.16) !important;
+    border-left: 3px solid #ff3b4e !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.38) !important;
+    color: #f1eff8 !important;
     font-size: 13.5px !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 10px 25px rgba(0, 0, 0, 0.80) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.30),
+      0 8px 24px rgba(0, 0, 0, 0.35) !important;
   }
 
   /* 10. Final CTA Card */
@@ -3514,10 +3671,19 @@
   }
 
   .final-cta-card {
-    border-radius: 22px !important;
-    background: linear-gradient(155deg, rgba(28, 14, 22, 0.94) 0%, rgba(8, 6, 12, 0.98) 100%) !important;
-    border: 1px solid rgba(193, 18, 31, 0.35) !important;
-    box-shadow: 0 0 35px rgba(193, 18, 31, 0.20), 0 25px 60px rgba(0, 0, 0, 0.95) !important;
+    border-radius: 26px !important;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 10%, rgba(193, 18, 31, 0.12), transparent 65%),
+      radial-gradient(ellipse 65% 55% at 90% 90%, rgba(85, 165, 255, 0.07), transparent 65%),
+      rgba(255, 255, 255, 0.038) !important;
+    backdrop-filter: blur(26px) saturate(145%) brightness(1.04) !important;
+    -webkit-backdrop-filter: blur(26px) saturate(145%) brightness(1.04) !important;
+    border: 1px solid rgba(220, 235, 255, 0.18) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.45) !important;
+    box-shadow:
+      inset 0 1.5px 1px rgba(255, 255, 255, 0.52),
+      0 24px 60px rgba(0, 0, 0, 0.52),
+      0 0 35px rgba(193, 18, 31, 0.12) !important;
   }
 
   .final-cta-inner {
@@ -3541,6 +3707,86 @@
     -webkit-backdrop-filter: blur(24px) !important;
     border: 1px solid rgba(255, 255, 255, 0.14) !important;
     box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.88), 0 0 20px rgba(193, 18, 31, 0.14) !important;
+  }
+
+  /* 12. Site Footer (Guaranteed Visible Mobile Liquid Glass) */
+  footer.site-footer {
+    position: relative !important;
+    z-index: 10 !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    background: linear-gradient(180deg, rgba(8, 10, 20, 0.88) 0%, rgba(3, 4, 8, 0.98) 100%) !important;
+    backdrop-filter: blur(24px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(140%) !important;
+    border-top: 1px solid rgba(220, 235, 255, 0.20) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 -12px 35px rgba(0, 0, 0, 0.7) !important;
+    padding: 48px 18px 145px 18px !important; /* Generous bottom clearance above mobile dock */
+  }
+
+  .footer-container {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 32px 20px !important;
+  }
+
+  .footer-brand-col {
+    grid-column: 1 / -1 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 24px;
+    margin-bottom: 4px;
+  }
+
+  .footer-brand-col p {
+    font-size: 13px !important;
+    line-height: 1.75 !important;
+    color: #c4c1d4 !important;
+    max-width: 100% !important;
+    margin: 14px 0 20px !important;
+  }
+
+  .footer-social-icons {
+    display: flex !important;
+    gap: 12px !important;
+  }
+
+  .footer-social-btn {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 14px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(220, 235, 255, 0.20) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.30) !important;
+  }
+
+  .footer-col h4 {
+    font-size: 11px !important;
+    letter-spacing: 2.2px !important;
+    margin-bottom: 14px !important;
+    color: #ffffff !important;
+  }
+
+  .footer-col ul {
+    gap: 10px !important;
+  }
+
+  .footer-col a {
+    font-size: 13px !important;
+    color: #b3b0c5 !important;
+    display: inline-block !important;
+    padding: 2px 0 !important;
+  }
+
+  .footer-bottom-copyright {
+    grid-column: 1 / -1 !important;
+    margin-top: 28px !important;
+    padding-top: 20px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    font-size: 10px !important;
+    letter-spacing: 1.5px !important;
+    line-height: 1.8 !important;
+    color: #8c87a2 !important;
+    text-align: center !important;
   }
 }
 
@@ -4239,15 +4485,17 @@
           <li><a href="profile.html">Client Dossier</a></li> 
           <li><a href="size.html">Sizing Guide</a></li> 
           <li><a href="faq.html">VIP Help & FAQs</a></li> 
+          <li><a href="refunds.html">Shipping & Returns</a></li> 
         </ul> 
       </div> 
  
       <div class="footer-col"> 
-        <h4>EXECUTIVE</h4> 
+        <h4>EXECUTIVE & LEGAL</h4> 
         <ul> 
           <li><a href="about.html">Brand Philosophy</a></li> 
           <li><a href="contact.html">Concierge Desk</a></li> 
           <li><a href="privacy.html">Privacy Policy</a></li> 
+          <li><a href="service.html">Terms of Service</a></li> 
           <li><a href="admin.html">Staff Console</a></li> 
         </ul> 
       </div> 
