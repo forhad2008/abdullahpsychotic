@@ -32,6 +32,15 @@
   <!-- FONT AWESOME -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
+  <!-- CRITICAL ASSET PRELOADS (PREVENT DELAYED SCROLL LOADING ON MOBILE) -->
+  <link rel="preload" as="image" href="32.png" media="(max-width: 768px)" fetchpriority="high">
+  <link rel="preload" as="image" href="1.png" media="(min-width: 769px)">
+  <link rel="preload" as="image" href="30.png" fetchpriority="high">
+  <link rel="preload" as="image" href="signature_clean.png" fetchpriority="high">
+  <link rel="preload" as="image" href="ab.webp">
+  <link rel="preload" as="image" href="ap1.webp">
+  <link rel="preload" as="image" href="31.png">
+  <link rel="preload" as="image" href="icon3.png">
 
   <style>
     /* =========================================================
@@ -3144,7 +3153,6 @@
     background-position: center top !important;
     background-size: cover !important;
     background-repeat: no-repeat !important;
-    background-attachment: fixed !important;
   }
 
   /* Keep the original ambient visual system */
@@ -3941,7 +3949,7 @@
         </div>
 
         <div class="signature-vision-row">
-          <img src="signature_clean.png" alt="Abdullah Psychotic" class="founder-signature-img" loading="lazy">
+          <img src="signature_clean.png" alt="Abdullah Psychotic" class="founder-signature-img" loading="eager" decoding="async" fetchpriority="high">
           <div class="vision-tag-wrap">
             <span class="vision-dash"></span>
             <div class="vision-labels">
@@ -4043,7 +4051,7 @@
             <span class="window-meta-tag">ORIGIN · 001</span>
           </div>
           <div class="visual-image-wrap">
-            <img src="ab.webp" alt="Abdullah Forhad - The Ordinary Beginning" loading="lazy">
+            <img src="ab.webp" alt="Abdullah Forhad - The Ordinary Beginning" loading="eager" decoding="async">
             <div class="visual-overlay-gradient"></div>
             <div class="floating-accent-badge">
               <i class="fas fa-feather-pointed"></i>
@@ -4053,7 +4061,7 @@
               </div>
             </div>
             <div class="liquid-watermark-logo">
-              <img src="icon3.png" alt="AP Emblem">
+              <img src="icon3.png" alt="AP Emblem" loading="eager" decoding="async">
             </div>
           </div>
           <div class="visual-card-content">
@@ -4159,7 +4167,7 @@
             <span class="window-meta-tag">DISCIPLINE · 100%</span>
           </div>
           <div class="visual-image-wrap">
-            <img src="ap1.webp" alt="The Spirit of Abdullah Psychotic" loading="lazy">
+            <img src="ap1.webp" alt="The Spirit of Abdullah Psychotic" loading="eager" decoding="async">
             <div class="visual-overlay-gradient"></div>
             <div class="floating-accent-badge">
               <i class="fas fa-fire"></i>
@@ -4169,7 +4177,7 @@
               </div>
             </div>
             <div class="liquid-watermark-logo">
-              <img src="icon3.png" alt="AP Emblem">
+              <img src="icon3.png" alt="AP Emblem" loading="eager" decoding="async">
             </div>
           </div>
           <div class="visual-card-content">
@@ -4326,7 +4334,7 @@
             </p>
           </div>
           <div class="liquid-watermark-logo">
-            <img src="31.png" alt="AP Emblem">
+            <img src="31.png" alt="AP Emblem" loading="eager" decoding="async">
           </div>
         </div>
       </div>
@@ -4447,7 +4455,7 @@
     <div class="footer-container">
       <div class="footer-brand-col">
         <div class="brand-logo-wrap">
-          <img src="logo0.webp" alt="Abdullah Psychotic" style="height: 38px;">
+          <img src="logo0.webp" alt="Abdullah Psychotic" style="height: 38px;" loading="eager" decoding="async">
         </div>
         <p>
           Defining contemporary dark luxury streetwear with architectural silhouettes, heavyweight craftsmanship, and an unyielding philosophy of identity.
@@ -4610,7 +4618,30 @@
   ========================================================= --> 
   <script> 
     'use strict'; 
- 
+
+    /* ================= INSTANT ASSET PRELOAD & GPU DECODE ================= */
+    // Guarantee all visual content is decoded and ready prior to scroll
+    if (typeof window !== 'undefined') {
+      const preloadAssets = [
+        '32.png',
+        '1.png',
+        '30.png',
+        'signature_clean.png',
+        'ab.webp',
+        'ap1.webp',
+        '31.png',
+        'icon3.png',
+        'logo0.webp'
+      ];
+      preloadAssets.forEach(src => {
+        const img = new Image();
+        img.src = src;
+        if (img.decode) {
+          img.decode().catch(() => {});
+        }
+      });
+    }
+
     /* ================= CART SYNCHRONIZATION ================= */ 
     let cart = []; 
     try { 
@@ -4748,9 +4779,11 @@
     syncHeaderHeight(); 
     window.addEventListener('resize', syncHeaderHeight); 
  
+    let lastActiveSection = '';
+
     window.addEventListener('scroll', () => { 
       const scrollY = window.scrollY; 
- 
+
       // Header shrunk style 
       if (scrollY > 30) { 
         mainHeader.classList.add('scrolled'); 
@@ -4758,14 +4791,14 @@
         mainHeader.classList.remove('scrolled'); 
       } 
       syncHeaderHeight(); 
- 
+
       // Toggle vertical indexer visibility on desktop past master hero 
       if (scrollY > 380) { 
         document.body.classList.add('scrolled-past-hero'); 
       } else { 
         document.body.classList.remove('scrolled-past-hero'); 
       } 
- 
+
       // Auto highlight vertical indexer steps (01, 02, 03) 
       const storySec = document.getElementById('mystory'); 
       const beginSec = document.getElementById('beginning'); 
@@ -4782,7 +4815,7 @@
           indexSteps[2].classList.add('active'); 
         } 
       } 
- 
+
       // Auto highlight active chapter pill during scroll 
       let currentSection = ''; 
       chapters.forEach(sec => { 
@@ -4792,8 +4825,9 @@
           currentSection = sec.getAttribute('id'); 
         } 
       }); 
- 
-      if (currentSection) { 
+
+      if (currentSection && currentSection !== lastActiveSection) { 
+        lastActiveSection = currentSection;
         pills.forEach(pill => { 
           if (pill.getAttribute('href') === `#${currentSection}`) { 
             pill.classList.add('active'); 
