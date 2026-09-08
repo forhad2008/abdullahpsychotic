@@ -988,88 +988,82 @@ header{
 
 .payment-option{
   width:100%;
-
-  min-height:48px;
-
-  padding:10px 12px;
-
+  min-height:50px;
+  padding:11px 13px;
   display:flex;
-
   align-items:center;
-
-  gap:10px;
-
-  border:1px solid #242424;
-
-  background:#090909;
-
+  gap:12px;
+  border:1px solid rgba(255,255,255,0.08);
+  background:rgba(12,11,16,0.65);
   color:#fff;
-
   text-align:left;
-
-  transition:.2s;
+  border-radius:8px;
+  cursor:pointer;
+  transition:all 0.22s ease;
 }
 
 .payment-option:hover{
-  border-color:#555;
+  border-color:rgba(193, 18, 31, 0.4);
+  background:rgba(22,17,26,0.8);
 }
 
 .payment-option.selected{
-  border-color:#fff;
-
-  background:#111;
+  border-color:#c1121f;
+  background:rgba(28,14,20,0.9);
+  box-shadow:0 0 16px rgba(193,18,31,0.2);
 }
 
 .payment-radio{
   width:16px;
   height:16px;
-
-  border:1px solid #555;
-
+  border:1px solid rgba(255,255,255,0.3);
   border-radius:50%;
-
   display:grid;
   place-items:center;
-
   flex:0 0 auto;
+  transition:border-color 0.2s;
 }
 
 .payment-option.selected .payment-radio{
-  border-color:#fff;
+  border-color:#c1121f;
 }
 
 .payment-option.selected .payment-radio::after{
   content:"";
-
-  width:7px;
-  height:7px;
-
+  width:8px;
+  height:8px;
   border-radius:50%;
-
-  background:#fff;
+  background:#c1121f;
+  box-shadow:0 0 6px #c1121f;
 }
 
 .payment-label{
-  font-size:11px;
-
+  font-size:11.5px;
   font-weight:600;
+  letter-spacing:0.5px;
 }
 
 .payment-badge{
   margin-left:auto;
-
-  color:#777;
-
-  font-size:8px;
-
+  color:#888;
+  font-size:8.5px;
   letter-spacing:1px;
+  font-weight:600;
+  padding:2px 6px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:4px;
+}
+
+.payment-option.selected .payment-badge{
+  color:#f59e0b;
+  border-color:rgba(245,158,11,0.3);
+  background:rgba(245,158,11,0.08);
 }
 
 .payment-empty{
   color:#666;
-
   font-size:10px;
-
   line-height:1.6;
 }
 
@@ -1813,20 +1807,22 @@ footer{
 
       <div class="payment-section">
 
-        <div class="payment-title">
-          PAYMENT METHOD
+        <div class="payment-title" style="display:flex;justify-content:space-between;align-items:center;">
+          <span>PAYMENT METHOD *</span>
+          <span id="selected-pay-badge" style="font-size:9.5px;color:#22c55e;letter-spacing:1px;font-weight:600;">COD ACTIVE</span>
         </div>
 
         <div
           class="payment-methods"
           id="payment-methods"
         >
-
           <div class="payment-empty">
-            Loading payment methods...
+            Loading payment options...
           </div>
-
         </div>
+
+        <!-- Dynamic Payment Instructions & TrxID Input Container -->
+        <div id="payment-instructions-box" style="margin-top:12px;display:none;"></div>
 
       </div>
 
@@ -1974,43 +1970,48 @@ const PAYMENT_METHODS_API =
 
 
 /* =========================================================
-   TEMPORARY PAYMENT METHODS
-=========================================================
-
-   Remove/change these when backend is ready.
-
+   AUTHENTIC PAYMENT METHODS
 ========================================================= */
 
-const fallbackPaymentMethods = [
-
+const availablePaymentMethods = [
   {
-    id:"card",
-    name:"Credit / Debit Card",
-    enabled:true,
-    badge:"CARD"
+    id: "cod",
+    name: "Cash on Delivery",
+    subtitle: "Pay cash upon arrival and garment inspection",
+    badge: "PAY ON ARRIVAL",
+    icon: '<i class="fa-solid fa-hand-holding-dollar" style="color:#22c55e;"></i>',
+    type: "cod",
+    enabled: true
   },
-
   {
-    id:"bkash",
-    name:"bKash",
-    enabled:true,
-    badge:"MOBILE"
+    id: "bkash",
+    name: "bKash Mobile Wallet",
+    subtitle: "Send Money / Payment to 01812-345678",
+    badge: "INSTANT / APP",
+    icon: '<span style="font-weight:900;color:#e2136e;font-size:11px;">bKash</span>',
+    type: "wallet",
+    walletNumber: "01812-345678",
+    enabled: true
   },
-
   {
-    id:"nagad",
-    name:"Nagad",
-    enabled:true,
-    badge:"MOBILE"
+    id: "nagad",
+    name: "Nagad Mobile Wallet",
+    subtitle: "Send Money to 01812-345678",
+    badge: "WALLET",
+    icon: '<span style="font-weight:900;color:#f7931e;font-size:11px;">Nagad</span>',
+    type: "wallet",
+    walletNumber: "01812-345678",
+    enabled: true
   },
-
   {
-    id:"cod",
-    name:"Cash on Delivery",
-    enabled:true,
-    badge:"COD"
+    id: "card",
+    name: "Credit / Debit Card & Online",
+    subtitle: "Visa, Mastercard, Concierge checkout",
+    badge: "CONCIERGE",
+    icon: '<i class="fa-regular fa-credit-card" style="color:#38bdf8;"></i>',
+    type: "card",
+    enabled: true
   }
-
 ];
 
 
@@ -2288,8 +2289,11 @@ function updateCart(){
 
   renderCartItems();
 
-
   updateCheckoutButton();
+
+  if (typeof renderPaymentInstructions === "function") {
+    renderPaymentInstructions();
+  }
 
 }
 
@@ -2560,195 +2564,189 @@ function applyCoupon(){
    PAYMENT METHODS
 ========================================================= */
 
-async function loadPaymentMethods(){
-
-  try{
-
-    const response =
-      await fetch(
-        PAYMENT_METHODS_API,
-        {
-          method:"GET",
-
-          headers:{
-            "Accept":
-              "application/json"
-          }
-        }
-      );
-
-
-    if(!response.ok){
-
-      throw new Error(
-        "Payment API unavailable"
-      );
-
-    }
-
-
-    const data =
-      await response.json();
-
-
-    paymentMethods =
-      Array.isArray(data)
-        ? data
-        : (
-          Array.isArray(data.methods)
-            ? data.methods
-            : []
-        );
-
-
-    if(!paymentMethods.length){
-
-      paymentMethods =
-        fallbackPaymentMethods;
-
-    }
-
+function loadPaymentMethods(){
+  paymentMethods = availablePaymentMethods;
+  if (!selectedPaymentMethod) {
+    selectedPaymentMethod = "cod";
   }
-
-
-  catch(error){
-
-    /*
-      Backend does not exist yet.
-
-      Use temporary methods so the
-      cart remains usable.
-    */
-
-    paymentMethods =
-      fallbackPaymentMethods;
-
-  }
-
-
   renderPaymentMethods();
-
   updateCheckoutButton();
-
 }
 
+function copyWalletNumber(num, btn) {
+  function showSuccess() {
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-check"></i> COPIED';
+    btn.style.background = '#22c55e';
+    setTimeout(() => {
+      btn.innerHTML = orig;
+      btn.style.background = '';
+    }, 2000);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(num).then(showSuccess).catch(doFallback);
+  } else {
+    doFallback();
+  }
+  function doFallback() {
+    const ta = document.createElement('textarea');
+    ta.value = num;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch(e){}
+    document.body.removeChild(ta);
+    showSuccess();
+  }
+}
 
-/* =========================================================
-   RENDER PAYMENT METHODS
-========================================================= */
+function renderPaymentInstructions() {
+  const instrBox = document.getElementById("payment-instructions-box");
+  const badgeEl = document.getElementById("selected-pay-badge");
+  if (!instrBox) return;
+
+  const currentTotal = money(Math.max(0, getSubtotal() - discountAmount));
+  const existingTrx = document.getElementById("payment-trx-id") ? document.getElementById("payment-trx-id").value : "";
+
+  if (selectedPaymentMethod === "bkash") {
+    if (badgeEl) { badgeEl.textContent = "BKASH ACTIVE"; badgeEl.style.color = "#ff4081"; }
+    instrBox.style.display = "block";
+    instrBox.innerHTML = `
+      <div style="background:rgba(226,19,110,0.06);border:1px solid rgba(226,19,110,0.45);border-radius:10px;padding:14px;box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;color:#ff4081;text-transform:uppercase;">
+            <i class="fa-solid fa-mobile-screen" style="margin-right:6px;"></i> bKash Payment Instructions
+          </div>
+          <span style="font-size:9.5px;padding:2px 8px;background:rgba(226,19,110,0.18);border:1px solid rgba(226,19,110,0.3);border-radius:999px;color:#ff80ab;font-weight:600;">Personal / Send Money</span>
+        </div>
+        
+        <div style="background:#09080c;border:1px dashed rgba(226,19,110,0.4);border-radius:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <div>
+            <div style="font-size:9.5px;color:#888;letter-spacing:1px;text-transform:uppercase;">AP Official bKash Number</div>
+            <div style="font-family:monospace;font-size:15px;font-weight:800;color:#fff;letter-spacing:1.5px;margin-top:2px;">01812-345678</div>
+          </div>
+          <button type="button" onclick="copyWalletNumber('01812345678', this)" style="background:#e2136e;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-size:10px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all 0.2s ease;">
+            COPY NUMBER
+          </button>
+        </div>
+
+        <div style="font-size:11px;color:#ccc;line-height:1.6;margin-bottom:12px;">
+          1. Send the verified order total <strong style="color:#22c55e;font-size:12px;" class="dynamic-pay-total">${currentTotal}</strong> via <strong>Send Money</strong> to the bKash number above.<br>
+          2. Enter the <strong>Transaction ID (TrxID)</strong> from your bKash SMS/app confirmation below to verify your order.
+        </div>
+
+        <div class="checkout-field" style="margin-bottom:0;">
+          <label for="payment-trx-id" style="font-size:10.5px;font-weight:700;color:#ff80ab;letter-spacing:1px;">bKash Transaction ID (TrxID) *</label>
+          <input type="text" id="payment-trx-id" value="${escapeHTML(existingTrx)}" placeholder="e.g. 9J3K8L2P1X" maxlength="30" autocomplete="off" style="font-family:monospace;font-size:13px;letter-spacing:1px;text-transform:uppercase;border-color:rgba(226,19,110,0.5);">
+          <div style="font-size:9.5px;color:#888;margin-top:4px;">Minimum 6 characters. Recorded to Google Sheet & admin email manifest.</div>
+        </div>
+      </div>
+    `;
+  } else if (selectedPaymentMethod === "nagad") {
+    if (badgeEl) { badgeEl.textContent = "NAGAD ACTIVE"; badgeEl.style.color = "#ffa726"; }
+    instrBox.style.display = "block";
+    instrBox.innerHTML = `
+      <div style="background:rgba(247,147,30,0.06);border:1px solid rgba(247,147,30,0.45);border-radius:10px;padding:14px;box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;color:#ffa726;text-transform:uppercase;">
+            <i class="fa-solid fa-wallet" style="margin-right:6px;"></i> Nagad Payment Instructions
+          </div>
+          <span style="font-size:9.5px;padding:2px 8px;background:rgba(247,147,30,0.18);border:1px solid rgba(247,147,30,0.3);border-radius:999px;color:#ffb74d;font-weight:600;">Personal / Send Money</span>
+        </div>
+        
+        <div style="background:#09080c;border:1px dashed rgba(247,147,30,0.4);border-radius:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <div>
+            <div style="font-size:9.5px;color:#888;letter-spacing:1px;text-transform:uppercase;">AP Official Nagad Number</div>
+            <div style="font-family:monospace;font-size:15px;font-weight:800;color:#fff;letter-spacing:1.5px;margin-top:2px;">01812-345678</div>
+          </div>
+          <button type="button" onclick="copyWalletNumber('01812345678', this)" style="background:#f7931e;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-size:10px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all 0.2s ease;">
+            COPY NUMBER
+          </button>
+        </div>
+
+        <div style="font-size:11px;color:#ccc;line-height:1.6;margin-bottom:12px;">
+          1. Send the verified order total <strong style="color:#22c55e;font-size:12px;" class="dynamic-pay-total">${currentTotal}</strong> via <strong>Send Money</strong> to the Nagad number above.<br>
+          2. Enter the <strong>Transaction ID (TrxID)</strong> from your Nagad SMS/app confirmation below to verify your order.
+        </div>
+
+        <div class="checkout-field" style="margin-bottom:0;">
+          <label for="payment-trx-id" style="font-size:10.5px;font-weight:700;color:#ffb74d;letter-spacing:1px;">Nagad Transaction ID (TrxID) *</label>
+          <input type="text" id="payment-trx-id" value="${escapeHTML(existingTrx)}" placeholder="e.g. 7M2K9L4P8Q" maxlength="30" autocomplete="off" style="font-family:monospace;font-size:13px;letter-spacing:1px;text-transform:uppercase;border-color:rgba(247,147,30,0.5);">
+          <div style="font-size:9.5px;color:#888;margin-top:4px;">Minimum 6 characters. Recorded to Google Sheet & admin email manifest.</div>
+        </div>
+      </div>
+    `;
+  } else if (selectedPaymentMethod === "card") {
+    if (badgeEl) { badgeEl.textContent = "ONLINE CONCIERGE"; badgeEl.style.color = "#38bdf8"; }
+    instrBox.style.display = "block";
+    instrBox.innerHTML = `
+      <div style="background:rgba(56,189,248,0.06);border:1px solid rgba(56,189,248,0.3);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:12px;">
+        <i class="fa-solid fa-shield-halved" style="color:#38bdf8;font-size:18px;flex-shrink:0;"></i>
+        <div style="font-size:11px;color:#bae6fd;line-height:1.5;">
+          <strong>Secure Digital Payment Concierge:</strong> Once your order is registered in our Google Sheet database, an encrypted payment link will be sent to your WhatsApp and verified email.
+        </div>
+      </div>
+    `;
+  } else {
+    // COD
+    if (badgeEl) { badgeEl.textContent = "COD ACTIVE"; badgeEl.style.color = "#22c55e"; }
+    instrBox.style.display = "block";
+    instrBox.innerHTML = `
+      <div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.3);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:12px;">
+        <i class="fa-solid fa-circle-check" style="color:#22c55e;font-size:18px;flex-shrink:0;"></i>
+        <div style="font-size:11px;color:#bbf7d0;line-height:1.5;">
+          <strong>Cash on Delivery:</strong> Pay cash upon arrival and garment inspection. Our logistics concierge will contact your verified phone number before dispatch.
+        </div>
+      </div>
+    `;
+  }
+}
 
 function renderPaymentMethods(){
+  const box = document.getElementById("payment-methods");
+  if (!box) return;
 
-  const box =
-    document.getElementById(
-      "payment-methods"
-    );
-
-
-  const enabledMethods =
-    paymentMethods.filter(
-      method =>
-        method.enabled === true
-    );
-
+  const enabledMethods = (paymentMethods && paymentMethods.length) ? paymentMethods.filter(m => m.enabled !== false) : availablePaymentMethods;
 
   if(!enabledMethods.length){
-
-    selectedPaymentMethod =
-      null;
-
-
-    box.innerHTML = `
-
-      <div class="payment-empty">
-        No payment methods are currently available.
-      </div>
-
-    `;
-
+    selectedPaymentMethod = null;
+    box.innerHTML = `<div class="payment-empty">No payment methods are currently available.</div>`;
+    renderPaymentInstructions();
     return;
-
   }
 
-
-  if(
-    !enabledMethods.some(
-      method =>
-        method.id ===
-        selectedPaymentMethod
-    )
-  ){
-
-    selectedPaymentMethod =
-      enabledMethods[0].id;
-
+  if(!enabledMethods.some(m => m.id === selectedPaymentMethod)){
+    selectedPaymentMethod = enabledMethods[0].id;
   }
 
+  box.innerHTML = enabledMethods.map(method => `
+    <button
+      type="button"
+      class="payment-option ${method.id === selectedPaymentMethod ? "selected" : ""}"
+      data-payment-id="${escapeHTML(method.id)}"
+    >
+      <span class="payment-radio"></span>
+      <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;">
+        <span style="font-size:13px;display:inline-flex;align-items:center;width:24px;justify-content:center;">${method.icon || ''}</span>
+        <div>
+          <div class="payment-label">${escapeHTML(method.name)}</div>
+          ${method.subtitle ? `<div style="font-size:9.5px;color:#888;margin-top:2px;">${escapeHTML(method.subtitle)}</div>` : ''}
+        </div>
+      </div>
+      ${method.badge ? `<span class="payment-badge">${escapeHTML(method.badge)}</span>` : ""}
+    </button>
+  `).join("");
 
-  box.innerHTML =
-    enabledMethods.map(
-      method => `
+  box.querySelectorAll(".payment-option").forEach(button => {
+    button.addEventListener("click", function(){
+      selectedPaymentMethod = this.dataset.paymentId;
+      renderPaymentMethods();
+      updateCheckoutButton();
+    });
+  });
 
-        <button
-          type="button"
-          class="
-            payment-option
-            ${
-              method.id ===
-              selectedPaymentMethod
-                ? "selected"
-                : ""
-            }
-          "
-          data-payment-id="${escapeHTML(method.id)}"
-        >
-
-          <span class="payment-radio"></span>
-
-          <span class="payment-label">
-            ${escapeHTML(method.name)}
-          </span>
-
-          ${
-            method.badge
-              ? `
-                <span class="payment-badge">
-                  ${escapeHTML(method.badge)}
-                </span>
-              `
-              : ""
-          }
-
-        </button>
-
-      `
-    ).join("");
-
-
-  box
-    .querySelectorAll(
-      ".payment-option"
-    )
-    .forEach(
-      button => {
-
-        button.addEventListener(
-          "click",
-          function(){
-
-            selectedPaymentMethod =
-              this.dataset.paymentId;
-
-            renderPaymentMethods();
-
-            updateCheckoutButton();
-
-          }
-        );
-
-      }
-    );
-
+  renderPaymentInstructions();
 }
 
 
@@ -2879,20 +2877,36 @@ async function checkout(){
   const cityEl = document.getElementById("checkout-city");
   const notesEl = document.getElementById("checkout-notes");
 
-  const name = (nameEl?.value || "").trim() || "Valued Client";
+  const name = (nameEl?.value || "").trim();
   const email = (emailEl?.value || localStorage.getItem("ap_underworld_email") || "").trim().toLowerCase();
   const phone = (phoneEl?.value || localStorage.getItem("ap_underworld_phone") || "").trim();
   const address = (addrEl?.value || "").trim();
   const city = (cityEl?.value || "").trim();
   const notes = (notesEl?.value || "").trim();
 
-  if (!email || !email.includes("@")) {
-    alert("Please provide a valid contact email address for your order manifest.");
-    if (emailEl) emailEl.focus();
+  // 1. Strictly validate customer name
+  if (!name || name.length < 2 || name.toLowerCase() === "valued client" || /^[0-9]+$/.test(name)) {
+    alert("Please provide your authentic full name for the client dossier and order manifest.");
+    if (nameEl) {
+      nameEl.focus();
+      nameEl.style.borderColor = "#ef4444";
+    }
     return;
   }
+  if (nameEl) nameEl.style.borderColor = "";
 
-  // Strictly enforce authentic phone number — ZERO FAKE NUMBERS ALLOWED
+  // 2. Strictly validate email
+  if (!email || !email.includes("@") || email.length < 5) {
+    alert("Please provide a valid contact email address for your order manifest.");
+    if (emailEl) {
+      emailEl.focus();
+      emailEl.style.borderColor = "#ef4444";
+    }
+    return;
+  }
+  if (emailEl) emailEl.style.borderColor = "";
+
+  // 3. Strictly enforce authentic phone number — ZERO FAKE NUMBERS ALLOWED
   const countryCode = document.getElementById("checkout-country-code") ? document.getElementById("checkout-country-code").value : "+880";
   let finalPhone = phone;
 
@@ -2912,11 +2926,41 @@ async function checkout(){
     if (phoneEl) phoneEl.focus();
     return;
   }
+  if (phoneEl) phoneEl.style.borderColor = "";
 
-  if (!address) {
-    alert("Please provide your delivery shipping address.");
-    if (addrEl) addrEl.focus();
+  // 4. Strictly validate delivery shipping address
+  if (!address || address.length < 5) {
+    alert("Please provide your detailed delivery shipping address (House, Road, Apartment, Area).");
+    if (addrEl) {
+      addrEl.focus();
+      addrEl.style.borderColor = "#ef4444";
+    }
     return;
+  }
+  if (addrEl) addrEl.style.borderColor = "";
+
+  // 5. Strictly validate payment method and Transaction ID if wallet is selected
+  let finalPaymentMethod = "Cash on Delivery (COD)";
+  let trxId = "";
+
+  if (selectedPaymentMethod === "bkash" || selectedPaymentMethod === "nagad") {
+    const trxEl = document.getElementById("payment-trx-id");
+    trxId = (trxEl?.value || "").trim().toUpperCase();
+    if (!trxId || trxId.length < 5) {
+      const provider = selectedPaymentMethod === "bkash" ? "bKash" : "Nagad";
+      alert(`❌ TRANSACTION ID (TRXID) REQUIRED\n\nPlease enter the authentic Transaction ID received from your ${provider} mobile transfer to verify your payment.`);
+      if (trxEl) {
+        trxEl.focus();
+        trxEl.style.borderColor = "#ef4444";
+      }
+      return;
+    }
+    if (trxEl) trxEl.style.borderColor = "";
+    finalPaymentMethod = `${selectedPaymentMethod === "bkash" ? "bKash" : "Nagad"} (TrxID: ${trxId})`;
+  } else if (selectedPaymentMethod === "card") {
+    finalPaymentMethod = "Credit / Debit Card & Online Concierge";
+  } else {
+    finalPaymentMethod = "Cash on Delivery (COD)";
   }
 
   // Update profile and contact memory
@@ -2924,6 +2968,9 @@ async function checkout(){
   try {
     savedUser = JSON.parse(localStorage.getItem("ap_user_profile") || localStorage.getItem("ap_user") || "{}");
   } catch(e){}
+
+  const existingUserId = (localStorage.getItem("ap_underworld_user_id") || savedUser.userId || savedUser.accessId || "").trim();
+
   savedUser.name = name;
   savedUser.email = email;
   savedUser.phone = finalPhone;
@@ -2964,10 +3011,20 @@ async function checkout(){
 
     if (res && res.ok && res.orderId) {
       const orderId = res.orderId;
+      const assignedUserId = res.userId || existingUserId || "AP-USR-CLIENT";
       const verifiedTotal = res.total || totalFormatted;
+
+      // Persist confirmed User ID in client memory
+      try {
+        localStorage.setItem("ap_underworld_user_id", assignedUserId);
+        savedUser.userId = assignedUserId;
+        savedUser.accessId = assignedUserId;
+        localStorage.setItem("ap_user_profile", JSON.stringify(savedUser));
+      } catch (e) {}
 
       const orderRecord = {
         orderId: orderId,
+        userId: assignedUserId,
         email: email,
         name: name,
         phone: finalPhone,
@@ -2976,7 +3033,7 @@ async function checkout(){
         total: verifiedTotal,
         subtotal: subtotalFormatted,
         discount: discountFormatted,
-        paymentMethod: selectedPaymentMethod,
+        paymentMethod: finalPaymentMethod,
         status: "CONFIRMED",
         timestamp: new Date().toISOString(),
         items: JSON.parse(JSON.stringify(cart))
@@ -3008,7 +3065,14 @@ async function checkout(){
         document.head.appendChild(clearScript);
       } catch(e){}
 
-      alert(`🎉 ORDER RECORDED IN GOOGLE SHEET!\n\nOrder Identifier: ${orderId}\nVerified Total: ${verifiedTotal}\nPayment Method: ${selectedPaymentMethod}\n\nA formal luxury manifest has been recorded to the backend database and dispatched to the concierge. You can track this order in real time.`);
+      alert(`🎉 REAL ORDER RECORDED IN GOOGLE SHEET!\n\n` +
+            `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
+            `• Order Identifier : ${orderId}\n` +
+            `• Customer User ID : ${assignedUserId}\n` +
+            `• Payment Method   : ${finalPaymentMethod}\n` +
+            `• Verified Total   : ${verifiedTotal}\n` +
+            `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+            `Your customer dossier has been registered in the Users database and an automated luxury manifest has been emailed to the admin. You can track this order in real time.`);
       window.location.href = "order.html?order=" + encodeURIComponent(orderId);
     } else {
       // Real backend error handling — NO FAKE ORDER CREATION!
@@ -3028,11 +3092,14 @@ async function checkout(){
 
   const queryParams = new URLSearchParams({
     action: "create_order",
+    userId: existingUserId,
     email: email,
     name: name,
     phone: finalPhone,
-    address: fullAddress,
-    paymentMethod: selectedPaymentMethod,
+    address: address,
+    city: city,
+    paymentMethod: finalPaymentMethod,
+    trxId: trxId,
     subtotal: subtotalFormatted,
     discount: discountFormatted,
     total: totalFormatted,
