@@ -2641,17 +2641,38 @@
             const oid = o.orderId || o.id || 'AP-ORD';
             const status = String(o.status || 'CONFIRMED').toUpperCase();
             const dateVal = o.timestamp || o.date;
-            const dateStr = dateVal ? new Date(dateVal).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recent';
+            const dateObj = dateVal ? new Date(dateVal) : null;
+            const dateStr = dateObj && !isNaN(dateObj.getTime()) ? dateObj.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recent';
             const itemsText = o.itemsSummary || (typeof o.items === 'string' ? o.items : 'Luxury Apparel Item');
             const totalText = o.total || '$0.00';
             const payment = o.paymentMethod || 'Cash on Delivery';
-            const canCancel = (status === 'CONFIRMED' || status === 'PROCESSING');
+
+            let isWithin24Hours = true;
+            let hoursRemaining = 24;
+            let hoursElapsed = 0;
+            if (dateObj && !isNaN(dateObj.getTime())) {
+                hoursElapsed = (Date.now() - dateObj.getTime()) / (1000 * 60 * 60);
+                if (hoursElapsed > 24) {
+                    isWithin24Hours = false;
+                } else {
+                    hoursRemaining = Math.max(0, 24 - hoursElapsed);
+                }
+            }
+            const canCancel = (status === 'CONFIRMED' || status === 'PROCESSING') && isWithin24Hours;
+            const isCancellationExpired = (status === 'CONFIRMED' || status === 'PROCESSING') && !isWithin24Hours;
 
             return `
                 <div class="order-card-lux">
                     <div class="order-card-head">
                         <span class="order-id-tag">#${escapeHtml(oid)}</span>
-                        <span class="order-status-pill status-${status.toLowerCase().replace(/\s+/g, '-')}">${status}</span>
+                        <div style="display: flex; gap: 6px; align-items: center;">
+                            ${isCancellationExpired ? `
+                                <span style="font-size: 9.5px; color: #a1a1aa; background: rgba(255,255,255,0.06); padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08);" title="Orders cannot be cancelled after 24 hours of placement">
+                                    <i class="fas fa-lock" style="font-size: 8.5px; margin-right: 3px; color: #f59e0b;"></i> Non-Cancellable (>24h)
+                                </span>
+                            ` : ''}
+                            <span class="order-status-pill status-${status.toLowerCase().replace(/\s+/g, '-')}">${status}</span>
+                        </div>
                     </div>
                     <div>
                         <div style="font-size: 13.5px; font-weight: 700; color: #fff;">${escapeHtml(itemsText)}</div>
@@ -2673,10 +2694,14 @@
                                 <i class="fas fa-star"></i>
                             </button>
                             ${canCancel ? `
-                                <button type="button" class="btn-icon-sm red" onclick="cancelUserOrder('${escapeHtml(oid)}')" title="Cancel Order in Sheet">
+                                <button type="button" class="btn-icon-sm red" onclick="cancelUserOrder('${escapeHtml(oid)}')" title="Cancel Order (${hoursRemaining.toFixed(0)}h left in 24h window)">
                                     <i class="fas fa-ban"></i>
                                 </button>
-                            ` : ''}
+                            ` : (isCancellationExpired ? `
+                                <button type="button" class="btn-icon-sm" disabled style="opacity: 0.35; cursor: not-allowed;" title="Cancellation window closed: Orders cannot be cancelled after 24 hours of placement.">
+                                    <i class="fas fa-lock" style="font-size: 10px;"></i>
+                                </button>
+                            ` : '')}
                         </div>
                     </div>
                 </div>
@@ -2698,21 +2723,26 @@
         renderUserOrders(filtered);
     }
 
-    /* REAL ORDER CANCELLATION IN GOOGLE SHEET */
+    /* REAL ORDER CANCELLATION IN GOOGLE SHEET — STRICT 24-HOUR POLICY */
     function cancelUserOrder(orderId) {
-        if (!confirm(`Are you sure you want to cancel Order #${orderId}? This will update your order status in the Google Sheet.`)) return;
+        const order = userOrders.find(o => String(o.orderId || o.id) === String(orderId));
+        if (order) {
+            const dateVal = order.timestamp || order.date;
+            if (dateVal) {
+                const orderTime = new Date(dateVal).getTime();
+                if (!isNaN(orderTime)) {
+                    const diffHours = (Date.now() - orderTime) / (1000 * 60 * 60);
+                    if (diffHours > 24) {
+                        alert(`❌ CANCELLATION PERIOD EXPIRED (24-HOUR POLICY)\n\nUnder brand policy, orders can only be cancelled within 24 hours (1 day) of placement.\nTime elapsed: ${diffHours.toFixed(1)} hours.\n\nThis order is locked for fulfillment. Please contact VIP Concierge via WhatsApp for concierge support.`);
+                        return;
+                    }
+                }
+            }
+        }
+
+        if (!confirm(`Are you sure you want to cancel Order #${orderId}? This will officially cancel your order in the Google Sheet backend.`)) return;
 
         showToast(`Cancelling order #${orderId} in Google Sheet...`, 'info');
-
-        // Optimistically update locally
-        userOrders = userOrders.map(o => {
-            if (String(o.orderId || o.id) === String(orderId)) {
-                return { ...o, status: 'CANCELLED' };
-            }
-            return o;
-        });
-        localStorage.setItem('ap_user_orders_' + userEmail.toLowerCase(), JSON.stringify(userOrders));
-        renderUserOrders(userOrders);
 
         const cb = 'cb_cancel_' + Date.now();
         const script = document.createElement('script');
@@ -2722,14 +2752,25 @@
             cleanupJsonp(cb, script);
             if (res && res.ok) {
                 showToast(`Order #${orderId} marked as CANCELLED in Google Sheet.`, 'success');
+                userOrders = userOrders.map(o => {
+                    if (String(o.orderId || o.id) === String(orderId)) {
+                        return { ...o, status: 'CANCELLED' };
+                    }
+                    return o;
+                });
+                localStorage.setItem('ap_user_orders_' + userEmail.toLowerCase(), JSON.stringify(userOrders));
+                renderUserOrders(userOrders);
             } else {
-                showToast(`Order #${orderId} cancellation registered.`, 'success');
+                const msg = (res && res.message) ? res.message : `Order #${orderId} could not be cancelled.`;
+                alert(`❌ CANCELLATION REJECTED\n\n${msg}`);
+                loadUserOrders();
             }
         };
 
         script.onerror = function() {
             cleanupJsonp(cb, script);
-            showToast(`Order #${orderId} marked as CANCELLED.`, 'success');
+            showToast(`Connection error. Please try again.`, 'error');
+            loadUserOrders();
         };
 
         document.body.appendChild(script);

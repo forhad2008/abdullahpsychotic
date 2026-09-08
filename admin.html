@@ -4797,6 +4797,20 @@
 
     function quickUpdateOrderStatus(orderId, newStatus) {
         const o = customOrders.find(x => x.id === orderId);
+
+        // Strict 24-Hour Policy: No one can cancel an order after 24 hours (1 day)
+        if (String(newStatus).toUpperCase() === 'CANCELLED' && o && (o.date || o.timestamp)) {
+            const orderTime = new Date(o.date || o.timestamp).getTime();
+            if (!isNaN(orderTime)) {
+                const diffHours = (Date.now() - orderTime) / (1000 * 60 * 60);
+                if (diffHours > 24) {
+                    showToast(`❌ Cannot cancel: Cancellation window expired 24 hours after placement (${diffHours.toFixed(1)} hrs elapsed).`, 'error');
+                    renderOrders(customOrders);
+                    return;
+                }
+            }
+        }
+
         if (o) {
             o.status = newStatus;
             localStorage.setItem('ap_admin_orders', JSON.stringify(customOrders));
@@ -4815,12 +4829,14 @@
                 logAudit(`Updated ${orderId} status to ${newStatus}`);
             } else {
                 showToast((res && res.message) ? res.message : 'Error updating status in sheet.', 'error');
+                loadOrders();
             }
         };
 
         script.onerror = function() {
             cleanupJsonp(cb, script);
             showToast('Network error updating status on Google Sheet.', 'error');
+            loadOrders();
         };
 
         script.src = `${BACKEND_URL}?action=admin_update_order_status&email=${encodeURIComponent(userEmail || PRIMARY_ADMIN_EMAIL)}&accessToken=${encodeURIComponent(accessToken || '')}&orderId=${encodeURIComponent(orderId)}&status=${encodeURIComponent(newStatus)}&callback=${cb}`;
@@ -5008,6 +5024,17 @@
         } else {
             const o = customOrders.find(x => x.id === idVal);
             if (o) {
+                if (String(status).toUpperCase() === 'CANCELLED' && (o.date || o.timestamp)) {
+                    const orderTime = new Date(o.date || o.timestamp).getTime();
+                    if (!isNaN(orderTime)) {
+                        const diffHours = (Date.now() - orderTime) / (1000 * 60 * 60);
+                        if (diffHours > 24) {
+                            showToast(`❌ Policy Violation: Orders cannot be cancelled after 24 hours (${diffHours.toFixed(1)} hrs elapsed).`, 'error');
+                            closeOrderModal();
+                            return;
+                        }
+                    }
+                }
                 o.id = ref;
                 o.customer = customer;
                 o.total = total;
