@@ -2877,8 +2877,71 @@ function getOptions(product){
 
 
 /* =========================================================
-   SAVE CART
+   SAVE CART & BACKEND SYNCHRONIZATION
 ========================================================= */
+
+const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbyHik2t4HnaeQsY9A992qOPdMHxjV0YeS-pcSnfisZYwJW5JJbH55RxhRHPHbGO2hztSA/exec';
+let syncCartTimer = null;
+
+function syncCartToBackend() {
+  const email = (localStorage.getItem("ap_underworld_email") || "").toLowerCase();
+  if (!email || !email.includes("@")) return;
+
+  clearTimeout(syncCartTimer);
+  syncCartTimer = setTimeout(() => {
+    const cb = "shopSaveCartCb_" + Date.now();
+    const script = document.createElement("script");
+    window[cb] = function() {
+      try { delete window[cb]; } catch(e){}
+      if (script.parentNode) script.parentNode.removeChild(script);
+    };
+    script.onerror = function() {
+      try { delete window[cb]; } catch(e){}
+      if (script.parentNode) script.parentNode.removeChild(script);
+    };
+    const params = new URLSearchParams({
+      action: "save_cart",
+      email: email,
+      items: JSON.stringify(cart),
+      callback: cb
+    });
+    script.src = `${BACKEND_URL}?${params.toString()}`;
+    document.head.appendChild(script);
+  }, 400);
+}
+
+function fetchCartFromBackend() {
+  const email = (localStorage.getItem("ap_underworld_email") || "").toLowerCase();
+  if (!email || !email.includes("@")) return;
+
+  const cb = "shopGetCartCb_" + Date.now();
+  const script = document.createElement("script");
+  window[cb] = function(res) {
+    try { delete window[cb]; } catch(e){}
+    if (script.parentNode) script.parentNode.removeChild(script);
+
+    if (res && res.ok && Array.isArray(res.items)) {
+      if (res.items.length > 0) {
+        if (!cart || cart.length === 0) {
+          cart = res.items;
+          localStorage.setItem("ap_user_cart", JSON.stringify(cart));
+          updateCart();
+        }
+      }
+    }
+  };
+  script.onerror = function() {
+    try { delete window[cb]; } catch(e){}
+    if (script.parentNode) script.parentNode.removeChild(script);
+  };
+  const params = new URLSearchParams({
+    action: "get_cart",
+    email: email,
+    callback: cb
+  });
+  script.src = `${BACKEND_URL}?${params.toString()}`;
+  document.head.appendChild(script);
+}
 
 function saveCart(){
 
@@ -2886,6 +2949,8 @@ function saveCart(){
     "ap_user_cart",
     JSON.stringify(cart)
   );
+
+  syncCartToBackend();
 
 }
 
@@ -3600,6 +3665,8 @@ document.addEventListener(
 renderProducts();
 
 updateCart();
+
+fetchCartFromBackend();
 
 if (localStorage.getItem('ap_underworld_access') === 'true' && localStorage.getItem('ap_underworld_access_token')) {
     const pNav = document.getElementById('shop-profile-nav');

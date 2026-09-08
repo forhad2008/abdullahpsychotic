@@ -9345,8 +9345,33 @@ function isValidUnderworldEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+let indexSyncCartTimer = null;
 function saveCartToStorage() {
     localStorage.setItem('ap_user_cart', JSON.stringify(cart));
+    const email = (localStorage.getItem(UNDERWORLD_EMAIL_KEY) || '').toLowerCase();
+    if (!email || !email.includes('@')) return;
+
+    clearTimeout(indexSyncCartTimer);
+    indexSyncCartTimer = setTimeout(() => {
+        const cb = 'indexCartCb_' + Date.now();
+        const script = document.createElement('script');
+        window[cb] = function() {
+            try { delete window[cb]; } catch(e){}
+            if (script.parentNode) script.parentNode.removeChild(script);
+        };
+        script.onerror = function() {
+            try { delete window[cb]; } catch(e){}
+            if (script.parentNode) script.parentNode.removeChild(script);
+        };
+        const params = new URLSearchParams({
+            action: 'save_cart',
+            email: email,
+            items: JSON.stringify(cart),
+            callback: cb
+        });
+        script.src = `${UNDERWORLD_BACKEND_URL}?${params.toString()}`;
+        document.head.appendChild(script);
+    }, 400);
 }
 
 function updateBuyerPanelVisibility() {

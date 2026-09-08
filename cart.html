@@ -1075,6 +1075,68 @@ header{
 
 
 /* =========================================================
+   CLIENT DOSSIER & DELIVERY FORM
+========================================================= */
+
+.checkout-dossier{
+  margin:20px 0 10px;
+  padding-top:18px;
+  border-top:1px solid var(--border);
+}
+
+.checkout-dossier-title{
+  font-family:var(--subheading);
+  font-size:11px;
+  letter-spacing:2px;
+  margin-bottom:12px;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.checkout-field{
+  margin-bottom:10px;
+}
+
+.checkout-field label{
+  display:block;
+  font-size:9.5px;
+  color:#888;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:5px;
+}
+
+.checkout-field input{
+  width:100%;
+  box-sizing:border-box;
+  background:#090909;
+  border:1px solid #252525;
+  color:#fff;
+  padding:10px 12px;
+  font-size:11px;
+  outline:none;
+  transition:.2s border-color;
+  font-family:inherit;
+}
+
+.checkout-field input:focus{
+  border-color:#777;
+}
+
+.checkout-row{
+  display:flex;
+  gap:8px;
+}
+
+.checkout-row .checkout-field{
+  flex:1;
+  min-width:0;
+}
+
+
+/* =========================================================
    CHECKOUT
 ========================================================= */
 
@@ -1673,6 +1735,52 @@ footer{
 
 
       <!-- =================================================
+           CLIENT DOSSIER & DELIVERY DESTINATION
+      ================================================== -->
+
+      <div class="checkout-dossier">
+
+        <div class="checkout-dossier-title">
+          <span>DELIVERY & CLIENT DOSSIER</span>
+          <span id="checkout-auth-badge" style="font-size:9.5px;color:#f59e0b;letter-spacing:1px;"></span>
+        </div>
+
+        <div class="checkout-field">
+          <label for="checkout-name">Client Name *</label>
+          <input type="text" id="checkout-name" placeholder="Full Name (e.g. Abdullah Forhad)" autocomplete="name" required>
+        </div>
+
+        <div class="checkout-row">
+          <div class="checkout-field">
+            <label for="checkout-email">Contact Email *</label>
+            <input type="email" id="checkout-email" placeholder="client@domain.com" autocomplete="email" required>
+          </div>
+          <div class="checkout-field">
+            <label for="checkout-phone">WhatsApp / Phone *</label>
+            <input type="tel" id="checkout-phone" placeholder="+880 1812 345678" autocomplete="tel" required>
+          </div>
+        </div>
+
+        <div class="checkout-field">
+          <label for="checkout-address">Shipping Address *</label>
+          <input type="text" id="checkout-address" placeholder="House, Road, Apartment, Area" autocomplete="street-address" required>
+        </div>
+
+        <div class="checkout-row">
+          <div class="checkout-field">
+            <label for="checkout-city">City / Area</label>
+            <input type="text" id="checkout-city" placeholder="e.g. Dhaka" autocomplete="address-level2">
+          </div>
+          <div class="checkout-field">
+            <label for="checkout-notes">Special Instructions</label>
+            <input type="text" id="checkout-notes" placeholder="Delivery notes (optional)">
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
            PAYMENT METHODS
       ================================================== -->
 
@@ -1898,8 +2006,37 @@ function money(value){
 
 
 /* =========================================================
-   SAVE CART
+   SAVE CART & BACKEND PERSISTENCE
 ========================================================= */
+
+let syncCartTimer = null;
+
+function syncCartToBackend() {
+  const email = (localStorage.getItem("ap_underworld_email") || (document.getElementById("checkout-email") ? document.getElementById("checkout-email").value.trim() : "")).toLowerCase();
+  if (!email || !email.includes("@")) return;
+
+  clearTimeout(syncCartTimer);
+  syncCartTimer = setTimeout(() => {
+    const cb = "saveCartCb_" + Date.now();
+    const script = document.createElement("script");
+    window[cb] = function() {
+      try { delete window[cb]; } catch(e){}
+      if (script.parentNode) script.parentNode.removeChild(script);
+    };
+    script.onerror = function() {
+      try { delete window[cb]; } catch(e){}
+      if (script.parentNode) script.parentNode.removeChild(script);
+    };
+    const params = new URLSearchParams({
+      action: "save_cart",
+      email: email,
+      items: JSON.stringify(cart),
+      callback: cb
+    });
+    script.src = `${BACKEND_URL}?${params.toString()}`;
+    document.head.appendChild(script);
+  }, 400);
+}
 
 function saveCart(){
 
@@ -1907,6 +2044,8 @@ function saveCart(){
     CART_KEY,
     JSON.stringify(cart)
   );
+
+  syncCartToBackend();
 
 }
 
@@ -2610,10 +2749,84 @@ function updateCheckoutButton(){
 
 const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbyHik2t4HnaeQsY9A992qOPdMHxjV0YeS-pcSnfisZYwJW5JJbH55RxhRHPHbGO2hztSA/exec';
 
+function initDossier() {
+  const email = (localStorage.getItem("ap_underworld_email") || "").toLowerCase();
+  const phone = localStorage.getItem("ap_underworld_phone") || "";
+  let profile = {};
+  try {
+    profile = JSON.parse(localStorage.getItem("ap_user_profile") || localStorage.getItem("ap_user") || "{}");
+  } catch(e){}
+
+  const nameEl = document.getElementById("checkout-name");
+  const emailEl = document.getElementById("checkout-email");
+  const phoneEl = document.getElementById("checkout-phone");
+  const addrEl = document.getElementById("checkout-address");
+  const cityEl = document.getElementById("checkout-city");
+  const notesEl = document.getElementById("checkout-notes");
+  const authBadge = document.getElementById("checkout-auth-badge");
+
+  if (email) {
+    if (emailEl) {
+      emailEl.value = email;
+      emailEl.readOnly = true;
+      emailEl.style.opacity = "0.85";
+    }
+    if (authBadge) authBadge.textContent = "● VERIFIED CLIENT";
+  } else {
+    if (authBadge) authBadge.textContent = "CLIENT CHECKOUT";
+  }
+
+  if (nameEl && !nameEl.value && (profile.name || profile.fullName)) {
+    nameEl.value = profile.name || profile.fullName;
+  }
+  if (phoneEl && !phoneEl.value && (phone || profile.phone)) {
+    phoneEl.value = phone || profile.phone;
+  }
+  if (addrEl && !addrEl.value && profile.address) {
+    addrEl.value = profile.address;
+  }
+  if (cityEl && !cityEl.value && profile.city) {
+    cityEl.value = profile.city;
+  }
+}
+
+function fetchCartFromBackend() {
+  const email = (localStorage.getItem("ap_underworld_email") || "").toLowerCase();
+  if (!email || !email.includes("@")) return;
+
+  const cb = "getCartCb_" + Date.now();
+  const script = document.createElement("script");
+  window[cb] = function(res) {
+    try { delete window[cb]; } catch(e){}
+    if (script.parentNode) script.parentNode.removeChild(script);
+
+    if (res && res.ok && Array.isArray(res.items)) {
+      if (res.items.length > 0) {
+        if (!cart || cart.length === 0) {
+          cart = res.items;
+          localStorage.setItem(CART_KEY, JSON.stringify(cart));
+          updateCart();
+        }
+      }
+    }
+  };
+  script.onerror = function() {
+    try { delete window[cb]; } catch(e){}
+    if (script.parentNode) script.parentNode.removeChild(script);
+  };
+  const params = new URLSearchParams({
+    action: "get_cart",
+    email: email,
+    callback: cb
+  });
+  script.src = `${BACKEND_URL}?${params.toString()}`;
+  document.head.appendChild(script);
+}
+
 async function checkout(){
 
   if(!cart.length){
-    alert("Your cart is empty. Please add items before placing an order.");
+    alert("Your shopping bag is empty. Please select garments before placing an order.");
     return;
   }
 
@@ -2622,103 +2835,133 @@ async function checkout(){
     return;
   }
 
-  const userToken = localStorage.getItem("ap_underworld_access_token");
-  const userEmail = localStorage.getItem("ap_underworld_email");
+  const nameEl = document.getElementById("checkout-name");
+  const emailEl = document.getElementById("checkout-email");
+  const phoneEl = document.getElementById("checkout-phone");
+  const addrEl = document.getElementById("checkout-address");
+  const cityEl = document.getElementById("checkout-city");
+  const notesEl = document.getElementById("checkout-notes");
 
-  if (!userToken || !userEmail) {
-    alert("Authentication Required: Please sign in or register on the main portal to proceed with your order.");
-    window.location.href = "index.html";
+  const name = (nameEl?.value || "").trim() || "Valued Client";
+  const email = (emailEl?.value || localStorage.getItem("ap_underworld_email") || "").trim().toLowerCase();
+  const phone = (phoneEl?.value || localStorage.getItem("ap_underworld_phone") || "").trim();
+  const address = (addrEl?.value || "").trim();
+  const city = (cityEl?.value || "").trim();
+  const notes = (notesEl?.value || "").trim();
+
+  if (!email || !email.includes("@")) {
+    alert("Please provide a valid contact email address for your order manifest.");
+    if (emailEl) emailEl.focus();
     return;
   }
 
-  const savedUser = JSON.parse(localStorage.getItem("ap_user_profile") || localStorage.getItem("ap_user") || "{}");
-  const userName = savedUser.name || savedUser.fullName || "Valued Client";
-  let userPhone = savedUser.phone || localStorage.getItem("ap_underworld_phone") || "";
-  let userAddress = savedUser.address || "";
-
-  if (!userPhone) {
-    userPhone = prompt("Please confirm your Contact Phone / WhatsApp Number for delivery coordination:", "+880");
-    if (!userPhone) {
-      alert("A valid contact phone number is required.");
-      return;
-    }
-    savedUser.phone = userPhone;
-    localStorage.setItem("ap_underworld_phone", userPhone);
-    localStorage.setItem("ap_user_profile", JSON.stringify(savedUser));
+  if (!phone || phone.length < 7) {
+    alert("Please provide a valid contact phone or WhatsApp number for delivery coordination.");
+    if (phoneEl) phoneEl.focus();
+    return;
   }
 
-  if (!userAddress) {
-    userAddress = prompt("Please confirm your Shipping & Delivery Address:", "Dhaka, Bangladesh");
-    if (!userAddress) {
-      alert("A delivery address is required.");
-      return;
-    }
-    savedUser.address = userAddress;
-    localStorage.setItem("ap_user_profile", JSON.stringify(savedUser));
-    localStorage.setItem("ap_user", JSON.stringify(savedUser));
+  if (!address) {
+    alert("Please provide your delivery shipping address.");
+    if (addrEl) addrEl.focus();
+    return;
   }
+
+  // Update profile and contact memory
+  let savedUser = {};
+  try {
+    savedUser = JSON.parse(localStorage.getItem("ap_user_profile") || localStorage.getItem("ap_user") || "{}");
+  } catch(e){}
+  savedUser.name = name;
+  savedUser.email = email;
+  savedUser.phone = phone;
+  savedUser.address = address;
+  if (city) savedUser.city = city;
+  if (notes) savedUser.notes = notes;
+  localStorage.setItem("ap_user_profile", JSON.stringify(savedUser));
+  localStorage.setItem("ap_underworld_email", email);
+  localStorage.setItem("ap_underworld_phone", phone);
 
   const btn = document.getElementById("checkout-btn");
   if (btn) {
     btn.disabled = true;
-    btn.textContent = "DISPATCHING ORDER TO BACKEND...";
+    btn.textContent = "DISPATCHING REAL ORDER TO GOOGLE SHEET...";
   }
 
   const subtotalFormatted = money(getSubtotal());
   const discountFormatted = money(discountAmount);
   const totalFormatted = money(Math.max(0, getSubtotal() - discountAmount));
   const couponVal = document.getElementById("coupon-input") ? document.getElementById("coupon-input").value.trim() : "";
+  const fullAddress = address + (city ? ", " + city : "");
 
   // Call Google Apps Script backend with action=create_order via JSONP
   const cb = "orderCb_" + Date.now();
   const script = document.createElement("script");
 
-  function finalizeOrderSuccess(resOrderId) {
-    const orderId = resOrderId || ("AP-ORD-" + Math.floor(100000 + Math.random() * 900000));
-    const orderRecord = {
-      orderId: orderId,
-      email: userEmail,
-      name: userName,
-      phone: userPhone,
-      address: userAddress,
-      itemsSummary: cart.map(i => `${i.name} (${i.size || 'M'}, x${i.qty || 1})`).join(", "),
-      total: totalFormatted,
-      subtotal: subtotalFormatted,
-      discount: discountFormatted,
-      paymentMethod: selectedPaymentMethod,
-      status: "CONFIRMED",
-      timestamp: new Date().toISOString(),
-      items: JSON.parse(JSON.stringify(cart))
-    };
-
-    // Save to user's order history
-    try {
-      const orderKey = "ap_user_orders_" + userEmail.toLowerCase();
-      const existingOrders = JSON.parse(localStorage.getItem(orderKey) || "[]");
-      existingOrders.unshift(orderRecord);
-      localStorage.setItem(orderKey, JSON.stringify(existingOrders));
-    } catch (e) {}
-
-    // Clear user's cart
-    cart = [];
-    saveCart();
-    updateCart();
-
-    alert(`🎉 ORDER PLACED SUCCESSFULLY!\n\nOrder Identifier: ${orderId}\nTotal: ${totalFormatted}\nPayment: ${selectedPaymentMethod}\n\nA formal manifest has been emailed directly to the executive admin desk. You can track this order in your Profile!`);
-    window.location.href = "profile.html";
+  function cleanupScript() {
+    try { delete window[cb]; } catch (e) {}
+    if (script.parentNode) script.parentNode.removeChild(script);
   }
 
   window[cb] = function(res) {
     cleanupScript();
     if (btn) {
       btn.disabled = false;
-      btn.textContent = "CHECKOUT";
+      btn.textContent = "PROCEED TO CHECKOUT";
     }
 
-    if (res && res.ok) {
-      finalizeOrderSuccess(res.orderId);
+    if (res && res.ok && res.orderId) {
+      const orderId = res.orderId;
+      const verifiedTotal = res.total || totalFormatted;
+
+      const orderRecord = {
+        orderId: orderId,
+        email: email,
+        name: name,
+        phone: phone,
+        address: fullAddress,
+        itemsSummary: cart.map(i => `${i.name} (${i.size || 'M'}, x${i.qty || 1})`).join(", "),
+        total: verifiedTotal,
+        subtotal: subtotalFormatted,
+        discount: discountFormatted,
+        paymentMethod: selectedPaymentMethod,
+        status: "CONFIRMED",
+        timestamp: new Date().toISOString(),
+        items: JSON.parse(JSON.stringify(cart))
+      };
+
+      // Save real verified order in customer record
+      try {
+        const orderKey = "ap_user_orders_" + email.toLowerCase();
+        const existingOrders = JSON.parse(localStorage.getItem(orderKey) || "[]");
+        existingOrders.unshift(orderRecord);
+        localStorage.setItem(orderKey, JSON.stringify(existingOrders));
+        localStorage.setItem("ap_last_order", JSON.stringify(orderRecord));
+      } catch (e) {}
+
+      // Clear local cart
+      cart = [];
+      saveCart();
+      updateCart();
+
+      // Clear backend cart
+      try {
+        const clearCb = "clearCartCb_" + Date.now();
+        const clearScript = document.createElement("script");
+        window[clearCb] = function() {
+          try { delete window[clearCb]; } catch(e){}
+          if (clearScript.parentNode) clearScript.parentNode.removeChild(clearScript);
+        };
+        clearScript.src = `${BACKEND_URL}?action=clear_cart&email=${encodeURIComponent(email)}&callback=${clearCb}`;
+        document.head.appendChild(clearScript);
+      } catch(e){}
+
+      alert(`🎉 ORDER RECORDED IN GOOGLE SHEET!\n\nOrder Identifier: ${orderId}\nVerified Total: ${verifiedTotal}\nPayment Method: ${selectedPaymentMethod}\n\nA formal luxury manifest has been recorded to the backend database and dispatched to the concierge. You can track this order in real time.`);
+      window.location.href = "order.html?order=" + encodeURIComponent(orderId);
     } else {
-      finalizeOrderSuccess();
+      // Real backend error handling — NO FAKE ORDER CREATION!
+      const errorMsg = (res && res.message) ? res.message : "The Google Sheet backend was unable to place this order. Please check your details and try again.";
+      alert(`❌ ORDER PLACEMENT FAILED\n\n${errorMsg}\n\nYour garments have been preserved in your cart. No fake records were created.`);
     }
   };
 
@@ -2726,22 +2969,17 @@ async function checkout(){
     cleanupScript();
     if (btn) {
       btn.disabled = false;
-      btn.textContent = "CHECKOUT";
+      btn.textContent = "PROCEED TO CHECKOUT";
     }
-    finalizeOrderSuccess();
+    alert("❌ CONNECTION ERROR\n\nUnable to communicate with the Google Sheet backend. Your garments are safe in your shopping bag. Please check your internet connection and try again.");
   };
-
-  function cleanupScript() {
-    try { delete window[cb]; } catch (e) {}
-    if (script.parentNode) script.parentNode.removeChild(script);
-  }
 
   const queryParams = new URLSearchParams({
     action: "create_order",
-    email: userEmail,
-    name: userName,
-    phone: userPhone,
-    address: userAddress,
+    email: email,
+    name: name,
+    phone: phone,
+    address: fullAddress,
     paymentMethod: selectedPaymentMethod,
     subtotal: subtotalFormatted,
     discount: discountFormatted,
@@ -2875,6 +3113,10 @@ window.addEventListener(
 updateCart();
 
 loadPaymentMethods();
+
+initDossier();
+
+fetchCartFromBackend();
 
 </script>
 

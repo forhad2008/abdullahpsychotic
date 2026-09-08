@@ -723,61 +723,67 @@ function renderOrder(order){
   result.classList.add('show');
 }
 
-async function trackOrder(orderId){
-  /*
-    Normal GET request. This requires Apps Script doGet(e)
-    to return JSON and to allow the browser to read it.
-  */
-  const url =
-    ORDER_BACKEND_URL +
-    '?action=track&orderId=' +
-    encodeURIComponent(orderId);
+function trackOrder(orderId){
+  return new Promise((resolve, reject) => {
+    const cb = "trackCb_" + Date.now();
+    const script = document.createElement("script");
 
-  const response = await fetch(url, {
-    method:'GET',
-    redirect:'follow',
-    cache:'no-store'
-  });
-
-  if (!response.ok){
-    throw new Error('Server returned ' + response.status);
-  }
-
-  const data = await response.json();
-
-  if (data.success === false){
-    throw new Error(data.message || 'Order not found.');
-  }
-
-  const order = normalizeOrder(data);
-
-  if (!order){
-    throw new Error('Order not found.');
-  }
-
-  return order;
-}
-
-/*
-  Optional local fallback:
-  If your checkout page stores a completed order in
-  localStorage under "ap_last_order", the tracker can show it
-  while testing without the backend.
-*/
-function getLocalOrder(orderId){
-  try{
-    const saved = JSON.parse(localStorage.getItem('ap_last_order'));
-    if (!saved) return null;
-
-    const savedId = saved.orderId || saved.id || saved.orderID;
-    if (
-      savedId &&
-      String(savedId).toUpperCase() === String(orderId).toUpperCase()
-    ){
-      return normalizeOrder(saved);
+    function cleanup() {
+      try { delete window[cb]; } catch(e){}
+      if (script.parentNode) script.parentNode.removeChild(script);
     }
-  }catch(e){}
-  return null;
+
+    const timer = setTimeout(() => {
+      cleanup();
+      // Try direct fetch if JSONP timed out
+      fetch(`${ORDER_BACKEND_URL}?action=track&orderId=${encodeURIComponent(orderId)}`, {
+        method: 'GET',
+        redirect: 'follow',
+        cache: 'no-store'
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data && (data.success === true || data.ok === true) && data.order) {
+          const ord = normalizeOrder(data);
+          if (ord) return resolve(ord);
+        }
+        reject(new Error(data?.message || 'Order not found in official registry.'));
+      })
+      .catch(err => reject(err));
+    }, 5000);
+
+    window[cb] = function(data) {
+      clearTimeout(timer);
+      cleanup();
+      if (data && (data.success === true || data.ok === true) && data.order) {
+        const ord = normalizeOrder(data);
+        if (ord) return resolve(ord);
+      }
+      reject(new Error(data?.message || 'Order not found in official registry.'));
+    };
+
+    script.onerror = function() {
+      clearTimeout(timer);
+      cleanup();
+      fetch(`${ORDER_BACKEND_URL}?action=track&orderId=${encodeURIComponent(orderId)}`, {
+        method: 'GET',
+        redirect: 'follow',
+        cache: 'no-store'
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data && (data.success === true || data.ok === true) && data.order) {
+          const ord = normalizeOrder(data);
+          if (ord) return resolve(ord);
+        }
+        reject(new Error(data?.message || 'Order not found in official registry.'));
+      })
+      .catch(err => reject(err));
+    };
+
+    script.src = `${ORDER_BACKEND_URL}?action=track&orderId=${encodeURIComponent(orderId)}&callback=${cb}`;
+    document.head.appendChild(script);
+  });
 }
 
 form.addEventListener('submit', async event=>{
@@ -791,13 +797,13 @@ form.addEventListener('submit', async event=>{
   }
 
   button.disabled = true;
-  button.textContent = 'SEARCHING...';
-  setMessage('Checking your order...');
+  button.textContent = 'SEARCHING GOOGLE SHEET...';
+  setMessage('Querying live order registry in backend...');
 
   try{
     const order = await trackOrder(orderId);
     renderOrder(order);
-    setMessage('ORDER FOUND.','success');
+    setMessage('AUTHENTIC ORDER FOUND IN BACKEND.','success');
 
     history.replaceState(
       null,
@@ -805,25 +811,13 @@ form.addEventListener('submit', async event=>{
       location.pathname + '?order=' + encodeURIComponent(orderId)
     );
   }catch(error){
-    /*
-      During development, try the local test order after
-      the live backend request fails.
-    */
-    const localOrder = getLocalOrder(orderId);
-
-    if (localOrder){
-      renderOrder(localOrder);
-      setMessage('Showing the saved local order.','success');
-    }else{
-      result.classList.remove('show');
-      empty.style.display = 'block';
-      setMessage(
-        'WE COULD NOT FIND THAT ORDER. PLEASE CHECK THE ORDER ID.',
-        'error'
-      );
-    }
-
-    console.error('Order tracking error:', error);
+    result.classList.remove('show');
+    empty.style.display = 'block';
+    setMessage(
+      error.message || 'ORDER NOT FOUND IN GOOGLE SHEET. PLEASE VERIFY THE ORDER ID.',
+      'error'
+    );
+    console.warn('Real order query result:', error);
   }finally{
     button.disabled = false;
     button.textContent = 'TRACK ORDER';
@@ -832,7 +826,7 @@ form.addEventListener('submit', async event=>{
 
 async function loadOrderFromURL(){
   const params = new URLSearchParams(location.search);
-  const order = params.get('order');
+  const order = params.get('order') || params.get('id') || params.get('orderId');
 
   if (order){
     input.value = order.toUpperCase();

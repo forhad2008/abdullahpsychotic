@@ -2026,6 +2026,7 @@
 
         // Fetch real data from Google Sheet backend for this user
         fetchBuyerDataFromBackend();
+        fetchCartFromBackend();
         loadUserOrders();
 
         // Initialize Intelligent Phone Verifier & Auto-Country Detectors
@@ -2371,13 +2372,56 @@
         }
     }
 
+    let syncCartTimer = null;
+    function syncCartToBackend() {
+        if (!userEmail || !userEmail.includes('@')) return;
+        clearTimeout(syncCartTimer);
+        syncCartTimer = setTimeout(() => {
+            const cb = 'cb_save_cart_' + Date.now();
+            const script = document.createElement('script');
+            const cartData = localStorage.getItem('ap_user_cart') || '[]';
+            const params = new URLSearchParams({
+                action: 'save_cart',
+                email: userEmail,
+                items: cartData,
+                callback: cb
+            });
+            script.src = `${BACKEND_URL}?${params.toString()}`;
+            window[cb] = function() { cleanupJsonp(cb, script); };
+            script.onerror = function() { cleanupJsonp(cb, script); };
+            document.body.appendChild(script);
+        }, 400);
+    }
+
+    function fetchCartFromBackend() {
+        if (!userEmail || !userEmail.includes('@')) return;
+        const cb = 'cb_get_cart_' + Date.now();
+        const script = document.createElement('script');
+        script.src = `${BACKEND_URL}?action=get_cart&email=${encodeURIComponent(userEmail)}&callback=${cb}`;
+        window[cb] = function(res) {
+            cleanupJsonp(cb, script);
+            if (res && res.ok && Array.isArray(res.items)) {
+                if (res.items.length > 0) {
+                    const localCart = JSON.parse(localStorage.getItem('ap_user_cart') || '[]');
+                    if (!localCart || localCart.length === 0) {
+                        localStorage.setItem('ap_user_cart', JSON.stringify(res.items));
+                        renderUnorderedCart();
+                    }
+                }
+            }
+        };
+        script.onerror = function() { cleanupJsonp(cb, script); };
+        document.body.appendChild(script);
+    }
+
     function removeCartItem(index) {
         try {
             let cart = JSON.parse(localStorage.getItem('ap_user_cart') || '[]');
             cart.splice(index, 1);
             localStorage.setItem('ap_user_cart', JSON.stringify(cart));
             renderUnorderedCart();
-            showToast('Item removed from cart.', 'info');
+            syncCartToBackend();
+            showToast('Item removed from cart & backend synced.', 'info');
         } catch (e) {}
     }
 
@@ -2400,6 +2444,7 @@
             localStorage.setItem('ap_user_cart', JSON.stringify(cart));
 
             renderUnorderedCart();
+            syncCartToBackend();
             loadWishlist();
             showToast(`Moved ${item.name} to Wishlist!`, 'success');
         } catch (e) {}
@@ -2598,7 +2643,7 @@
                             <button type="button" class="btn-icon-sm" onclick="openInvoiceModal('${escapeHtml(oid)}')" title="View Invoice">
                                 <i class="fas fa-file-invoice"></i>
                             </button>
-                            <a href="order.html?id=${encodeURIComponent(oid)}" class="btn-icon-sm" target="_blank" title="Live Track Order">
+                            <a href="order.html?order=${encodeURIComponent(oid)}" class="btn-icon-sm" target="_blank" title="Live Track Order">
                                 <i class="fas fa-truck-fast"></i>
                             </a>
                             <a href="https://wa.me/8801812345678?text=Hello%20Concierge,%20inquiring%20about%20order%20${encodeURIComponent(oid)}" target="_blank" class="btn-icon-sm" style="color: #22c55e;" title="WhatsApp Concierge">
