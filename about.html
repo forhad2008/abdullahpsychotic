@@ -683,21 +683,6 @@
       .chapter-pill i {
         font-size: 8.5px;
       }
-
-          .cinematic-ambient-canvas {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-      background-color: #05070d;
-      background-image: 
-        radial-gradient(ellipse at 50% 50%, rgba(5, 7, 13, 0.15) 30%, rgba(5, 7, 13, 0.75) 100%),
-        url('32.png');
-      background-position: center top;
-      background-size: cover;
-      background-repeat: no-repeat;
-    }
     }
 
     @media (max-width: 380px) {
@@ -3047,8 +3032,90 @@
         -10px 0 38px rgba(193,18,31,.024);
     }
 
+/* =========================================================
+   AUTHENTIC MOBILE DARK VIBE MASTER OVERRIDE (< 768px)
+   DEEP OBSIDIAN CANVAS + PORTRAIT LIQUID SMOKE (32.png)
+   CRIMSON NEON ACCENTS + HIGH-CONTRAST DARK LUXURY GLASS
+   ========================================================= */
 @media (max-width: 768px) {
+  :root {
+    --bg-deep: #020204;
+    --text-main: #f5f4fa;
+    --text-muted: #b8b4c7;
+    --text-sub: #7d7890;
+  }
 
+  body {
+    background-color: #020204 !important;
+  }
+
+  /* 1. Mobile Deep Obsidian Liquid Smoke Canvas (32.png) */
+  .cinematic-ambient-canvas {
+    position: fixed !important;
+    inset: 0 !important;
+    pointer-events: none !important;
+    z-index: 0 !important;
+    overflow: hidden !important;
+    background-color: #020204 !important;
+    background-image:
+      radial-gradient(ellipse at 50% 18%, rgba(193, 18, 31, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse at 50% 50%, rgba(2, 2, 5, 0.40) 25%, rgba(2, 2, 5, 0.94) 100%),
+      linear-gradient(180deg, rgba(2, 2, 5, 0.3) 0%, rgba(2, 2, 5, 0.65) 50%, rgba(2, 2, 5, 0.98) 100%),
+      url('32.png') !important;
+    background-position: center top !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+  }
+
+  /* Deactivate blurry breathe spheres on mobile so 32.png remains sharp, deep & ink-dark */
+  .ambient-sphere-breathe,
+  .ambient-ribbon-breathe {
+    display: none !important;
+  }
+
+  /* 2. Floating Capsule Navbar (Dark Obsidian Glass) */
+  header.site-header {
+    background: rgba(5, 5, 10, 0.92) !important;
+    backdrop-filter: blur(24px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.13) !important;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.90), 0 0 20px rgba(193, 18, 31, 0.14) !important;
+  }
+
+  header.site-header.scrolled {
+    background: rgba(3, 3, 7, 0.97) !important;
+    border-color: rgba(255, 255, 255, 0.18) !important;
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.96), 0 0 25px rgba(193, 18, 31, 0.22) !important;
+  }
+
+  .brand-logo-pill {
+    color: #ffffff !important;
+  }
+
+  /* 3. Sticky Story Chapter Subbar (Dark Vibe) */
+  .chapter-subbar {
+    background: rgba(4, 4, 8, 0.96) !important;
+    backdrop-filter: blur(22px) !important;
+    -webkit-backdrop-filter: blur(22px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.80) !important;
+  }
+
+  .chapter-pill {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.09) !important;
+    color: #aba6bc !important;
+  }
+
+  .chapter-pill.active {
+    background: linear-gradient(135deg, rgba(193, 18, 31, 0.45) 0%, rgba(18, 12, 24, 0.92) 100%) !important;
+    border-color: rgba(255, 42, 61, 0.55) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 14px rgba(193, 18, 31, 0.45) !important;
+  }
+
+  /* 4. Deep Obsidian Liquid Glass Windows & Cards */
   .liquid-glass-window,
   .luxury-visual-card,
   .transformation-card,
@@ -3060,51 +3127,420 @@
   .hero-model-card,
   .mystory-tray-inner,
   .stat-card {
-
     background:
-      radial-gradient(
-        circle at 100% 0%,
-        rgba(40, 100, 180, 0.035),
-        transparent 52%
-      ),
-      radial-gradient(
-        circle at 0% 100%,
-        rgba(193, 18, 31, 0.025),
-        transparent 52%
-      ),
-      rgba(7, 8, 14, 0.72) !important;
-
-    backdrop-filter: blur(18px) saturate(125%) !important;
-    -webkit-backdrop-filter: blur(18px) saturate(125%) !important;
-
-    border-color: rgba(210, 225, 245, 0.13) !important;
-
+      radial-gradient(circle at 100% 0%, rgba(193, 18, 31, 0.07), transparent 50%),
+      radial-gradient(circle at 0% 100%, rgba(30, 65, 130, 0.06), transparent 50%),
+      linear-gradient(160deg, rgba(16, 17, 26, 0.90) 0%, rgba(8, 9, 15, 0.96) 100%) !important;
+    backdrop-filter: blur(24px) saturate(170%) brightness(0.88) contrast(110%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(170%) brightness(0.88) contrast(110%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.09) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.22) !important;
     box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.28),
-      inset 0 0 25px rgba(60,120,190,0.018),
-      0 20px 50px rgba(0,0,0,0.78),
-      0 0 30px rgba(193,18,31,0.035) !important;
+      inset 0 1px 0 rgba(255, 255, 255, 0.20),
+      inset 0 0 30px rgba(0, 0, 0, 0.65),
+      0 20px 55px rgba(0, 0, 0, 0.92),
+      0 0 25px rgba(193, 18, 31, 0.06) !important;
   }
 
+  /* Specular top sheen line */
+  .liquid-glass-window::after,
+  .luxury-visual-card::after,
+  .transformation-card::after,
+  .creed-card::after,
+  .discipline-pillar-card::after,
+  .manifesto-parchment-box::after,
+  .final-cta-card::after,
+  .hero-brand-card::after,
+  .hero-model-card::after,
+  .mystory-tray-inner::after,
+  .stat-card::after {
+    background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.32),
+      rgba(255, 42, 61, 0.35),
+      rgba(255, 255, 255, 0.22),
+      transparent) !important;
+    box-shadow: 0 0 8px rgba(255, 42, 61, 0.2) !important;
+  }
+
+  /* Window Top Title Bar */
   .liquid-window-bar {
-    background: rgba(5,6,11,0.55) !important;
-    border-bottom-color: rgba(255,255,255,0.07) !important;
+    background: rgba(5, 5, 10, 0.88) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
+    padding: 11px 16px !important;
   }
 
-  .chapter-subbar {
-    background: rgba(5,6,11,0.94) !important;
-    backdrop-filter: blur(18px) saturate(125%) !important;
-    -webkit-backdrop-filter: blur(18px) saturate(125%) !important;
+  .window-tab-title {
+    color: rgba(245, 244, 250, 0.9) !important;
+    font-size: 9.5px !important;
   }
 
-  header.site-header {
-    background: rgba(5,5,10,0.90) !important;
-    backdrop-filter: blur(20px) saturate(130%) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(130%) !important;
+  .window-dot.red {
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.7) !important;
   }
 
-  header.site-header.scrolled {
-    background: rgba(4,4,8,0.97) !important;
+  /* 5. Hero Section Specific Mobile Polish */
+  .hero-showcase-section {
+    margin: clamp(85px, 13vh, 110px) auto 0 !important;
+    padding: 0 14px !important;
+  }
+
+  .hero-double-grid {
+    gap: 20px !important;
+  }
+
+  .hero-brand-card {
+    padding: 28px 20px !important;
+    border-radius: 22px !important;
+  }
+
+  .hero-card-eyebrow {
+    font-size: 10px !important;
+    letter-spacing: 3px !important;
+    color: #a29fb4 !important;
+    margin-bottom: 14px !important;
+  }
+
+  .hero-brand-title {
+    font-size: clamp(30px, 8.5vw, 42px) !important;
+    letter-spacing: 1.5px !important;
+    line-height: 1.12 !important;
+    margin-bottom: 14px !important;
+    color: #ffffff !important;
+    text-shadow: 0 4px 22px rgba(0, 0, 0, 0.95) !important;
+  }
+
+  .crimson-glow-text {
+    color: #ff2a3d !important;
+    text-shadow: 0 0 18px rgba(255, 42, 61, 0.85), 0 0 40px rgba(193, 18, 31, 0.55) !important;
+  }
+
+  .hero-brand-subtitle {
+    font-size: 10px !important;
+    letter-spacing: 2.5px !important;
+    color: #dedbeb !important;
+    margin-bottom: 16px !important;
+  }
+
+  .hero-brand-desc {
+    font-size: 13.5px !important;
+    line-height: 1.75 !important;
+    color: #c4c1d4 !important;
+    margin-bottom: 24px !important;
+  }
+
+  .btn-discover-pill {
+    padding: 12px 28px !important;
+    font-size: 11.5px !important;
+    background: linear-gradient(135deg, rgba(193, 18, 31, 0.38) 0%, rgba(14, 11, 20, 0.92) 100%) !important;
+    border: 1px solid rgba(255, 42, 61, 0.45) !important;
+    box-shadow: 0 0 22px rgba(193, 18, 31, 0.35), 0 10px 25px rgba(0, 0, 0, 0.85) !important;
+  }
+
+  /* Hero Model Card (30.png Showcase) */
+  .hero-model-card {
+    padding: 10px !important;
+    border-radius: 22px !important;
+  }
+
+  .hero-model-frame {
+    height: 380px !important;
+    min-height: 380px !important;
+    border-radius: 16px !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    background: #04050a !important;
+  }
+
+  .hero-model-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to top, rgba(3, 4, 8, 0.94) 0%, rgba(3, 4, 8, 0.25) 40%, transparent 68%);
+    z-index: 2;
+  }
+
+  .hero-model-img {
+    object-position: center 20% !important;
+  }
+
+  .hero-live-badge {
+    top: 14px !important;
+    right: 14px !important;
+    padding: 6px 14px !important;
+    font-size: 9.5px !important;
+    background: rgba(5, 6, 12, 0.92) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.85) !important;
+    z-index: 4 !important;
+  }
+
+  .laser-flare-beam {
+    z-index: 3 !important;
+    bottom: 22% !important;
+  }
+
+  /* 6. My Story Showcase Tray */
+  .my-story-showcase-tray {
+    margin: 22px auto 48px !important;
+    padding: 0 14px !important;
+  }
+
+  .mystory-tray-inner {
+    padding: 24px 18px !important;
+    border-radius: 22px !important;
+    gap: 24px !important;
+  }
+
+  .mystory-eyebrow {
+    font-size: 10px !important;
+    letter-spacing: 3px !important;
+    color: #a29fb4 !important;
+    margin-bottom: 10px !important;
+  }
+
+  .mystory-title {
+    font-size: clamp(24px, 6.8vw, 32px) !important;
+    line-height: 1.18 !important;
+    margin-bottom: 12px !important;
+    color: #ffffff !important;
+  }
+
+  .mystory-desc {
+    font-size: 13.5px !important;
+    line-height: 1.75 !important;
+    color: #c4c1d4 !important;
+    margin-bottom: 20px !important;
+  }
+
+  .link-read-story {
+    font-size: 11.5px !important;
+    color: #ffffff !important;
+  }
+
+  /* Stat Tiles: 2x2 Dark Luxury Grid */
+  .stats-metric-grid {
+    gap: 10px !important;
+    margin-top: 6px !important;
+  }
+
+  .stat-card {
+    padding: 16px 10px !important;
+    border-radius: 14px !important;
+    background: linear-gradient(155deg, rgba(18, 20, 32, 0.94) 0%, rgba(8, 9, 15, 0.98) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.10) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.24) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.20), 0 12px 28px rgba(0, 0, 0, 0.88) !important;
+  }
+
+  .stat-icon {
+    color: #ff2a3d !important;
+    filter: drop-shadow(0 0 8px rgba(255, 42, 61, 0.85)) !important;
+    font-size: 18px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .stat-value {
+    color: #ffffff !important;
+    font-size: 21px !important;
+    font-weight: 800 !important;
+  }
+
+  .stat-label {
+    color: #aba7bd !important;
+    font-size: 9px !important;
+    letter-spacing: 0.8px !important;
+    text-transform: uppercase !important;
+  }
+
+  /* Signature & Vision Row */
+  .signature-vision-row {
+    margin-top: 18px !important;
+    padding-top: 14px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .founder-signature-img {
+    height: 36px !important;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.75)) !important;
+  }
+
+  .vision-dash {
+    box-shadow: 0 0 10px #ff3344 !important;
+  }
+
+  .vision-labels span {
+    color: #ccc8dc !important;
+    font-size: 8.5px !important;
+  }
+
+  /* 7. Chapters 01 to 04 Responsive Spacing & Dark Theme */
+  .story-chapter {
+    padding: 28px 14px !important;
+    margin-bottom: 20px !important;
+  }
+
+  .chapter-split-grid {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  .story-text-col,
+  .story-visual-col {
+    width: 100% !important;
+  }
+
+  .liquid-window-content {
+    padding: 22px 18px !important;
+  }
+
+  .chapter-number-tag {
+    color: #a8a4b8 !important;
+    font-size: 10px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .chapter-heading {
+    font-size: clamp(22px, 5.8vw, 30px) !important;
+    line-height: 1.25 !important;
+    color: #ffffff !important;
+    margin-bottom: 14px !important;
+  }
+
+  .chapter-heading span {
+    color: #ff3b4e !important;
+    text-shadow: 0 0 16px rgba(255, 59, 78, 0.5) !important;
+  }
+
+  .story-lead-p {
+    font-size: 14px !important;
+    line-height: 1.75 !important;
+    color: #e0ddeb !important;
+    margin-bottom: 16px !important;
+  }
+
+  .story-paragraphs p {
+    font-size: 13.5px !important;
+    line-height: 1.75 !important;
+    color: #c4c1d4 !important;
+    margin-bottom: 14px !important;
+  }
+
+  .story-paragraphs strong {
+    color: #ffffff !important;
+  }
+
+  /* Chapter Visual Cards */
+  .luxury-visual-card {
+    border-radius: 20px !important;
+  }
+
+  .visual-image-wrap {
+    border-radius: 14px !important;
+  }
+
+  .visual-overlay-gradient {
+    background: linear-gradient(to top, rgba(5, 6, 12, 0.95) 0%, rgba(5, 6, 12, 0.3) 50%, transparent 100%) !important;
+  }
+
+  .visual-card-content {
+    padding: 18px 16px !important;
+  }
+
+  .visual-title {
+    color: #ffffff !important;
+    font-size: 17px !important;
+  }
+
+  .visual-desc {
+    color: #b7b4c7 !important;
+    font-size: 12px !important;
+  }
+
+  .floating-accent-badge {
+    top: 12px !important;
+    left: 12px !important;
+    padding: 8px 12px !important;
+    background: rgba(6, 7, 13, 0.90) !important;
+    border-color: rgba(255, 255, 255, 0.16) !important;
+  }
+
+  /* 8. Quote Breakout Strip */
+  .quote-breakout-strip {
+    margin: 20px auto 40px !important;
+    padding: 0 14px !important;
+  }
+
+  .quote-breakout-inner {
+    padding: 28px 20px !important;
+    background: linear-gradient(155deg, rgba(20, 15, 26, 0.92) 0%, rgba(8, 6, 12, 0.98) 100%) !important;
+    border: 1px solid rgba(193, 18, 31, 0.35) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 0 30px rgba(193, 18, 31, 0.15), 0 20px 50px rgba(0, 0, 0, 0.92) !important;
+  }
+
+  .quote-glyph {
+    font-size: 54px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .large-manifesto-quote {
+    font-size: clamp(20px, 5.2vw, 26px) !important;
+    line-height: 1.4 !important;
+    color: #ffffff !important;
+    margin-bottom: 16px !important;
+  }
+
+  .quote-author {
+    font-size: 10px !important;
+    letter-spacing: 2.5px !important;
+    color: #d4af37 !important;
+  }
+
+  /* 9. Discipline Pillars & Transformation */
+  .discipline-pillar-card {
+    background: linear-gradient(145deg, rgba(18, 18, 28, 0.94) 0%, rgba(8, 8, 14, 0.98) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.09) !important;
+    border-left: 3px solid #ff2a3d !important;
+    color: #e2dfef !important;
+    font-size: 13.5px !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 10px 25px rgba(0, 0, 0, 0.80) !important;
+  }
+
+  /* 10. Final CTA Card */
+  .final-cta-section {
+    margin: 0 auto 50px !important;
+    padding: 0 14px !important;
+  }
+
+  .final-cta-card {
+    border-radius: 22px !important;
+    background: linear-gradient(155deg, rgba(28, 14, 22, 0.94) 0%, rgba(8, 6, 12, 0.98) 100%) !important;
+    border: 1px solid rgba(193, 18, 31, 0.35) !important;
+    box-shadow: 0 0 35px rgba(193, 18, 31, 0.20), 0 25px 60px rgba(0, 0, 0, 0.95) !important;
+  }
+
+  .final-cta-inner {
+    padding: 34px 18px !important;
+  }
+
+  .final-cta-card h2 {
+    font-size: clamp(24px, 6.5vw, 34px) !important;
+    color: #ffffff !important;
+  }
+
+  .final-cta-card p {
+    font-size: 13.5px !important;
+    color: #c4c0d4 !important;
+  }
+
+  /* 11. Mobile Floating Bottom Dock */
+  .mobile-floating-dock {
+    background: rgba(5, 5, 10, 0.95) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.88), 0 0 20px rgba(193, 18, 31, 0.14) !important;
   }
 }
 
