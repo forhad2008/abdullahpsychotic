@@ -1757,7 +1757,34 @@ footer{
           </div>
           <div class="checkout-field">
             <label for="checkout-phone">WhatsApp / Phone *</label>
-            <input type="tel" id="checkout-phone" placeholder="+880 1812 345678" autocomplete="tel" required>
+            <div style="display:flex;gap:6px;">
+              <select id="checkout-country-code" style="width:85px;flex-shrink:0;background:#090909;border:1px solid #252525;color:#fff;padding:10px 4px;font-size:11px;outline:none;font-family:inherit;cursor:pointer;">
+                <option value="+880" selected>🇧🇩 +880</option>
+                <option value="+1">🇺🇸 +1</option>
+                <option value="+44">🇬🇧 +44</option>
+                <option value="+971">🇦🇪 +971</option>
+                <option value="+966">🇸🇦 +966</option>
+                <option value="+91">🇮🇳 +91</option>
+                <option value="+92">🇵🇰 +92</option>
+                <option value="+60">🇲🇾 +60</option>
+                <option value="+65">🇸🇬 +65</option>
+                <option value="+61">🇦🇺 +61</option>
+                <option value="+49">🇩🇪 +49</option>
+                <option value="+33">🇫🇷 +33</option>
+                <option value="+974">🇶🇦 +974</option>
+                <option value="+965">🇰🇼 +965</option>
+                <option value="+234">🇳🇬 +234</option>
+                <option value="+20">🇪🇬 +20</option>
+                <option value="+90">🇹🇷 +90</option>
+                <option value="+86">🇨🇳 +86</option>
+                <option value="+81">🇯🇵 +81</option>
+                <option value="+82">🇰🇷 +82</option>
+                <option value="+52">🇲🇽 +52</option>
+                <option value="+55">🇧🇷 +55</option>
+              </select>
+              <input type="tel" id="checkout-phone" placeholder="01812 345678" autocomplete="tel" required style="flex:1;min-width:0;">
+            </div>
+            <div id="checkout-phone-verifier" style="display:none;align-items:center;margin-top:6px;padding:6px 10px;border-radius:6px;font-size:10px;font-weight:500;transition:all 0.25s ease;"></div>
           </div>
         </div>
 
@@ -1839,6 +1866,7 @@ footer{
 </footer>
 
 
+<script src="phone-verifier.js"></script>
 <script>
 
 /* =========================================================
@@ -2788,6 +2816,15 @@ function initDossier() {
   if (cityEl && !cityEl.value && profile.city) {
     cityEl.value = profile.city;
   }
+
+  // Initialize Intelligent Phone Verifier & Country Auto-Detector
+  if (window.PhoneVerifier) {
+    window.PhoneVerifier.attachToInput({
+      phoneInput: phoneEl,
+      countrySelect: document.getElementById("checkout-country-code"),
+      statusEl: document.getElementById("checkout-phone-verifier")
+    });
+  }
 }
 
 function fetchCartFromBackend() {
@@ -2855,7 +2892,22 @@ async function checkout(){
     return;
   }
 
-  if (!phone || phone.length < 7) {
+  // Strictly enforce authentic phone number — ZERO FAKE NUMBERS ALLOWED
+  const countryCode = document.getElementById("checkout-country-code") ? document.getElementById("checkout-country-code").value : "+880";
+  let finalPhone = phone;
+
+  if (window.PhoneVerifier) {
+    const vRes = window.PhoneVerifier.verify(phone, countryCode);
+    if (!vRes.isValid) {
+      alert("❌ INVALID PHONE NUMBER\n\n" + (vRes.error || "Please enter an authentic personal mobile number.\nSequential (e.g. 12345678) and dummy numbers are strictly forbidden."));
+      if (phoneEl) {
+        phoneEl.focus();
+        phoneEl.style.borderColor = "#ef4444";
+      }
+      return;
+    }
+    finalPhone = vRes.formattedNumber || vRes.e164Number;
+  } else if (!phone || phone.length < 7) {
     alert("Please provide a valid contact phone or WhatsApp number for delivery coordination.");
     if (phoneEl) phoneEl.focus();
     return;
@@ -2874,13 +2926,13 @@ async function checkout(){
   } catch(e){}
   savedUser.name = name;
   savedUser.email = email;
-  savedUser.phone = phone;
+  savedUser.phone = finalPhone;
   savedUser.address = address;
   if (city) savedUser.city = city;
   if (notes) savedUser.notes = notes;
   localStorage.setItem("ap_user_profile", JSON.stringify(savedUser));
   localStorage.setItem("ap_underworld_email", email);
-  localStorage.setItem("ap_underworld_phone", phone);
+  localStorage.setItem("ap_underworld_phone", finalPhone);
 
   const btn = document.getElementById("checkout-btn");
   if (btn) {
@@ -2918,7 +2970,7 @@ async function checkout(){
         orderId: orderId,
         email: email,
         name: name,
-        phone: phone,
+        phone: finalPhone,
         address: fullAddress,
         itemsSummary: cart.map(i => `${i.name} (${i.size || 'M'}, x${i.qty || 1})`).join(", "),
         total: verifiedTotal,
@@ -2978,7 +3030,7 @@ async function checkout(){
     action: "create_order",
     email: email,
     name: name,
-    phone: phone,
+    phone: finalPhone,
     address: fullAddress,
     paymentMethod: selectedPaymentMethod,
     subtotal: subtotalFormatted,

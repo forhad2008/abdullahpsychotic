@@ -3351,7 +3351,8 @@
                     <div class="form-group">
                         <label class="form-label">Phone Number</label>
                         <input type="text" id="edit-user-phone" class="form-control" oninput="updateDrawerWhatsAppLink()">
-                        <a id="edit-user-whatsapp-link" href="#" target="_blank" class="btn-whatsapp-action" style="display: none;">
+                        <div id="edit-user-phone-verifier" style="display: none; align-items: center; margin-top: 6px; padding: 5px 10px; border-radius: 6px; font-size: 11px;"></div>
+                        <a id="edit-user-whatsapp-link" href="#" target="_blank" class="btn-whatsapp-action" style="display: none; margin-top: 6px;">
                             <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
                         </a>
                     </div>
@@ -3528,6 +3529,7 @@
     <!-- =========================================================
          SCRIPT LOGIC
     ========================================================= */ -->
+    <script src="phone-verifier.js"></script>
     <script>
     'use strict';
 
@@ -4085,10 +4087,11 @@
 
             let rawPhone = String(u.phone || '').trim();
             if (rawPhone === '#ERROR!' || rawPhone.startsWith('#')) {
-                rawPhone = '+880 1812 345678';
+                rawPhone = '';
             }
-            const rawDigits = rawPhone.replace(/[^0-9]/g, '');
-            const waUrl = u.whatsappUrl || (rawDigits.length >= 7 ? `https://wa.me/${rawDigits}?text=${encodeURIComponent('Hello ' + (u.name || 'valued customer') + ', this is Abdullah Psychotic Concierge.')}` : '');
+            const pInfo = window.PhoneVerifier ? window.PhoneVerifier.formatDisplay(rawPhone) : null;
+            const phoneDisplay = pInfo ? pInfo.displayHtml : (rawPhone ? `<span style="color: var(--text-secondary); font-size: 11.5px;">${escapeHtml(rawPhone)}</span>` : '<span style="color: var(--text-muted);">—</span>');
+            const waUrl = (pInfo && pInfo.waUrl) ? `${pInfo.waUrl}?text=${encodeURIComponent('Hello ' + (u.name || 'valued customer') + ', this is Abdullah Psychotic Concierge.')}` : (u.whatsappUrl || '');
 
             html += `
                 <tr>
@@ -4109,7 +4112,7 @@
                     </td>
                     <td>
                         <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start;">
-                            <span style="color: var(--text-secondary); font-size: 11.5px; font-weight: 500;">${escapeHtml(rawPhone || '—')}</span>
+                            ${phoneDisplay}
                             ${waUrl ? `
                                 <a href="${escapeAttribute(waUrl)}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-cell" title="Chat on WhatsApp with ${escapeAttribute(u.name || 'customer')}">
                                     <i class="fa-brands fa-whatsapp"></i> WhatsApp
@@ -4209,16 +4212,54 @@
         const phoneInput = document.getElementById('edit-user-phone');
         const waLink = document.getElementById('edit-user-whatsapp-link');
         const nameInput = document.getElementById('edit-user-name');
-        if (!phoneInput || !waLink) return;
+        const verifierBadge = document.getElementById('edit-user-phone-verifier');
+        if (!phoneInput) return;
 
-        const digits = phoneInput.value.replace(/[^0-9]/g, '');
-        if (digits.length >= 7) {
-            const customerName = (nameInput && nameInput.value.trim()) || 'valued customer';
-            waLink.href = `https://wa.me/${digits}?text=${encodeURIComponent('Hello ' + customerName + ', this is Abdullah Psychotic Concierge.')}`;
-            waLink.style.display = 'inline-flex';
+        const val = phoneInput.value.trim();
+        if (!val) {
+            if (waLink) { waLink.style.display = 'none'; waLink.href = '#'; }
+            if (verifierBadge) verifierBadge.style.display = 'none';
+            return;
+        }
+
+        if (window.PhoneVerifier) {
+            const pInfo = window.PhoneVerifier.verify(val);
+            if (verifierBadge) {
+                verifierBadge.style.display = 'flex';
+                if (pInfo.isValid) {
+                    verifierBadge.style.background = 'rgba(34, 197, 94, 0.12)';
+                    verifierBadge.style.border = '1px solid rgba(34, 197, 94, 0.35)';
+                    verifierBadge.style.color = '#4ade80';
+                    verifierBadge.innerHTML = `<i class="fas fa-check-circle" style="margin-right: 6px;"></i> ${pInfo.country.flag} ${pInfo.country.name} (${pInfo.formattedNumber}) • Valid`;
+                } else {
+                    verifierBadge.style.background = 'rgba(239, 68, 68, 0.12)';
+                    verifierBadge.style.border = '1px solid rgba(239, 68, 68, 0.35)';
+                    verifierBadge.style.color = '#f87171';
+                    verifierBadge.innerHTML = `<i class="fas fa-triangle-exclamation" style="margin-right: 6px;"></i> ${pInfo.error || 'Invalid / dummy number'}`;
+                }
+            }
+
+            if (waLink) {
+                const digits = (pInfo.e164Number || val).replace(/\D/g, '');
+                if (digits.length >= 7) {
+                    const customerName = (nameInput && nameInput.value.trim()) || 'valued customer';
+                    waLink.href = `https://wa.me/${digits}?text=${encodeURIComponent('Hello ' + customerName + ', this is Abdullah Psychotic Concierge.')}`;
+                    waLink.style.display = 'inline-flex';
+                } else {
+                    waLink.style.display = 'none';
+                    waLink.href = '#';
+                }
+            }
         } else {
-            waLink.style.display = 'none';
-            waLink.href = '#';
+            const digits = val.replace(/[^0-9]/g, '');
+            if (digits.length >= 7 && waLink) {
+                const customerName = (nameInput && nameInput.value.trim()) || 'valued customer';
+                waLink.href = `https://wa.me/${digits}?text=${encodeURIComponent('Hello ' + customerName + ', this is Abdullah Psychotic Concierge.')}`;
+                waLink.style.display = 'inline-flex';
+            } else if (waLink) {
+                waLink.style.display = 'none';
+                waLink.href = '#';
+            }
         }
     }
 
@@ -4232,8 +4273,21 @@
         const user = allUsers.find(u => u.email.toLowerCase() === originalEmail.toLowerCase());
         if (!user) return;
 
+        const rawPhone = document.getElementById('edit-user-phone').value.trim();
+        if (rawPhone && window.PhoneVerifier) {
+            const vRes = window.PhoneVerifier.verify(rawPhone);
+            if (!vRes.isValid) {
+                showToast('❌ Invalid phone: ' + (vRes.error || 'Fake or dummy numbers are strictly forbidden.'), 'error');
+                const phoneInp = document.getElementById('edit-user-phone');
+                if (phoneInp) phoneInp.focus();
+                return;
+            }
+            user.phone = vRes.formattedNumber || vRes.e164Number;
+        } else {
+            user.phone = rawPhone;
+        }
+
         user.name = document.getElementById('edit-user-name').value.trim();
-        user.phone = document.getElementById('edit-user-phone').value.trim();
         user.address = document.getElementById('edit-user-address').value.trim();
         user.role = document.getElementById('edit-user-role').value;
         user.status = document.getElementById('edit-user-status').value;
@@ -4254,7 +4308,7 @@
         window[cb] = function (res) {
             cleanupJsonp(cb, script);
             if (res && res.ok) {
-                showToast('Changes synced to Google Sheets cloud.', 'info');
+                logAudit(`Synced updated profile for ${user.email} to Google Sheets`);
             }
         };
         script.onerror = function () {
@@ -4298,11 +4352,27 @@
         }
 
         const name = prompt('Enter user name:', 'Customer Name') || 'Customer';
+        const phone = prompt('Enter genuine mobile number (e.g. 01812345678):', '') || '';
+        let validPhone = '';
+
+        if (phone) {
+            if (window.PhoneVerifier) {
+                const vRes = window.PhoneVerifier.verify(phone);
+                if (!vRes.isValid) {
+                    showToast('❌ Rejected: ' + (vRes.error || 'Fake or sequential numbers are strictly forbidden.'), 'error');
+                    return;
+                }
+                validPhone = vRes.formattedNumber || vRes.e164Number;
+            } else {
+                validPhone = phone.trim();
+            }
+        }
+
         const newUser = {
             accessId: 'AP-' + Math.floor(1000 + Math.random() * 9000),
             email: email.trim(),
             name: name.trim(),
-            phone: '+880',
+            phone: validPhone,
             address: 'Store Client',
             role: 'buyer',
             status: 'ACTIVE',
@@ -4658,8 +4728,9 @@
             `;
 
             const rawPhone = String(o.phone || '').trim();
-            const rawDigits = rawPhone.replace(/[^0-9]/g, '');
-            const waUrl = o.whatsappUrl || (rawDigits.length >= 7 ? `https://wa.me/${rawDigits}?text=${encodeURIComponent('Hello ' + (o.customer || 'valued client') + ', this is Abdullah Psychotic regarding your order #' + (o.id || ''))}` : '');
+            const pInfo = window.PhoneVerifier ? window.PhoneVerifier.formatDisplay(rawPhone) : null;
+            const phoneDisplay = pInfo ? pInfo.displayHtml : (rawPhone ? `<span style="font-size: 11px; color: var(--text-secondary); font-weight: 500;">${escapeHtml(rawPhone)}</span>` : '<span style="color: var(--text-muted); font-size: 11px;">—</span>');
+            const waUrl = (pInfo && pInfo.waUrl) ? `${pInfo.waUrl}?text=${encodeURIComponent('Hello ' + (o.customer || 'valued client') + ', this is Abdullah Psychotic regarding your order #' + (o.id || ''))}` : '';
 
             return `
                 <tr>
@@ -4670,8 +4741,8 @@
                     <td data-label="Customer">
                         <div style="font-weight: 600; color: #fff; font-size: 13px;">${escapeHtml(o.customer || 'Valued Buyer')}</div>
                         <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">${escapeHtml(o.email || '—')}</div>
-                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
-                            <span style="font-size: 11px; color: var(--text-secondary); font-weight: 500;">${escapeHtml(rawPhone || '—')}</span>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px; flex-wrap: wrap;">
+                            ${phoneDisplay}
                             ${waUrl ? `
                                 <a href="${escapeAttribute(waUrl)}" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-cell" title="Chat on WhatsApp with ${escapeAttribute(o.customer)}">
                                     <i class="fa-brands fa-whatsapp"></i> WhatsApp

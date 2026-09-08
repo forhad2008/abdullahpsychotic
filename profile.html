@@ -2132,7 +2132,27 @@
 
         if (data.phone) {
             document.getElementById('input-phone-number').value = data.phone;
-            document.getElementById('addr-phone-display').textContent = data.phone;
+            const deliveryPhoneInput = document.getElementById('input-delivery-phone');
+            if (deliveryPhoneInput && !deliveryPhoneInput.value) deliveryPhoneInput.value = data.phone;
+
+            if (window.PhoneVerifier) {
+                const pInfo = window.PhoneVerifier.formatDisplay(data.phone);
+                const addrPhoneEl = document.getElementById('addr-phone-display');
+                if (addrPhoneEl) addrPhoneEl.innerHTML = pInfo.displayHtml;
+
+                const countrySelect = document.getElementById('input-country-code');
+                if (countrySelect && pInfo.country) {
+                    const targetVal = pInfo.country.selectVal || pInfo.country.code;
+                    for (let i = 0; i < countrySelect.options.length; i++) {
+                        if (countrySelect.options[i].value === targetVal) {
+                            countrySelect.selectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+            } else {
+                document.getElementById('addr-phone-display').textContent = data.phone;
+            }
         }
         if (data.altPhone) document.getElementById('input-alt-phone').value = data.altPhone;
         if (data.address) {
